@@ -14,6 +14,7 @@ float error = 0;
 float output = 0;
 float measured_value = 0;
 float proportional_gain = 0;
+float controller_output = 0;
 float ticksPerDegree = (44 * 193) / (360 / 3);
 // function for driving a motor from just one value between -255 and 255
 void motorDrive(int power) {
@@ -52,9 +53,12 @@ void BANGBANG(float setpoint, float measured_value) {
     motorDrive(255);
   }
 }
-void P(float setpoint,float measured_value,float error)
+void P(float setpoint,float measured_value)
 {
-error = measured_value - setpoint;
+error = setpoint - measured_value;
+controller_output = error * proportional_gain;
+controller_output = constrain(controller_output,-255,255);
+motorDrive((int)controller_output);
 }
 
 void setup() {
@@ -87,7 +91,9 @@ void loop() {
   }
   //  make the control loop run ten times per second
   delay(100);
-  BANGBANG(setpoint, measured_value);
+  // BANGBANG(setpoint, measured_value);
+  P(setpoint, measured_value);
+
   //  print some debug info, check it out in the serial plotter
   Serial.print("Setpoint:");
   Serial.print(setpoint);
