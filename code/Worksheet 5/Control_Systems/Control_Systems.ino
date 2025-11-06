@@ -15,6 +15,8 @@ float output = 0;
 float measured_value = 0;
 float ticksPerDegree = 44 * 193 / 360 / 3;
 
+
+
 // function for driving a motor from just one value between -255 and 255
 void motorDrive(int power) {
 
@@ -43,18 +45,18 @@ void motorDrive(int power) {
   // write the motor power to the enable pin
   analogWrite(motorE, abs(power));
 }
- void BANGBANG(float setpoint, float measured_value)
- {
-  measured_value = analogRead(pos);
-  if(setpoint > measured_value)
-  {
+
+
+void BANGBANG(float setpoint, float measured_value) {
+  if (setpoint > measured_value) {
+    motorDrive(-255);
+  } else if (measured_value > setpoint) {
     motorDrive(255);
   }
-  else if(measured_value > setpoint)
-  {
-    motorDrive(-255);
-  }
- }
+}
+
+
+
 void setup() {
   // set the pin modes of the motor pins and encoder pins
   pinMode(motorA, OUTPUT);
@@ -73,30 +75,31 @@ void setup() {
   delay(100);
 }
 
-void loop()
-{
+
+
+void loop() {
   // convert the encoder ticks to degrees
   pos = myEncoder.read() / ticksPerDegree;
   measured_value = pos;
   // update the desired setpoint of the motor from serial
-  if (Serial.available() > 1)
-  {
+  if (Serial.available() > 1) {
     setpoint = Serial.parseInt();
   }
-  // ----------WRITE CONTROLLER HERE--------------------------------
- // You will need to write your Bang Bang and PID controller code here
- // Remember you will need to create variables for Kp, Ki and Kd (Your gain values to tune)
-  motorDrive(output);
-
-  // ----------------------------------------------------------------
-
   //  make the control loop run ten times per second
   delay(100);
   BANGBANG(setpoint, measured_value);
   //  print some debug info, check it out in the serial plotter
-  Serial.print("Setpoint:"); Serial.print(setpoint); Serial.print(", ");
-  Serial.print("Position:"); Serial.print(pos); Serial.print(", ");
-  Serial.print("Error:"); Serial.print(error); Serial.print(", ");
-  Serial.print("OutputPower:"); Serial.print(output); Serial.print(", ");
+  Serial.print("Setpoint:");
+  Serial.print(setpoint);
+  Serial.print(", ");
+  Serial.print("Position:");
+  Serial.print(pos);
+  Serial.print(", ");
+  Serial.print("Error:");
+  Serial.print(error);
+  Serial.print(", ");
+  Serial.print("OutputPower:");
+  Serial.print(output);
+  Serial.print(", ");
   Serial.println();
 }
