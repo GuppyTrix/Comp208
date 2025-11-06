@@ -15,7 +15,7 @@ float error = 0;
 float output = 0;
 float measured_value = 0;
 float controller_output = 0;
-float proportional_gain = 2.0;   
+float proportional_gain = 0.0;   
 float integral_gain = 0.5;       
 float integral = 0;
 
@@ -60,7 +60,7 @@ void BANGBANG(float setpoint, float measured_value) {
 }
 
 void Proportional_Control(float setpoint, float measured_value) {
-  float Kp = 1;  // Proportional gain
+  float Kp = proportional_gain;  // Proportional gain
   error = setpoint - pos;  // Proportional term
   output = Kp * error;
   motorDrive(output);
