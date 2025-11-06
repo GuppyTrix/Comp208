@@ -13,8 +13,7 @@ float pos = 0;
 float setpoint = 0;
 float error = 0;
 float output = 0;
-float integral_gain = 0.5;       
-float integral = 0;
+float error_integral = 0;
 
 float ticksPerDegree = (44 * 193) / (360 / 3);
 
@@ -57,16 +56,31 @@ void BANGBANG(float setpoint, float pos) {
 }
 
 void Proportional_Control(float setpoint, float pos) {
-  float Kp = 0.1;  
-  error = setpoint - pos;  
+  float Kp = 3;
+  error = setpoint - pos;
   output = Kp * error;
   motorDrive(-output);
 }
 
 
-void Kpi(float setpoint, float pos)
-{
+void Proportional_Integral_Control(float setpoint, float pos) {
+  // Output = Kp * error + Ki * error_integral
 
+  float Kp = 3;
+  float Ki = 0.5; 
+
+  error = setpoint - pos;
+  output = Kp * error;
+  error_integral += error;
+  
+  float integral = Ki * error_integral;
+  output = output + integral;
+
+  output = Kp * (setpoint - pos) + (Ki * error_integral);
+
+  
+  // Drive motor (negative because of motor direction)
+  motorDrive(-output);
 }
 
 
@@ -98,7 +112,8 @@ void loop() {
   delay(100);
 
   // BANGBANG(setpoint, pos);
-  Proportional_Control(setpoint, pos);
+  // Proportional_Control(setpoint, pos);
+  Proportional_Integral_Control(setpoint, pos);
 
   //  print some debug info, check it out in the serial plotter
   Serial.print("Setpoint:");
