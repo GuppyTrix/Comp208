@@ -13,9 +13,6 @@ float pos = 0;
 float setpoint = 0;
 float error = 0;
 float output = 0;
-float measured_value = 0;
-float controller_output = 0;
-float proportional_gain = 0.0;   
 float integral_gain = 0.5;       
 float integral = 0;
 
@@ -51,29 +48,28 @@ void motorDrive(int power) {
 }
 
 
-void BANGBANG(float setpoint, float measured_value) {
-  if (setpoint > measured_value) {
+void BANGBANG(float setpoint, float pos) {
+  if (setpoint > pos) {
     motorDrive(-255);
-  } else if (measured_value > setpoint) {
+  } else if (pos > setpoint) {
     motorDrive(255);
   }
 }
 
-void Proportional_Control(float setpoint, float measured_value) {
-  float Kp = proportional_gain;  // Proportional gain
-  error = setpoint - pos;  // Proportional term
+void Proportional_Control(float setpoint, float pos) {
+  float Kp = 0.1;  
+  error = setpoint - pos;  
   output = Kp * error;
-  motorDrive(output);
+  motorDrive(-output);
 }
-void PI(float measured_value,float setpoint)
+
+
+void Kpi(float setpoint, float pos)
 {
-  error = setpoint - measured_value;
-  integral += error * integral_gain;
-  integral  = constrain(integral,-255,255);
-  float proportional_term = error * proportional_gain;
-  controller_output = proportional_term + integral;
-  controller_output = constrain(controller_output,-255,255);
+
 }
+
+
 void setup() {
   // set the pin modes of the motor pins and encoder pins
   pinMode(motorA, OUTPUT);
@@ -92,7 +88,6 @@ void setup() {
 void loop() {
   // convert the encoder ticks to degrees
   pos = myEncoder.read() / ticksPerDegree;
-  measured_value = pos;
 
   // update the desired setpoint of the motor from serial
   if (Serial.available() > 1) {
@@ -102,8 +97,8 @@ void loop() {
   //  make the control loop run ten times per second
   delay(100);
 
-  // BANGBANG(setpoint, measured_value);
-  Proportional_Control(setpoint, measured_value);
+  // BANGBANG(setpoint, pos);
+  Proportional_Control(setpoint, pos);
 
   //  print some debug info, check it out in the serial plotter
   Serial.print("Setpoint:");
