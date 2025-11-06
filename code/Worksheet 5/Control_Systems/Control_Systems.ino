@@ -1,5 +1,6 @@
 #include <Encoder.h>
 
+// Encode Variables //
 int encoderA = 3;
 int encoderB = 2;
 int motorA = 9;
@@ -8,14 +9,16 @@ int motorE = 11;
 
 Encoder myEncoder(encoderA, encoderB);
 
+// General Variables //
+
 float pos = 0;
 float setpoint = 0;
 float error = 0;
 float output = 0;
 float measured_value = 0;
-float proportional_gain = 0;
-float controller_output = 0;
 float ticksPerDegree = (44 * 193) / (360 / 3);
+
+
 // function for driving a motor from just one value between -255 and 255
 void motorDrive(int power) {
 
@@ -53,13 +56,17 @@ void BANGBANG(float setpoint, float measured_value) {
     motorDrive(255);
   }
 }
-void P(float setpoint,float measured_value)
-{
-error = setpoint - measured_value;
-controller_output = error * proportional_gain;
-controller_output = constrain(controller_output,-255,255);
-motorDrive((int)controller_output);
+
+
+
+void Proportional_Control(float setpoint, float measured_value) {
+  float Kp = 1;  // Proportional gain
+  error = setpoint - pos;  // Proportional term
+  output = Kp * error;
+  motorDrive(output);
 }
+
+
 
 void setup() {
   // set the pin modes of the motor pins and encoder pins
@@ -71,12 +78,7 @@ void setup() {
 
   Serial.begin(115200);
 
-  // quick motor test to make sure the 'positive' direction of the motor matches the encoder
-  // to change the direction of either the motor or encoder, simply swap the two signal wires
-  motorDrive(255);
   delay(200);
-  motorDrive(0);
-  delay(100);
 }
 
 
@@ -85,14 +87,17 @@ void loop() {
   // convert the encoder ticks to degrees
   pos = myEncoder.read() / ticksPerDegree;
   measured_value = pos;
+
   // update the desired setpoint of the motor from serial
   if (Serial.available() > 1) {
     setpoint = Serial.parseInt();
   }
+
   //  make the control loop run ten times per second
   delay(100);
+
   // BANGBANG(setpoint, measured_value);
-  P(setpoint, measured_value);
+  Proportional_Control(setpoint, measured_value);
 
   //  print some debug info, check it out in the serial plotter
   Serial.print("Setpoint:");
