@@ -67,7 +67,7 @@ void Proportional_Integral_Control(float setpoint, float pos) {
   // Output = Kp * error + Ki * error_integral
 
   float Kp = 3;
-  float Ki = 0.5; 
+  float Ki = 0.1; 
 
   error = setpoint - pos;
   output = Kp * error;
@@ -81,6 +81,10 @@ void Proportional_Integral_Control(float setpoint, float pos) {
   
   // Drive motor (negative because of motor direction)
   motorDrive(-output);
+}
+
+void Proportional_Integral_Derivative_Control(float setpoint, float pos){
+
 }
 
 
@@ -114,6 +118,7 @@ void loop() {
   // BANGBANG(setpoint, pos);
   // Proportional_Control(setpoint, pos);
   Proportional_Integral_Control(setpoint, pos);
+  // Proportional_Integral_Derivative_Control(setpoint, pos);
 
   //  print some debug info, check it out in the serial plotter
   Serial.print("Setpoint:");
