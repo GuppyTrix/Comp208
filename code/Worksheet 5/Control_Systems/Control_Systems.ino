@@ -13,10 +13,8 @@ float setpoint = 0;
 float error = 0;
 float output = 0;
 float measured_value = 0;
-float ticksPerDegree = 44 * 193 / 360 / 3;
-
-
-
+float proportional_gain = 0;
+float ticksPerDegree = (44 * 193) / (360 / 3);
 // function for driving a motor from just one value between -255 and 255
 void motorDrive(int power) {
 
@@ -54,8 +52,10 @@ void BANGBANG(float setpoint, float measured_value) {
     motorDrive(255);
   }
 }
-
-
+void P(float setpoint,float measured_value,float error)
+{
+error = measured_value - setpoint;
+}
 
 void setup() {
   // set the pin modes of the motor pins and encoder pins
