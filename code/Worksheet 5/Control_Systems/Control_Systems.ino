@@ -97,9 +97,6 @@ void Proportional_Integral_Derivative_Control(float setpoint, float pos){
   output = output + integral;
 
   output = KP * (setpoint - pos) + (KI * error_integral);
-
-  
-
 }
 
 
