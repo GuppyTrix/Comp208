@@ -1,4 +1,3 @@
-#define ENCODER_DO_NOT_USE_INTERRUPTS
 #include <Encoder.h>
 //PID DECLARATION
 float PIDL();
@@ -50,7 +49,7 @@ float measured_valueL = 0;
 float measured_valueR = 0;
 float controller_outputL;
 float controller_outputR;
-float ticksPerDegree = (44.00 * 193.00) / (360.00 / 3.00); // simplified for tuning
+float ticksPerDegree = (44.00 * 193.00) / (360.00 / 3.00); 
 
 int step = 0; // movement phase tracker
 
