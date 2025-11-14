@@ -1,4 +1,6 @@
 #include <Encoder.h>
+#include <AMT25.h>
+#define ENCODER_DO_NOT_USE_INTERRUPTS
 //PID DECLARATION
 float PIDL();
 float PIDR();
@@ -56,6 +58,38 @@ int step = 0; // movement phase tracker
 //encoders
 Encoder myEncoderL(encoderC, encoderD);
 Encoder myEncoderR(encoderA, encoderB);
+void velocity()
+{
+  static long lprevticks = 0;
+  static long rprevticks = 0;
+  static unsigned long lasttime = 0;
+
+  unsigned long now = millis();
+  float deltatime = (now - lasttime) / 1000.0;
+  if (deltatime <= 0)
+  {
+    deltatime = 0.0001;
+  }
+
+  long lticks = myEncoderL.read();
+  long rticks = myEncoderR.read();
+
+  long ldeltaticks = lticks - lprevticks;
+  long rdeltaticks = rticks - rprevticks;
+
+  float wheelradius = 0.00;
+
+  float angular_velocityw1 = (ldeltaticks / ticksPerDegree) * (PI / 180.0) / deltatime;
+  float angular_velocityw2 = (rdeltaticks / ticksPerDegree) * (PI / 180.0) / deltatime;
+
+  float longitudinal_velocity = (wheelradius / 2.0) * (angular_velocityw1 + angular_velocityw2);
+  float angular_velocity = (wheelradius / axisWidth) * (angular_velocityw2 - angular_velocityw1);
+
+  lprevticks = lticks;
+  rprevticks = rticks;
+  lasttime = now;
+}
+
 
 void control_left()
 {
