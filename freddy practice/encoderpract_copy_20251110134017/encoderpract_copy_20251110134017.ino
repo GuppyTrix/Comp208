@@ -11,7 +11,6 @@ void left();
 //odometry
 float odometry();
 int axisWidth;
-//encoded readings
 float rPrev, lPrev,hPrev;
 float x,y;
 float rad;
@@ -236,7 +235,11 @@ void setup()
   Serial.begin(9600);
   lastTimeL = millis();
   lastTimeR = millis();
-  rPrev,lPrev,hPrev,x,y = 0;
+rPrev = 0;
+lPrev = 0;
+hPrev = 0;
+x = 0;
+y = 0;
   axisWidth = 20;
   pinMode(motorA, OUTPUT);
   pinMode(motorB, OUTPUT);
