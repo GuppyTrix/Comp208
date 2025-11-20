@@ -35,11 +35,6 @@ The primary goal of this project is to create a robot that can:
 - LEDs
 - Buzzer
 
-
-
-# \## Development Notes
-
-# 
-
-# This project addresses the unique challenge of combining full autonomy in terrain that is inconsistent and constantly changing
+## Development Notes
+This project addresses the unique challenge of combining full autonomy in terrain that is inconsistent and constantly changing
 
