@@ -1,5 +1,4 @@
 #include <Encoder.h>
-#include <AMT25.h>
 #define ENCODER_DO_NOT_USE_INTERRUPTS
 //PID DECLARATION
 float PIDL();
@@ -17,13 +16,13 @@ float rad;
 //top right wheel
 int encoderA = 3;
 int encoderB = 2;
-int motorA = 8;
-int motorB = 9;
+int motorA = 8;   // Right motor IN1
+int motorB = 9;  // Right motor IN2
 //top left wheel
 int encoderC = 5;
 int encoderD = 6;
-int motorC = 10;
-int motorD = 11;
+int motorC = 10;  // Left motor IN3
+int motorD = 11;  // Left motor IN4
 //PID CONTROL SYSTEMS
 float proportional_gain = 5.0;
 float Integral_gain = 0.1;
@@ -76,7 +75,7 @@ void velocity()
   long ldeltaticks = lticks - lprevticks;
   long rdeltaticks = rticks - rprevticks;
 
-  float wheelradius = 0.00;
+  float wheelradius = 3.00;
 
   float angular_velocityw1 = (ldeltaticks / ticksPerDegree) * (PI / 180.0) / deltatime;
   float angular_velocityw2 = (rdeltaticks / ticksPerDegree) * (PI / 180.0) / deltatime;
