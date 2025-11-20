@@ -12,6 +12,8 @@ enum Movement_Enum {
 enum State_enum {
   // The robot is Not doing anything
   IDLE,
+  // the robot is tring to move around and obstacle found in the environment
+  AVOIDING_OBSTACLE,
   // The robot is in the search algorythm state where it is looking for a red can
   SEARCHING,
   // The robot has spotted a red object
@@ -48,6 +50,11 @@ void StateMachine(){
   switch (Current_State) {
     // A state for the robot to do nothing mainly for debuging or for waiting for button input to start the state machine.
     case IDLE:
+    break;
+
+    // the robot should have detected an obstacle and is trying to manouver around the obstacle, 
+    //this should work straight out of any state and Re-enter the previous state without creating errors
+    case AVOIDING_OBSTACLE:
     break;
 
     //the robot should implement a search algorithm that explores an X*Y area and attempts to find a coke can
