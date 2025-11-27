@@ -17,7 +17,6 @@
 
 #define R_TRIG 7
 #define R_ECHO 6
-
 const float SOUND_SPEED = 0.0343;
 long duration;
 float distance;
@@ -25,7 +24,8 @@ unsigned long lastMeasurement = 0;
 const unsigned long MEASUREMENT_INTERVAL = 200;
 
 // Robot states
-enum State { 
+enum State
+{ 
   MOVING_FORWARD,
   STOPPING,
   TURNING_LEFT,
