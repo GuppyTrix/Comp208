@@ -12,6 +12,12 @@
 Ultrasonic leftus(L_TRIG,L_ECHO);
 Ultrasonic midus(M_TRIG,M_ECHO);
 Ultrasonic rightus(R_TRIG,R_ECHO);
+const float SOUND_SPEED = 0.0343;
+long duration;
+float distance;
+unsigned long lastMeasurement = 0;
+const unsigned long MEASUREMENT_INTERVAL = 200;
+
 void LEFTMOTOR(int f,int b)
 {
   analogWrite(L_MOTOR_A,f);
@@ -54,6 +60,90 @@ void TURN_AROUND()
   TURNLEFT();
   STOP();
 }
+float measureDistanceL()
+{
+  digitalWrite(L_TRIG, LOW);
+  delayMicroseconds(2);
+  
+  // Set trigPin HIGH for 10μs
+  digitalWrite(L_TRIG, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(L_TRIG, LOW);
+  
+  // Read echoPin
+  duration = pulseIn(L_ECHO, HIGH);
+  
+  // Calculate distance (cm)
+  distanceL = (duration * SOUND_SPEED) / 2;
+  
+  return distanceL;
+}
+float measureDistanceM()
+{
+  digitalWrite(M_TRIG, LOW);
+  delayMicroseconds(2);
+  
+  // Set trigPin HIGH for 10μs
+  digitalWrite(M_TRIG, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(M_TRIG, LOW);
+  
+  // Read echoPin
+  duration = pulseIn(M_ECHO, HIGH);
+  
+  // Calculate distance (cm)
+  distanceM = (duration * SOUND_SPEED) / 2;
+  
+  return distanceM;
+}
+float measureDistanceM()
+{
+  digitalWrite(R_TRIG, LOW);
+  delayMicroseconds(2);
+  
+  // Set trigPin HIGH for 10μs
+  digitalWrite(R_TRIG, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(R_TRIG, LOW);
+  
+  // Read echoPin
+  duration = pulseIn(R_ECHO, HIGH);
+  
+  // Calculate distance (cm)
+  distanceR = (duration * SOUND_SPEED) / 2;
+  
+  return distanceR;
+}
+int measurementL()
+{
+  uint currentmillis = millis();
+  if (currentmillis - lastMeasurement >= MEASUREMENT_INTERVAL)
+  {
+    distanceL = measureDistance();
+    lastMeasurement = millis();
+  }
+  return distanceL;
+}
+int measurementM()
+{
+  uint currentmillis = millis();
+  if (currentmillis - lastMeasurement >= MEASUREMENT_INTERVAL)
+  {
+    distanceM = measureDistance();
+    lastMeasurement = millis();
+  }
+  return distanceM;
+}
+int measurementR()
+{
+  uint currentmillis = millis();
+  if (currentmillis - lastMeasurement >= MEASUREMENT_INTERVAL)
+  {
+    distanceR = measureDistance();
+    lastMeasurement = millis();
+  }
+  return distanceR;
+}
 void setup()
 {
   // put your setup code here, to run once:
@@ -61,6 +151,12 @@ void setup()
   pinMode(L_MOTOR_B, OUTPUT);
   pinMode(R_MOTOR_A, OUTPUT);
   pinMode(R_MOTOR_B, OUTPUT);
+  pinMode(L_TRIG,OUTPUT);
+  pinMode(L_ECHO,OUTPUT);
+  pinMode(M_TRIG,OUTPUT);
+  pinMode(M_ECHO,OUTPUT);
+  pinMode(R_TRIG,OUTPUT);
+  pinMode(R_ECHO,OUTPUT);
   Serial.begin(115200);
 }
 
