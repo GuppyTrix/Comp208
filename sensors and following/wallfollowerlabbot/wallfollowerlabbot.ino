@@ -1,5 +1,6 @@
+#include <pio_encoder.h>
+#include <Adafruit_QMC5883P.h>
 #include <Ultrasonic.h>
-
 // MOTOR PINS //
 #define L_MOTOR_A 11
 #define L_MOTOR_B 10
