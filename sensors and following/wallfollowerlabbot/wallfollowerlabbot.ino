@@ -24,46 +24,6 @@ long duration;
 float distance;
 unsigned long lastMeasurement = 0;
 const unsigned long MEASUREMENT_INTERVAL = 200;
-
-
-void setup()
-{
-  Serial.begin(115200);
-
-  // MOTORS//
-  pinMode(L_MOTOR_A, OUTPUT);
-  pinMode(L_MOTOR_B, OUTPUT);
-  pinMode(R_MOTOR_A, OUTPUT);
-  pinMode(R_MOTOR_B, OUTPUT);
-
-
-  // ULTRASOUND SENSOR PINS //
-  pinMode(L_TRIG,OUTPUT);
-  pinMode(L_ECHO,OUTPUT);
-
-  pinMode(M_TRIG,OUTPUT);
-  pinMode(M_ECHO,OUTPUT);
-  
-  pinMode(R_TRIG,OUTPUT);
-  pinMode(R_ECHO,OUTPUT);
-
-  Serial.println("Robot Initialized");
-}
-
-void loop()
-{
-  // measureDistance(M_TRIG, M_ECHO);
-
-  // measureDistance(R_TRIG, R_ECHO);
-
-  // measureDistance(L_TRIG, L_ECHO);
-  
-  TURN_AROUND();
-  delay(500);
-}
-
-
-
 void LEFTMOTOR(int f,int b)
 {
   analogWrite(L_MOTOR_A,f);
@@ -106,7 +66,6 @@ void TURN_AROUND()
   TURNLEFT();
   STOP();
 }
-
 float measureDistance(int TRIG, int ECHO)
 {
   digitalWrite(TRIG, LOW);
@@ -124,4 +83,50 @@ float measureDistance(int TRIG, int ECHO)
   distance = (duration * SOUND_SPEED) / 2;
   
   return distance;
+}
+int measurement()
+{
+  uint currentmillis = millis();
+  if (currentmillis - lastMeasurement >= MEASUREMENT_INTERVAL)
+  {
+    distance = measureDistance();
+    lastMeasurement = millis();
+  }
+  return distance;
+}
+void setup()
+{
+  Serial.begin(115200);
+
+  // MOTORS//
+  pinMode(L_MOTOR_A, OUTPUT);
+  pinMode(L_MOTOR_B, OUTPUT);
+  pinMode(R_MOTOR_A, OUTPUT);
+  pinMode(R_MOTOR_B, OUTPUT);
+
+
+  // ULTRASOUND SENSOR PINS //
+  pinMode(L_TRIG,OUTPUT);
+  pinMode(L_ECHO,OUTPUT);
+
+  pinMode(M_TRIG,OUTPUT);
+  pinMode(M_ECHO,OUTPUT);
+  
+  pinMode(R_TRIG,OUTPUT);
+  pinMode(R_ECHO,OUTPUT);
+
+  Serial.println("Robot Initialized");
+}
+
+void loop()
+{
+  const int WALLDISTANCE 5;
+  bool wall = distance < WALLDISTANCE;
+  if(wall)
+  {
+    TURNRIGHT();
+    return;
+  }
+  FORWARD();
+  delay(500);
 }
