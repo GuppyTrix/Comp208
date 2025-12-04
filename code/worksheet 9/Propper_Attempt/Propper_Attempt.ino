@@ -24,11 +24,11 @@ const int rows = 5;
 const int cols = 5;
 
 int grid[rows][cols] = {
-  {0, 0, 0, 1, 0},
-  {0, 1, 0, 1, 0},
-  {0, 1, 0, 0, 0},
-  {0, 0, 0, 1, 0},
-  {0, 1, 0, 0, 0}
+  { 0, 0, 0, 1, 0 },
+  { 0, 1, 0, 1, 0 },
+  { 0, 1, 0, 0, 0 },
+  { 0, 0, 0, 1, 0 },
+  { 0, 1, 0, 0, 0 }
 };
 
 // =============================================================
@@ -127,11 +127,11 @@ void resetArrays() {
 // Calculate direction from two points
 // =============================================================
 int calculateDirection(int dr, int dc) {
-  if (dr == -1 && dc == 0) return 0;   // Up
-  if (dr == 0 && dc == 1) return 1;    // Right
-  if (dr == 1 && dc == 0) return 2;    // Down
-  if (dr == 0 && dc == -1) return 3;   // Left
-  return 1;  // Default to right
+  if (dr == -1 && dc == 0) return 0;  // Up
+  if (dr == 0 && dc == 1) return 1;   // Right
+  if (dr == 1 && dc == 0) return 2;   // Down
+  if (dr == 0 && dc == -1) return 3;  // Left
+  return 1;                           // Default to right
 }
 
 // =============================================================
@@ -139,13 +139,13 @@ int calculateDirection(int dr, int dc) {
 // =============================================================
 Movement calculateTurn(int fromDir, int toDir) {
   if (fromDir == toDir) return GO_STRAIGHT;
-  
+
   int diff = (toDir - fromDir + 4) % 4;
-  
+
   if (diff == 1) return TURN_RIGHT;
   if (diff == 3) return TURN_LEFT;
   if (diff == 2) return TURN_AROUND;
-  
+
   return GO_STRAIGHT;
 }
 
@@ -154,31 +154,30 @@ Movement calculateTurn(int fromDir, int toDir) {
 // =============================================================
 bool generateMovementInstructions(int startR, int startC, int endR, int endC) {
   instructionCount = 0;
-  
+
   // First, reconstruct the path from end to start
   int path[MAX_INSTRUCTIONS][2];
   int pathLength = 0;
-  
+
   int currentR = endR;
   int currentC = endC;
-  
+
   // Backtrack to build path in reverse
   while (currentR != -1 && currentC != -1) {
     path[pathLength][0] = currentR;
     path[pathLength][1] = currentC;
     pathLength++;
-    
-    if (prevCell[currentR][currentC][0] == -1 && 
-        prevCell[currentR][currentC][1] == -1) {
+
+    if (prevCell[currentR][currentC][0] == -1 && prevCell[currentR][currentC][1] == -1) {
       break;
     }
-    
+
     int nextR = prevCell[currentR][currentC][0];
     int nextC = prevCell[currentR][currentC][1];
     currentR = nextR;
     currentC = nextC;
   }
-  
+
   // Reverse path to get start-to-end order
   for (int i = 0; i < pathLength / 2; i++) {
     int tempR = path[i][0];
@@ -188,16 +187,16 @@ bool generateMovementInstructions(int startR, int startC, int endR, int endC) {
     path[pathLength - 1 - i][0] = tempR;
     path[pathLength - 1 - i][1] = tempC;
   }
-  
+
   // Now generate movement instructions
   int currentDir = currentDirection;  // Start with initial facing direction
-  
+
   for (int i = 0; i < pathLength - 1; i++) {
     int dr = path[i + 1][0] - path[i][0];
     int dc = path[i + 1][1] - path[i][1];
-    
+
     int targetDir = calculateDirection(dr, dc);
-    
+
     // Add turn instruction if needed
     Movement turn = calculateTurn(currentDir, targetDir);
     if (turn != GO_STRAIGHT) {
@@ -207,25 +206,25 @@ bool generateMovementInstructions(int startR, int startC, int endR, int endC) {
         instructionCount++;
       }
     }
-    
+
     // Add forward movement (always move 1 cell forward)
     if (instructionCount < MAX_INSTRUCTIONS) {
       robotInstructions[instructionCount].action = GO_STRAIGHT;
       robotInstructions[instructionCount].steps = 1;
       instructionCount++;
     }
-    
+
     // Update current direction
     currentDir = targetDir;
   }
-  
+
   // Add stop instruction at the end
   if (instructionCount < MAX_INSTRUCTIONS) {
     robotInstructions[instructionCount].action = STOP;
     robotInstructions[instructionCount].steps = 0;
     instructionCount++;
   }
-  
+
   return (instructionCount > 0);
 }
 
@@ -236,12 +235,12 @@ void printMovementInstructions() {
   Serial.println("=== Robot Movement Instructions ===");
   Serial.print("Instruction count: ");
   Serial.println(instructionCount);
-  
+
   for (int i = 0; i < instructionCount; i++) {
     Serial.print("Step ");
     Serial.print(i + 1);
     Serial.print(": ");
-    
+
     switch (robotInstructions[i].action) {
       case TURN_RIGHT:
         Serial.print("TURN RIGHT");
@@ -272,12 +271,12 @@ void printMovementInstructions() {
 bool runBFS(int startR, int startC, int endR, int endC) {
   resetArrays();
 
-  Node start = {startR, startC};
+  Node start = { startR, startC };
   bfsQueue.push(&start);
   visited[startR][startC] = true;
 
-  int dr[4] = {0, 1, 0, -1};
-  int dc[4] = {1, 0, -1, 0};
+  int dr[4] = { 0, 1, 0, -1 };
+  int dc[4] = { 1, 0, -1, 0 };
 
   while (!bfsQueue.isEmpty()) {
     Node u;
@@ -285,7 +284,7 @@ bool runBFS(int startR, int startC, int endR, int endC) {
 
     if (u.row == endR && u.col == endC) {
       Serial.println("BFS Path Found!");
-      
+
       // Generate movement instructions
       if (generateMovementInstructions(startR, startC, endR, endC)) {
         printMovementInstructions();
@@ -305,7 +304,7 @@ bool runBFS(int startR, int startC, int endR, int endC) {
           prevCell[nr][nc][0] = u.row;
           prevCell[nr][nc][1] = u.col;
 
-          Node nxt = {nr, nc};
+          Node nxt = { nr, nc };
           bfsQueue.push(&nxt);
         }
       }
@@ -326,42 +325,42 @@ void executeRobotInstructions() {
   }
 
   Serial.println("Executing robot instructions...");
-  
+
   for (int i = 0; i < instructionCount; i++) {
     Serial.print("Executing instruction ");
     Serial.print(i + 1);
     Serial.print(": ");
-    
+
     switch (robotInstructions[i].action) {
       case TURN_RIGHT:
         Serial.println("Turning right 90 degrees");
         turnRight();
         break;
-        
+
       case TURN_LEFT:
         Serial.println("Turning left 90 degrees");
         turnLeft();
         break;
-        
+
       case GO_STRAIGHT:
         for (int j = 0; i < robotInstructions[i].steps; j++) {
-          Serial.println("Going forward 1 step");
+          Serial.println("Going forward 1 cell");
 
           moveStraight();
         }
         break;
-        
+
       case TURN_AROUND:
         Serial.println("Turning around 180 degrees");
         turnLeft();
         turnLeft();
         break;
-        
+
       case STOP:
-       stopMotors();
+        stopMotors();
         break;
     }
-    
+
     // Update current direction based on action
     if (robotInstructions[i].action == TURN_RIGHT) {
       currentDirection = (currentDirection + 1) % 4;
@@ -370,18 +369,16 @@ void executeRobotInstructions() {
     } else if (robotInstructions[i].action == TURN_AROUND) {
       currentDirection = (currentDirection + 2) % 4;
     }
-    
+
     delay(1000);
   }
-  
+
   Serial.println("Instruction execution complete!");
 }
 
 // =============================================================
 // Motor Control Functions
 // =============================================================
-
-
 void moveStraight() {
   int distance = 200;
   long L_pos = L_encoder.getCount() / ticksPerDegree * distancePerDegree;
@@ -390,91 +387,94 @@ void moveStraight() {
   int L_adjDistance = distance += L_pos;
   int R_adjDistance = distance += R_pos;
 
-  while (L_pos < L_adjDistance || R_pos < R_adjDistance){
+  while (L_pos < L_adjDistance || R_pos < R_adjDistance) {
     L_pos = L_encoder.getCount() / ticksPerDegree * distancePerDegree;
     R_pos = R_encoder.getCount() / ticksPerDegree * distancePerDegree;
+
+    if (L_pos < L_adjDistance) {
+      analogWrite(L_MOTOR_A, 100);
+      analogWrite(L_MOTOR_B, 0);
+    }
+    if (R_pos < R_adjDistance) {
+      analogWrite(R_MOTOR_A, 100);
+      analogWrite(R_MOTOR_B, 0);
+    }
 
     Serial.print("L_pos stright: ");
     Serial.println(L_pos);
 
     Serial.print("L_adjDistance stright: ");
     Serial.println(L_adjDistance);
-
-    analogWrite(L_MOTOR_A, 100);
-    analogWrite(L_MOTOR_B, 0);
-
-    analogWrite(R_MOTOR_A, 100);
-    analogWrite(R_MOTOR_B, 0);
   }
   stopMotors();
-
-
 }
 
 void stopMotors() {
-    analogWrite(L_MOTOR_A, 0);
-    analogWrite(L_MOTOR_B, 0);
+  analogWrite(L_MOTOR_A, 0);
+  analogWrite(L_MOTOR_B, 0);
 
-    analogWrite(R_MOTOR_A, 0);
-    analogWrite(R_MOTOR_B, 0);
+  analogWrite(R_MOTOR_A, 0);
+  analogWrite(R_MOTOR_B, 0);
 }
 
-void turnLeft(){
-  int distance = 90;
+void turnLeft() {
+  int degrees = 360;
   long L_pos = L_encoder.getCount() / ticksPerDegree * distancePerDegree;
   long R_pos = R_encoder.getCount() / ticksPerDegree * distancePerDegree;
 
-  int L_adjDistance = L_pos += distance;
-  int R_adjDistance = R_pos -= distance;
+  int L_adjDistance = L_pos += degrees * distancePerDegree;
+  int R_adjDistance = R_pos -= degrees * distancePerDegree;
 
-  while (L_pos < L_adjDistance || R_pos > R_adjDistance){
+  while (L_pos < L_adjDistance || R_pos > R_adjDistance) {
     L_pos = L_encoder.getCount() / ticksPerDegree * distancePerDegree;
     R_pos = R_encoder.getCount() / ticksPerDegree * distancePerDegree;
+
+    if (L_pos < L_adjDistance) {
+      analogWrite(L_MOTOR_A, 100);
+      analogWrite(L_MOTOR_B, 0);
+    }
+    if (R_pos > R_adjDistance) {
+      analogWrite(R_MOTOR_A, 0);
+      analogWrite(R_MOTOR_B, 100);
+    }
 
     Serial.print("L_pos left: ");
     Serial.println(L_pos);
 
     Serial.print("R_pos left: ");
     Serial.println(R_pos);
-
-    analogWrite(L_MOTOR_A, 100);
-    analogWrite(L_MOTOR_B, 0);
-
-    analogWrite(R_MOTOR_A, 0);
-    analogWrite(R_MOTOR_B, 100);
   }
   stopMotors();
-
-
 }
 
-void turnRight(){
-  int distance = 90;
+void turnRight() {
+  int degrees = 360;
   long L_pos = L_encoder.getCount() / ticksPerDegree * distancePerDegree;
   long R_pos = R_encoder.getCount() / ticksPerDegree * distancePerDegree;
 
-  int L_adjDistance = L_pos -= distance;
-  int R_adjDistance = R_pos += distance;
+  int L_adjDistance = L_pos -= degrees * distancePerDegree;
+  int R_adjDistance = R_pos += degrees * distancePerDegree;
 
-  while (L_pos > L_adjDistance || R_pos < R_adjDistance){
+  while (L_pos > L_adjDistance || R_pos < R_adjDistance) {
     L_pos = L_encoder.getCount() / ticksPerDegree * distancePerDegree;
     R_pos = R_encoder.getCount() / ticksPerDegree * distancePerDegree;
+
+    if (L_pos > L_adjDistance) {
+      analogWrite(L_MOTOR_A, 0);
+      analogWrite(L_MOTOR_B, 100);
+    }
+    if (R_pos < R_adjDistance) {
+      analogWrite(R_MOTOR_A, 100);
+      analogWrite(R_MOTOR_B, 0);
+    }
 
     Serial.print("L_pos right: ");
     Serial.println(L_pos);
 
     Serial.print("R_pos right: ");
     Serial.println(R_pos);
-
-    analogWrite(L_MOTOR_A, 0);
-    analogWrite(L_MOTOR_B, 100);
-
-    analogWrite(R_MOTOR_A, 100);
-    analogWrite(R_MOTOR_B, 0);
   }
   stopMotors();
-
-
 }
 
 // =============================================================
@@ -491,19 +491,20 @@ void setup() {
 
   R_encoder.begin();
   R_encoder.flip();
-  
+
   L_encoder.begin();
   L_encoder.flip();
 
-  while (!Serial);
+  while (!Serial)
+    ;
   Serial.println("Running Pathfinder with Movement Instructions");
-  
+
   // Run BFS and generate movement instructions
   bool pathFound = runBFS(0, 0, 4, 4);
-  
+
   if (pathFound) {
     Serial.println("\nMovement instructions are ready!");
-    
+
     executeRobotInstructions();
   }
 }
@@ -512,7 +513,7 @@ void loop() {
   // Your existing encoder reading code
   long L_pos = L_encoder.getCount() / ticksPerDegree * distancePerDegree;
   long R_pos = R_encoder.getCount() / ticksPerDegree * distancePerDegree;
-  
-  
+
+
   delay(100);
 }
