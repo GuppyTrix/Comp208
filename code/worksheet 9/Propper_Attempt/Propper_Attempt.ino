@@ -14,7 +14,7 @@ bool hasRun = false;
 PioEncoder L_encoder(18);
 PioEncoder R_encoder(20);
 
-float ticksPerDegree = (63 * 46) / 360;
+float ticksPerDegree = (63.0f * 46.0f) / 360.0f;
 float distancePerDegree = 0.68;  // mm
 
 // =============================================================
@@ -343,7 +343,7 @@ void executeRobotInstructions() {
         break;
 
       case GO_STRAIGHT:
-        for (int j = 0; i < robotInstructions[i].steps; j++) {
+        for (int j = 0; j< robotInstructions[i].steps; j++) {
           Serial.println("Going forward 1 cell");
 
           moveStraight();
@@ -381,15 +381,15 @@ void executeRobotInstructions() {
 // =============================================================
 void moveStraight() {
   int distance = 200;
-  long L_pos = L_encoder.getCount() / ticksPerDegree * distancePerDegree;
-  long R_pos = R_encoder.getCount() / ticksPerDegree * distancePerDegree;
+  long L_pos = (L_encoder.getCount() / ticksPerDegree) * distancePerDegree;
+  long R_pos = (R_encoder.getCount() / ticksPerDegree) * distancePerDegree;
 
   int L_adjDistance = distance + L_pos;
   int R_adjDistance = distance + R_pos;
 
   while (L_pos < L_adjDistance || R_pos < R_adjDistance) {
-    L_pos = L_encoder.getCount() / ticksPerDegree * distancePerDegree;
-    R_pos = R_encoder.getCount() / ticksPerDegree * distancePerDegree;
+    L_pos = (L_encoder.getCount() / ticksPerDegree) * distancePerDegree;
+    R_pos = (R_encoder.getCount() / ticksPerDegree) * distancePerDegree;
 
     if (L_pos < L_adjDistance) {
       analogWrite(L_MOTOR_A, 100);
@@ -419,15 +419,15 @@ void stopMotors() {
 
 void turnLeft() {
   int degrees = 360;
-  long L_pos = L_encoder.getCount() / ticksPerDegree * distancePerDegree;
-  long R_pos = R_encoder.getCount() / ticksPerDegree * distancePerDegree;
+  long L_pos = (L_encoder.getCount() / ticksPerDegree) * distancePerDegree;
+  long R_pos = (R_encoder.getCount() / ticksPerDegree) * distancePerDegree;
 
   int L_adjDistance = L_pos + (degrees * distancePerDegree);
   int R_adjDistance = R_pos - (degrees * distancePerDegree);
 
   while (L_pos < L_adjDistance || R_pos > R_adjDistance) {
-    L_pos = L_encoder.getCount() / ticksPerDegree * distancePerDegree;
-    R_pos = R_encoder.getCount() / ticksPerDegree * distancePerDegree;
+    L_pos = (L_encoder.getCount() / ticksPerDegree) * distancePerDegree;
+    R_pos = (R_encoder.getCount() / ticksPerDegree) * distancePerDegree;
 
     if (L_pos < L_adjDistance) {
       analogWrite(L_MOTOR_A, 100);
@@ -449,15 +449,15 @@ void turnLeft() {
 
 void turnRight() {
   int degrees = 360;
-  long L_pos = L_encoder.getCount() / ticksPerDegree * distancePerDegree;
-  long R_pos = R_encoder.getCount() / ticksPerDegree * distancePerDegree;
+  long L_pos = (L_encoder.getCount() / ticksPerDegree) * distancePerDegree;
+  long R_pos = (R_encoder.getCount() / ticksPerDegree) * distancePerDegree;
 
   int L_adjDistance = L_pos - (degrees * distancePerDegree);
   int R_adjDistance = R_pos + (degrees * distancePerDegree);
 
   while (L_pos > L_adjDistance || R_pos < R_adjDistance) {
-    L_pos = L_encoder.getCount() / ticksPerDegree * distancePerDegree;
-    R_pos = R_encoder.getCount() / ticksPerDegree * distancePerDegree;
+    L_pos = (L_encoder.getCount() / ticksPerDegree) * distancePerDegree;
+    R_pos = (R_encoder.getCount() / ticksPerDegree) * distancePerDegree;
 
     if (L_pos > L_adjDistance) {
       analogWrite(L_MOTOR_A, 0);
@@ -486,8 +486,8 @@ void setup() {
 
   pinMode(L_MOTOR_A, OUTPUT);
   pinMode(L_MOTOR_B, OUTPUT);
-  pinMode(L_MOTOR_A, OUTPUT);
-  pinMode(L_MOTOR_B, OUTPUT);
+  pinMode(R_MOTOR_A, OUTPUT);
+  pinMode(R_MOTOR_B, OUTPUT);
 
   R_encoder.begin();
   R_encoder.flip();
@@ -511,8 +511,8 @@ void setup() {
 
 void loop() {
   // Your existing encoder reading code
-  long L_pos = L_encoder.getCount() / ticksPerDegree * distancePerDegree;
-  long R_pos = R_encoder.getCount() / ticksPerDegree * distancePerDegree;
+  long L_pos = (L_encoder.getCount() / ticksPerDegree) * distancePerDegree;
+  long R_pos = (R_encoder.getCount() / ticksPerDegree) * distancePerDegree;
 
 
   delay(100);
