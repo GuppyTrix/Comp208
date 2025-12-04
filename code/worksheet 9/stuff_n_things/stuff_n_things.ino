@@ -124,96 +124,6 @@ int heuristic(int r, int c, int goalR, int goalC) {
   return abs(r - goalR) + abs(c - goalC);
 }
 
-// =============================================================
-// BFS
-// =============================================================
-void runBFS(int startR, int startC, int endR, int endC) {
-  resetArrays();
-
-  Node start = { startR, startC };
-  bfsQueue.push(&start);
-  visited[startR][startC] = true;
-
-  int dr[4] = { 0, 1, 0, -1 };
-  int dc[4] = { 1, 0, -1, 0 };
-
-  while (!bfsQueue.isEmpty()) {
-    Node u;
-    bfsQueue.pop(&u);
-
-    if (u.row == endR && u.col == endC) {
-      Serial.println("BFS Path:");
-      printDirections(endR, endC);
-      return;
-    }
-
-    for (int i = 0; i < 4; i++) {
-      int nr = u.row + dr[i];
-      int nc = u.col + dc[i];
-
-      if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
-        if (!visited[nr][nc] && grid[nr][nc] == 0) {
-          visited[nr][nc] = true;
-
-          prevCell[nr][nc][0] = u.row;
-          prevCell[nr][nc][1] = u.col;
-
-          Node nxt = { nr, nc };
-          bfsQueue.push(&nxt);
-        }
-      }
-    }
-  }
-
-  Serial.println("BFS: No path found");
-}
-
-// =============================================================
-// Dijkstra
-// =============================================================
-void runDijkstra(int startR, int startC, int endR, int endC) {
-  resetArrays();
-  pqSize = 0;
-
-  distCost[startR][startC] = 0;
-  pqPush({ startR, startC, 0 });
-
-  int dr[4] = { 0, 1, 0, -1 };
-  int dc[4] = { 1, 0, -1, 0 };
-
-  while (!pqEmpty()) {
-    PQItem u = pqPopMin();
-
-    if (u.row == endR && u.col == endC) {
-      Serial.println("Dijkstra Path:");
-      printDirections(endR, endC);
-      return;
-    }
-
-    for (int i = 0; i < 4; i++) {
-      int nr = u.row + dr[i];
-      int nc = u.col + dc[i];
-
-      if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
-        if (grid[nr][nc] == 0) {
-
-          int gNew = distCost[u.row][u.col] + 1;
-
-          if (gNew < distCost[nr][nc]) {
-            distCost[nr][nc] = gNew;
-
-            prevCell[nr][nc][0] = u.row;
-            prevCell[nr][nc][1] = u.col;
-
-            pqPush({ nr, nc, gNew });
-          }
-        }
-      }
-    }
-  }
-
-  Serial.println("Dijkstra: No path found");
-}
 
 // =============================================================
 // A* Algorithm
@@ -273,6 +183,7 @@ void runAStar(int startR, int startC, int endR, int endC) {
 void setup() {
   Serial.begin(9600);
   delay(500);
+  while (!Serial){}
 
   int startR = 0, startC = 0;
   int endR = 4, endC = 4;
@@ -290,7 +201,6 @@ void setup() {
 
 void loop() {
 
-  
 }
 
 
