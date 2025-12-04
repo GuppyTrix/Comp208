@@ -384,8 +384,8 @@ void moveStraight() {
   long L_pos = L_encoder.getCount() / ticksPerDegree * distancePerDegree;
   long R_pos = R_encoder.getCount() / ticksPerDegree * distancePerDegree;
 
-  int L_adjDistance = distance += L_pos;
-  int R_adjDistance = distance += R_pos;
+  int L_adjDistance = distance + L_pos;
+  int R_adjDistance = distance + R_pos;
 
   while (L_pos < L_adjDistance || R_pos < R_adjDistance) {
     L_pos = L_encoder.getCount() / ticksPerDegree * distancePerDegree;
@@ -422,8 +422,8 @@ void turnLeft() {
   long L_pos = L_encoder.getCount() / ticksPerDegree * distancePerDegree;
   long R_pos = R_encoder.getCount() / ticksPerDegree * distancePerDegree;
 
-  int L_adjDistance = L_pos += degrees * distancePerDegree;
-  int R_adjDistance = R_pos -= degrees * distancePerDegree;
+  int L_adjDistance = L_pos + (degrees * distancePerDegree);
+  int R_adjDistance = R_pos - (degrees * distancePerDegree);
 
   while (L_pos < L_adjDistance || R_pos > R_adjDistance) {
     L_pos = L_encoder.getCount() / ticksPerDegree * distancePerDegree;
@@ -452,8 +452,8 @@ void turnRight() {
   long L_pos = L_encoder.getCount() / ticksPerDegree * distancePerDegree;
   long R_pos = R_encoder.getCount() / ticksPerDegree * distancePerDegree;
 
-  int L_adjDistance = L_pos -= degrees * distancePerDegree;
-  int R_adjDistance = R_pos += degrees * distancePerDegree;
+  int L_adjDistance = L_pos - (degrees * distancePerDegree);
+  int R_adjDistance = R_pos + (degrees * distancePerDegree);
 
   while (L_pos > L_adjDistance || R_pos < R_adjDistance) {
     L_pos = L_encoder.getCount() / ticksPerDegree * distancePerDegree;
