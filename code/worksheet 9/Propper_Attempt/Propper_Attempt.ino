@@ -23,16 +23,23 @@ int forwardAmount = 230;
 // =============================================================
 // Grid Setup
 // =============================================================
-const int rows = 5;
-const int cols = 5;
+const int rows = 7;
+const int cols = 7;
 
 int grid[rows][cols] = {
-  { 0, 0, 0, 1, 0 },
-  { 0, 1, 0, 1, 0 },
-  { 0, 1, 0, 0, 0 },
-  { 0, 0, 0, 1, 0 },
-  { 0, 1, 0, 0, 0 }
+  { 0, 0, 0, 0, 1, 0, 0 },
+  { 1, 0, 0, 0, 1, 1, 0 },
+  { 0, 0, 1, 0, 0, 0, 0 },
+  { 1, 0, 1, 1, 1, 0, 1 },
+  { 1, 0, 0, 1, 0, 0, 0 },
+  { 1, 0, 0, 1, 0, 1, 0 },
+  { 0, 1, 0, 0, 0, 0, 0 }
 };
+
+const int startX = 0;
+const int startY = 0;
+const int endX = 6;
+const int endY = 6;
 
 // =============================================================
 // Movement Instructions for Robot
@@ -406,12 +413,6 @@ void moveStraight() {
     } else {
       stopRightMotor();
     }
-
-    Serial.print("L_pos stright: ");
-    Serial.println(L_pos);
-
-    Serial.print("R_pos stright: ");
-    Serial.println(R_pos);
   }
   stopMotors();
 }
@@ -458,12 +459,6 @@ void turnLeft() {
     } else {
       stopRightMotor();
     }
-
-    Serial.print("L_pos left: ");
-    Serial.println(L_pos);
-
-    Serial.print("R_pos left: ");
-    Serial.println(R_pos);
   }
   stopMotors();
 }
@@ -492,12 +487,6 @@ void turnRight() {
     } else {
       stopRightMotor();
     }
-
-    Serial.print("L_pos right: ");
-    Serial.println(L_pos);
-
-    Serial.print("R_pos right: ");
-    Serial.println(R_pos);
   }
   stopMotors();
 }
@@ -524,7 +513,7 @@ void setup() {
   Serial.println("Running Pathfinder with Movement Instructions");
 
   // Run BFS and generate movement instructions
-  bool pathFound = runBFS(0, 0, 4, 4);
+  bool pathFound = runBFS(startX, startY, endX, endY);
 
   if (pathFound) {
     Serial.println("\nMovement instructions are ready!");
