@@ -17,6 +17,9 @@ PioEncoder R_encoder(20);
 float ticksPerDegree = (63.0f * 46.0f) / 360.0f;
 float distancePerDegree = 0.68;  // mm
 
+int turnAmount = 200;
+int forwardAmount = 230;
+
 // =============================================================
 // Grid Setup
 // =============================================================
@@ -343,7 +346,7 @@ void executeRobotInstructions() {
         break;
 
       case GO_STRAIGHT:
-        for (int j = 0; j< robotInstructions[i].steps; j++) {
+        for (int j = 0; j < robotInstructions[i].steps; j++) {
           Serial.println("Going forward 1 cell");
 
           moveStraight();
@@ -380,7 +383,7 @@ void executeRobotInstructions() {
 // Motor Control Functions
 // =============================================================
 void moveStraight() {
-  int distance = 200;
+  int distance = forwardAmount;
   long L_pos = (L_encoder.getCount() / ticksPerDegree) * distancePerDegree;
   long R_pos = (R_encoder.getCount() / ticksPerDegree) * distancePerDegree;
 
@@ -394,19 +397,32 @@ void moveStraight() {
     if (L_pos < L_adjDistance) {
       analogWrite(L_MOTOR_A, 100);
       analogWrite(L_MOTOR_B, 0);
+    } else {
+      stopLeftMotor();
     }
     if (R_pos < R_adjDistance) {
-      analogWrite(R_MOTOR_A, 100);
+      analogWrite(R_MOTOR_A, 110);
       analogWrite(R_MOTOR_B, 0);
+    } else {
+      stopRightMotor();
     }
 
     Serial.print("L_pos stright: ");
     Serial.println(L_pos);
 
-    Serial.print("L_adjDistance stright: ");
-    Serial.println(L_adjDistance);
+    Serial.print("R_pos stright: ");
+    Serial.println(R_pos);
   }
   stopMotors();
+}
+
+void stopLeftMotor() {
+  analogWrite(L_MOTOR_A, 0);
+  analogWrite(L_MOTOR_B, 0);
+}
+void stopRightMotor() {
+  analogWrite(R_MOTOR_A, 0);
+  analogWrite(R_MOTOR_B, 0);
 }
 
 void stopMotors() {
@@ -418,7 +434,7 @@ void stopMotors() {
 }
 
 void turnLeft() {
-  int degrees = 360;
+  int degrees = turnAmount;
   long L_pos = (L_encoder.getCount() / ticksPerDegree) * distancePerDegree;
   long R_pos = (R_encoder.getCount() / ticksPerDegree) * distancePerDegree;
 
@@ -432,10 +448,15 @@ void turnLeft() {
     if (L_pos < L_adjDistance) {
       analogWrite(L_MOTOR_A, 100);
       analogWrite(L_MOTOR_B, 0);
+    } else {
+      stopLeftMotor();
     }
+
     if (R_pos > R_adjDistance) {
       analogWrite(R_MOTOR_A, 0);
       analogWrite(R_MOTOR_B, 100);
+    } else {
+      stopRightMotor();
     }
 
     Serial.print("L_pos left: ");
@@ -448,7 +469,7 @@ void turnLeft() {
 }
 
 void turnRight() {
-  int degrees = 360;
+  int degrees = turnAmount;
   long L_pos = (L_encoder.getCount() / ticksPerDegree) * distancePerDegree;
   long R_pos = (R_encoder.getCount() / ticksPerDegree) * distancePerDegree;
 
@@ -462,10 +483,14 @@ void turnRight() {
     if (L_pos > L_adjDistance) {
       analogWrite(L_MOTOR_A, 0);
       analogWrite(L_MOTOR_B, 100);
+    } else {
+      stopLeftMotor();
     }
     if (R_pos < R_adjDistance) {
       analogWrite(R_MOTOR_A, 100);
       analogWrite(R_MOTOR_B, 0);
+    } else {
+      stopRightMotor();
     }
 
     Serial.print("L_pos right: ");
@@ -481,8 +506,7 @@ void turnRight() {
 // Arduino Setup
 // =============================================================
 void setup() {
-  Serial.begin(9600);
-  delay(500);
+  // Serial.begin(9600);
 
   pinMode(L_MOTOR_A, OUTPUT);
   pinMode(L_MOTOR_B, OUTPUT);
@@ -495,8 +519,8 @@ void setup() {
   L_encoder.begin();
   L_encoder.flip();
 
-  while (!Serial)
-    ;
+  // while (!Serial) {};
+
   Serial.println("Running Pathfinder with Movement Instructions");
 
   // Run BFS and generate movement instructions
@@ -510,10 +534,4 @@ void setup() {
 }
 
 void loop() {
-  // Your existing encoder reading code
-  long L_pos = (L_encoder.getCount() / ticksPerDegree) * distancePerDegree;
-  long R_pos = (R_encoder.getCount() / ticksPerDegree) * distancePerDegree;
-
-
-  delay(100);
 }
