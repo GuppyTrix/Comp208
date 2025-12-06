@@ -7,29 +7,14 @@ float deadzone = 0.15;
 int cont = 0;
 int signature , x,y,width,height;
 float cx,cy,area;
-const int H1_IN1 = 39;
-const int H1_IN2 = 41;
-const int H1_IN3 = 43;
-const int H1_IN4 = 45;
-// H-BRIDGE 2
-const int H2_IN1 = 38;
-const int H2_IN2 = 40;
-const int H2_IN3 = 42;
-const int H2_IN4 = 44;
-// H-BRIDGE 1 (LEFT SIDE)
-const int TL_FWD = H1_IN1;  
-const int TL_BWD = H1_IN2;
-
-const int BL_FWD = H1_IN3;
-const int BL_BWD = H1_IN4;
-
-// H-BRIDGE 2 (RIGHT SIDE)
-const int TR_FWD = H2_IN1;
-const int TR_BWD = H2_IN2;
-
-const int BR_FWD = H2_IN3;
-const int BR_BWD = H2_IN4;
-
+const int motor2a = 41;
+const int motor2b = 39;
+const int motor3a = 43;
+const int motor3b = 45;
+const int motor1a = 38;
+const int motor1b = 40;
+const int motor4a = 42;
+const int motor4b = 44;
 void setup() {
   Serial.begin(9600);
   pixy.init();
@@ -83,6 +68,17 @@ void stopMotors() {
   digitalWrite(BR_FWD, LOW);
   digitalWrite(BR_BWD, LOW);
 }
+void move()
+{
+  if(leftspeed >= 0)
+{
+
+}
+}
+float mapfloat(long x,long in_min,long in_max,long out_min,long out_max)
+{
+  return(float)(x - in_min) * (out_max - out_min) / (float)(in_max - in_min) + out_min;
+}
 float pixyCheck()
 {
   static int i = 0;
@@ -96,8 +92,23 @@ float pixyCheck()
     height = pixy.blocks[0].height;
     width = pixy.blocks[0].width;
     x = pixy.blocks[0].x;
-    y = pixy.blocks
+    y = pixy.blocks[0].y;
+    cx = (x + (width / 2));
+    cy = (y + (height/2));
+    cx = mapfloat(cx,0,320,-1,1);
+    cy = mapfloat(cy,0,200,1,-1);
+    area = width * height;
   }
+  else
+  {
+    cont += 1;
+    if(cont == 100)
+    {
+      cont = 0;
+      cx = 0;
+    }
+  }
+  return cx;
 }
 void pixyloop()
 {
