@@ -18,55 +18,50 @@ const int motor4b = 44;
 void setup() {
   Serial.begin(9600);
   pixy.init();
-  pinMode(TL_FWD, OUTPUT);
-  pinMode(TL_BWD, OUTPUT);
-  pinMode(BL_FWD, OUTPUT);
-  pinMode(BL_BWD, OUTPUT);
-  pinMode(TR_FWD, OUTPUT);
-  pinMode(TR_BWD, OUTPUT);
-  pinMode(BR_FWD, OUTPUT);
-  pinMode(BR_BWD, OUTPUT);
+  pinMode(motor1a, OUTPUT); // Motor 2and going backwards
+  pinMode(motor1b, OUTPUT); //
+  pinMode(motor2a, OUTPUT); //
+  pinMode(motor2b, OUTPUT); //
+  pinMode(motor3a, OUTPUT); // 
+  pinMode(motor3b, OUTPUT); //
+  pinMode(motor4a, OUTPUT); //
+  pinMode(motor4b, OUTPUT); // 
 }
 
 void forward()
 {
-digitalWrite(TL_FWD, HIGH);
-digitalWrite(TL_BWD, LOW);
-
-digitalWrite(BL_FWD, HIGH);
-digitalWrite(BL_BWD, LOW);
-
-digitalWrite(TR_FWD, LOW);
-digitalWrite(TR_BWD, HIGH);
-  
-digitalWrite(BR_FWD, LOW);
-digitalWrite(BR_BWD, HIGH);
+digitalWrite(motor1a, LOW);
+digitalWrite(motor1b, HIGH);
+digitalWrite(motor2a, HIGH);
+digitalWrite(motor2b, LOW);
+digitalWrite(motor3a, HIGH);
+digitalWrite(motor3b, LOW);
+digitalWrite(motor4a, HIGH);
+digitalWrite(motor4b, LOW);
 }
 
 void backward()
 {
-  digitalWrite(TL_FWD, LOW);
-  digitalWrite(TL_BWD, HIGH);
-
-  digitalWrite(BL_FWD, LOW);
-  digitalWrite(BL_BWD, HIGH);
-
-  digitalWrite(TR_FWD, LOW);
-  digitalWrite(TR_BWD, HIGH);
-
-  digitalWrite(BR_FWD, LOW);
-  digitalWrite(BR_BWD, HIGH);
+digitalWrite(motor1a, HIGH);
+digitalWrite(motor1b, LOW);
+digitalWrite(motor2a, LOW);
+digitalWrite(motor2b, HIGH);
+digitalWrite(motor3a, LOW);
+digitalWrite(motor3b, HIGH);
+digitalWrite(motor4a, LOW);
+digitalWrite(motor4b, HIGH);
 }
 
-void stopMotors() {
-  digitalWrite(TL_FWD, LOW);
-  digitalWrite(TL_BWD, LOW);
-  digitalWrite(BL_FWD, LOW);
-  digitalWrite(BL_BWD, LOW);
-  digitalWrite(TR_FWD, LOW);
-  digitalWrite(TR_BWD, LOW);
-  digitalWrite(BR_FWD, LOW);
-  digitalWrite(BR_BWD, LOW);
+void stopMotors()
+{
+digitalWrite(motor1a, LOW);
+digitalWrite(motor1b, LOW);
+digitalWrite(motor2a, LOW);
+digitalWrite(motor2b, LOW);
+digitalWrite(motor3a, LOW);
+digitalWrite(motor3b, LOW);
+digitalWrite(motor4a, LOW);
+digitalWrite(motor4b, LOW);
 }
 void move()
 {
