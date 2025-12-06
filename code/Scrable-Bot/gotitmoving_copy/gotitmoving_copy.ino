@@ -16,7 +16,8 @@ const int motor1b = 40;
 const int motor4a = 42;
 const int motor4b = 44;
 
-void setup() {
+void setup()
+{
   Serial.begin(9600);
   pixy.init();
   pixy.changeProg("color_connected_components");
@@ -31,7 +32,8 @@ void setup() {
   pinMode(motor4b, OUTPUT);
 }
 
-void forward() {
+void forward()
+{
   digitalWrite(motor1a, LOW);
   digitalWrite(motor1b, HIGH);
   digitalWrite(motor2a, HIGH);
@@ -42,7 +44,8 @@ void forward() {
   digitalWrite(motor4b, LOW);
 }
 
-void backward() {
+void backward()
+{
   digitalWrite(motor1a, HIGH);
   digitalWrite(motor1b, LOW);
   digitalWrite(motor2a, LOW);
@@ -53,7 +56,8 @@ void backward() {
   digitalWrite(motor4b, HIGH);
 }
 
-void stopMotors() {
+void stopMotors()
+{
   digitalWrite(motor1a, LOW);
   digitalWrite(motor1b, LOW);
   digitalWrite(motor2a, LOW);
@@ -64,14 +68,17 @@ void stopMotors() {
   digitalWrite(motor4b, LOW);
 }
 
-float mapfloat(long x,long in_min,long in_max,long out_min,long out_max) {
+float mapfloat(long x,long in_min,long in_max,long out_min,long out_max)
+{
   return(float)(x - in_min) * (out_max - out_min) / (float)(in_max - in_min) + out_min;
 }
 
-float pixyCheck() {
+float pixyCheck()
+{
   uint16_t blocks = pixy.ccc.getBlocks();
 
-  if(blocks) {
+  if(blocks)
+  {
     signature = pixy.ccc.blocks[0].m_signature;
     height = pixy.ccc.blocks[0].m_height;
     width  = pixy.ccc.blocks[0].m_width;
@@ -91,20 +98,24 @@ float pixyCheck() {
   return NAN;
 }
 
-void pixyloop() {
+void pixyloop()
+{
   float turn = pixyCheck();
 
-  if(isnan(turn)) {
+  if(isnan(turn))
+  {
     stopMotors();
     return;
   }
 
-  if(turn > -deadzone && turn < deadzone) {
+  if(turn > -deadzone && turn < deadzone)
+  {
     forward();
     return;
   }
 
-  if(turn < 0) {
+  if(turn < 0)
+  {
     digitalWrite(motor1a, LOW);
     digitalWrite(motor1b, HIGH);
     digitalWrite(motor2a, LOW);
@@ -113,7 +124,8 @@ void pixyloop() {
     digitalWrite(motor3b, LOW);
     digitalWrite(motor4a, HIGH);
     digitalWrite(motor4b, LOW);
-  } else if(turn > 0) {
+  } else if(turn > 0)
+  {
     digitalWrite(motor1a, LOW);
     digitalWrite(motor1b, LOW);
     digitalWrite(motor2a, HIGH);
@@ -127,6 +139,7 @@ void pixyloop() {
   delay(5);
 }
 
-void loop() {
+void loop()
+{
   pixyloop();
 }
