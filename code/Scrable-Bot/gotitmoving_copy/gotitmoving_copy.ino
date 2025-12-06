@@ -63,11 +63,15 @@ digitalWrite(motor3b, LOW);
 digitalWrite(motor4a, LOW);
 digitalWrite(motor4b, LOW);
 }
-void move()
+void move(int speed)
 {
-  if(leftspeed >= 0)
+  if(speed >= 0)
 {
-
+  forward();
+}
+else
+{
+  backward();
 }
 }
 float mapfloat(long x,long in_min,long in_max,long out_min,long out_max)
