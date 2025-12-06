@@ -1,16 +1,13 @@
 #include<Pixy2.h>
-#include<SPI.h>
-#include<Pixy2SPI_SS.h>
 #include<Pixy2CCC.h>
 Pixy2 pixy;
 float deadzone = 0.15;
-int cont = 0;
 int signature , x,y,width,height;
 float cx,cy,area;
 const int motor2a = 41;
 const int motor2b = 39;
 const int motor3a = 43;
-const int motor3b = 45;
+const int motor3b = 45;s
 const int motor1a = 38;
 const int motor1b = 40;
 const int motor4a = 42;
@@ -112,20 +109,52 @@ float pixyCheck()
 void pixyloop()
 {
   float turn = pixyCheck();
+
+  if(isnan(turn)) {
+    stopMotors();
+    return;
+  }
+
   if(turn > -deadzone && turn < deadzone)
   {
-    turn = 0;
+    forward();
+    return;
   }
+
   if(turn < 0)
   {
-    forward();
+    // turn LEFT
+    digitalWrite(motor1a, HIGH);
+    digitalWrite(motor1b, LOW);
+
+    digitalWrite(motor2a, LOW);
+    digitalWrite(motor2b, LOW);
+
+    digitalWrite(motor3a, LOW);
+    digitalWrite(motor3b, LOW);
+
+    digitalWrite(motor4a, HIGH);
+    digitalWrite(motor4b, LOW);
   }
   else if(turn > 0)
   {
-    backward();
+    //TURN RIGHT
+    digitalWrite(motor1a, LOW);
+    digitalWrite(motor1b, LOW);
+
+    digitalWrite(motor2a, HIGH);
+    digitalWrite(motor2b, LOW);
+
+    digitalWrite(motor3a, HIGH);
+    digitalWrite(motor3b, LOW);
+
+    digitalWrite(motor4a, LOW);
+    digitalWrite(motor4b, LOW);
   }
+
   delay(5);
 }
+
 void loop() {
   forward();
   delay(2000);
