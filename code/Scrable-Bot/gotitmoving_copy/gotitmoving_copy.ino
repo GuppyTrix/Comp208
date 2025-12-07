@@ -3,10 +3,7 @@
 
 Pixy2 pixy;
 
-float deadzone = 0.15;
-int signature, x, y, width, height;
-float cx, cy, area;
-
+// Motor pins
 const int motor2a = 41;
 const int motor2b = 39;
 const int motor3a = 45;
@@ -16,12 +13,18 @@ const int motor1b = 40;
 const int motor4a = 42;
 const int motor4b = 44;
 
+// Tracking variables
+float deadzone = 0.15;
+int signature, x, y, width, height;
+float cx, cy, area;
+
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(115200);
   pixy.init();
   pixy.changeProg("color_connected_components");
 
+  // Motor outputs
   pinMode(motor1a, OUTPUT);
   pinMode(motor1b, OUTPUT);
   pinMode(motor2a, OUTPUT);
@@ -70,14 +73,18 @@ void stopMotors()
 
 float mapfloat(long x,long in_min,long in_max,long out_min,long out_max)
 {
-  return(float)(x - in_min) * (out_max - out_min) / (float)(in_max - in_min) + out_min;
+  return (float)(x - in_min) * (out_max - out_min) / (float)(in_max - in_min) + out_min;
 }
 
 float pixyCheck()
 {
   uint16_t blocks = pixy.ccc.getBlocks();
 
-  if(blocks)
+  // Print block count every time
+  Serial.print("Blocks: ");
+  Serial.println(blocks);
+
+  if (blocks)
   {
     signature = pixy.ccc.blocks[0].m_signature;
     height = pixy.ccc.blocks[0].m_height;
@@ -85,13 +92,22 @@ float pixyCheck()
     x      = pixy.ccc.blocks[0].m_x;
     y      = pixy.ccc.blocks[0].m_y;
 
+    // Print block values for important information
+    Serial.print("X=");
+    Serial.print(x);
+    Serial.print(" Y=");
+    Serial.print(y);
+    Serial.print(" W=");
+    Serial.print(width);
+    Serial.print(" H=");
+    Serial.println(height);
+
     cx = x + (width / 2);
     cy = y + (height / 2);
 
     cx = mapfloat(cx, 0, 316, -1, 1);
     cy = mapfloat(cy, 0, 208, 1, -1);
 
-    area = width * height;
     return cx;
   }
 
@@ -102,27 +118,28 @@ void pixyloop()
 {
   float turn = pixyCheck();
 
-  if(isnan(turn))
+  if (isnan(turn))   // no blocks detected
   {
     stopMotors();
     return;
   }
 
+  // Object centered? Go forward
   if(turn > -deadzone && turn < deadzone)
   {
     forward();
     return;
   }
-
   if(turn < 0)
   {
     forward();
-  } else if(turn > 0)
+  }
+  else if(turn > 0)
   {
     backward();
   }
 
-  delay(5);
+  delay(50);
 }
 
 void loop()
