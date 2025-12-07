@@ -9,8 +9,8 @@ float cx, cy, area;
 
 const int motor2a = 41;
 const int motor2b = 39;
-const int motor3a = 43;
-const int motor3b = 45;
+const int motor3a = 45;
+const int motor3b = 43;
 const int motor1a = 38;
 const int motor1b = 40;
 const int motor4a = 42;
@@ -34,8 +34,8 @@ void setup()
 
 void forward()
 {
-  digitalWrite(motor1a, LOW);
-  digitalWrite(motor1b, HIGH);
+  digitalWrite(motor1a, HIGH);
+  digitalWrite(motor1b, LOW);
   digitalWrite(motor2a, HIGH);
   digitalWrite(motor2b, LOW);
   digitalWrite(motor3a, HIGH);
@@ -46,8 +46,8 @@ void forward()
 
 void backward()
 {
-  digitalWrite(motor1a, HIGH);
-  digitalWrite(motor1b, LOW);
+  digitalWrite(motor1a, LOW);
+  digitalWrite(motor1b, HIGH);
   digitalWrite(motor2a, LOW);
   digitalWrite(motor2b, HIGH);
   digitalWrite(motor3a, LOW);
@@ -116,24 +116,10 @@ void pixyloop()
 
   if(turn < 0)
   {
-    digitalWrite(motor1a, LOW);
-    digitalWrite(motor1b, HIGH);
-    digitalWrite(motor2a, LOW);
-    digitalWrite(motor2b, LOW);
-    digitalWrite(motor3a, LOW);
-    digitalWrite(motor3b, LOW);
-    digitalWrite(motor4a, HIGH);
-    digitalWrite(motor4b, LOW);
+    forward();
   } else if(turn > 0)
   {
-    digitalWrite(motor1a, LOW);
-    digitalWrite(motor1b, LOW);
-    digitalWrite(motor2a, HIGH);
-    digitalWrite(motor2b, LOW);
-    digitalWrite(motor3a, HIGH);
-    digitalWrite(motor3b, LOW);
-    digitalWrite(motor4a, LOW);
-    digitalWrite(motor4b, LOW);
+    backward();
   }
 
   delay(5);
