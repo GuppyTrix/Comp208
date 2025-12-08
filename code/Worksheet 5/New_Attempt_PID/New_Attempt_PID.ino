@@ -16,106 +16,104 @@ PioEncoder R_encoder(20);
 
 float L_setpoint = 0;
 float R_setpoint = 0;
-float error = 0;
-float output = 0;
-float integral = 0;
-float deltaTime = 0;
-float lastTime = 0;
-float previousError = 0;
-float derivative = 0;
 
-
-float ticksPerDegree = (63 * 46) / 360 ;
-float distancePerDegree = 0.68; //mm
+float ticksPerDegree = (63 * 46) / 360;
+float distancePerDegree = 0.651;  //mm
 //diameter == 70mm
 
 // function for driving a motor from just one value between -255 and 255
 void motorDrive(int power, int FW, int BW) {
-
   // check the input value is in the right range
-  power = constrain(power, -255, 255);
+  power = constrain(power, -100, 100);
 
-  analogWrite(FW, -power);
-  analogWrite(BW, power);
+  if (power > 0) {
+    analogWrite(FW, power);
+    analogWrite(BW, 0);
+  } else if (power < 0) {
+    analogWrite(FW, 0);
+    analogWrite(BW, -power);
+  }
 }
 
-void Proportional_Integral_Derivative_Control(float setpoint, float pos, int motor_A, int motor_B ) {
+class PIDController {
+private:
+  float kp, ki, kd;
+  float integral = 0.0;
+  float previousError = 0.0;
+  long previousTime = 0;
+  
+public:
+  PIDController(float p, float i, float d) : kp(p), ki(i), kd(d) {}
+  
+  float compute(float setpoint, float input) {
+    unsigned long currentTime = millis();
+    unsigned long dt = (currentTime - previousTime); // time differenve
+    float error = setpoint - input; // Proportional term
+    integral += error * dt;  // Integral term
+    float derivative = (error - previousError) / dt;  // Derivative term
+    float output = (kp * error) + (ki * integral) + (kd * derivative);
 
-  float KP = 1;
-  float KI = 1.1;
-  float KD = 4;
+    previousError = error;
+    previousTime = currentTime;
 
-  unsigned long currentTime = millis(); // get system time 
-  deltaTime = (currentTime - lastTime) / 100.0; // time differenve
-  error = setpoint - pos; // Proportional term
-  integral += error * deltaTime;  // Integral term
-  derivative = (error - previousError) / deltaTime;  // Derivative term
-  output = (KP * error) + (KI * integral) + (KD * derivative);
-  lastTime = currentTime;
-  previousError = error;
+    Serial.print("error:");
+    Serial.print(error);
+    Serial.print(",");
 
+    Serial.print("integral:");
+    Serial.print(integral);
+    Serial.print(",");
 
-  motorDrive(-output, motor_A, motor_B);
-}
+    Serial.print("derivative:");
+    Serial.print(derivative);
+    Serial.print(",");
 
+    Serial.print("output:");
+    Serial.println(output);
+    
+    return output;
+  }
+  
+  void reset() {
+    integral = 0.0;
+    previousError = 0.0;
+    previousTime = 0;
+  }
+};
+
+PIDController leftPID(0.03, 0.01, 0.01);
+// PIDController rightPID(0.5, 0.2, 0.2);
 void setup() {
   Serial.begin(115200);
 
   // set the pin modes of the motor pins and encoder pins
   pinMode(L_MOTOR_A, OUTPUT);
   pinMode(L_MOTOR_B, OUTPUT);
-  pinMode(L_MOTOR_A, OUTPUT);
-  pinMode(L_MOTOR_B, OUTPUT);
+  pinMode(R_MOTOR_A, OUTPUT);
+  pinMode(R_MOTOR_B, OUTPUT);
 
   R_encoder.begin();
   R_encoder.flip();
-  
+
   L_encoder.begin();
   L_encoder.flip();
+
 
   delay(200);
 }
 
-float distancetoticks(float distanceMM){
-  return distanceMM/distancePerDegree;
-}
-
 void loop() {
   // convert the encoder ticks to degrees
-  long L_pos = L_encoder.getCount();
-  long R_pos = R_encoder.getCount();
+  long L_pos = L_encoder.getCount()/ticksPerDegree/distancePerDegree;
+  long R_pos = R_encoder.getCount()/ticksPerDegree/distancePerDegree;
 
+  L_setpoint = 1000;
+  R_setpoint = 1000;
 
+  float L_output = leftPID.compute(L_setpoint, L_pos);
+  // float R_output = rightPID.compute(R_setpoint, R_pos);
+  motorDrive(L_output, L_MOTOR_A, L_MOTOR_B);
+  // motorDrive(R_output, R_MOTOR_A, R_MOTOR_B);
   
-  int input;
-  // update the desired setpoint of the motor from serial
-  if (Serial.available() > 1) {
-    input = Serial.parseInt();
-    L_setpoint = input;
-  }
-
-  // input = distancetoticks(1000);
-
-  //  make the control loop run ten times per second
-  delay(100);
-
-  Proportional_Integral_Derivative_Control(L_setpoint, L_pos, L_MOTOR_A, L_MOTOR_B);
-  // Proportional_Integral_Derivative_Control(L_setpoint, R_pos, R_MOTOR_A, R_MOTOR_B);
-
-
-
-  //  print some debug info, check it out in the serial plotter
-  Serial.print("Setpoint:");
-  Serial.print(L_setpoint);
-  Serial.print(", ");
-  Serial.print("Position:");
-  Serial.print(L_pos);
-  Serial.print(", ");
-  Serial.print("Error:");
-  Serial.print(error);
-  Serial.print(", ");
-  Serial.print("OutputPower:");
-  Serial.print(output);
-  Serial.print(", ");
-  Serial.println();
+  delay(10);
 }
