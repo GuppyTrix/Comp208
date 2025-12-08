@@ -3,38 +3,38 @@
 // =============================================================
 // Motor Variables
 // =============================================================
-const int motor1a = 38;  
-const int motor1b = 40;  
+const int motor1a = 38;
+const int motor1b = 40;
 
-const int motor2a = 41;  
-const int motor2b = 39;  
+const int motor2a = 41;
+const int motor2b = 39;
 
-const int motor3a = 43;  
-const int motor3b = 45;  
+const int motor3a = 45;
+const int motor3b = 43;
 
-const int motor4a = 42;  
-const int motor4b = 44;  
+const int motor4a = 42;
+const int motor4b = 44;
 
 // =============================================================
 // Distance calculations
 // =============================================================
 const int gearRatio = 63;
 const int ticksPerRev = 44;
-const float wheelDiameter = 120;  // mm
+const float wheelDiameter = 100;  // mm
 const float wheelCirc = wheelDiameter * M_PI;
 const float ticksPerDegree = (gearRatio * ticksPerRev) / 360.0;
 const float distancePerDegree = wheelCirc / 360.0;
 const float distancePerTick = wheelCirc / (gearRatio * ticksPerRev);
 
-const float WHEELBASE = 200.0;  // Distance between left and right wheels (mm)
+const float WHEELBASE = 142.0;  // Distance between left and right wheels (mm)
 
 // =============================================================
-// Sensor Pins (not yet determined)
+// Sensor Pins
 // =============================================================
-const int PIN_CAN_LEFT = 22;     // High when can is to the left
-const int PIN_CAN_RIGHT = 23;    // High when can is to the right
-const int PIN_CAN_FOUND = 24;    // High when can is detected
-const int PIN_CAN_ARRIVED = 25;  // High when robot reached can
+const int PIN_CAN_LEFT = 25;     // High when can is to the left
+const int PIN_CAN_RIGHT = 27;    // High when can is to the right
+const int PIN_CAN_FOUND = 29;    // High when can is detected
+const int PIN_CAN_ARRIVED = 23;  // High when robot reached can
 
 // =============================================================
 // Movement Variables
@@ -46,10 +46,10 @@ const float TURN_ADJUSTMENT = 5.0;
 // =============================================================
 // Encoders
 // =============================================================
-Encoder FL_motor(50, 52);  // 1 Front Left
-Encoder FR_motor(48, 46);  // 2 Front Right
-Encoder BL_motor(49, 47);  // 3 Back Left
-Encoder BR_motor(53, 51);  // 4 Back Right
+Encoder FL_motor(2, 4);   // 1 Front Left
+Encoder FR_motor(3, 5);   // 2 Front Right
+Encoder BL_motor(21, 6);  // 3 Back Left
+Encoder BR_motor(21, 7);  // 4 Back Right
 
 // =============================================================
 // Odometry Class
@@ -96,16 +96,24 @@ public:
   // Motor Control Methods
   // =============================================================
   void driveMotor(int speed) {
+
     speed = constrain(speed, -255, 255);
     if (speed > 0) {
-      analogWrite(motorPinA, speed);
-      digitalWrite(motorPinB, LOW);
-    } else if (speed < 0) {
       digitalWrite(motorPinA, LOW);
-      analogWrite(motorPinB, -speed);
-    } else {
-      stopMotor();
+      digitalWrite(motorPinB, HIGH);
+    } else if (speed < 0) {
+      digitalWrite(motorPinA, HIGH);
+      digitalWrite(motorPinB, LOW);
     }
+
+    // speed = constrain(speed, -255, 255);
+    // if (speed > 0) {
+    //   analogWrite(motorPinA, speed);
+    //   analogWrite(motorPinB, 0);
+    // } else if (speed < 0) {
+    //   analogWrite(motorPinA, 0);
+    //   analogWrite(motorPinB, -speed);
+    // }
   }
 
   void stopMotor() {
@@ -154,7 +162,7 @@ public:
   }
 
   // =============================================================
-  // Update Method 
+  // Update Method
   // =============================================================
   void update() {
     if (moveState == STATE_IDLE) return;
@@ -243,6 +251,7 @@ private:
   Odometry* leftBack;
   Odometry* rightBack;
 
+
   float degreesToTurnDistance(float degrees) {
     // For differential drive: turning distance = (wheelbase * PI * degrees) / 360
     return (WHEELBASE * M_PI * abs(degrees)) / 360.0;
@@ -258,12 +267,21 @@ public:
     rightBack = rb;
   }
 
+  typedef enum {
+    MOVING_FORWARD,
+    TURNING_LEFT,
+    TURNING_RIGHT,
+    IDLE
+  } MoveState;
+  MoveState moveState;
+
+
   // Update all motors
   void update() {
-    if (leftFront) leftFront->update();
-    if (rightFront) rightFront->update();
-    if (leftBack) leftBack->update();
-    if (rightBack) rightBack->update();
+    leftFront->update();
+    rightFront->update();
+    leftBack->update();
+    rightBack->update();
   }
 
   // =============================================================
@@ -271,65 +289,86 @@ public:
   // =============================================================
   void moveForward(float distanceMM, int speed = DEFAULT_SPEED) {
     // All wheels forward
-    if (leftFront) leftFront->startMoveForward(distanceMM, speed);
-    if (rightFront) rightFront->startMoveForward(distanceMM, speed);
-    if (leftBack) leftBack->startMoveForward(distanceMM, speed);
-    if (rightBack) rightBack->startMoveForward(distanceMM, speed);
+    leftFront->startMoveForward(distanceMM, speed);
+    rightFront->startMoveForward(distanceMM, speed);
+    leftBack->startMoveForward(distanceMM, speed);
+    rightBack->startMoveForward(distanceMM, speed);
+
+    moveState = MOVING_FORWARD;
   }
 
   void moveBackward(float distanceMM, int speed = DEFAULT_SPEED) {
     // All wheels backward
-    if (leftFront) leftFront->startMoveBackward(distanceMM, speed);
-    if (rightFront) rightFront->startMoveBackward(distanceMM, speed);
-    if (leftBack) leftBack->startMoveBackward(distanceMM, speed);
-    if (rightBack) rightBack->startMoveBackward(distanceMM, speed);
+    leftFront->startMoveBackward(distanceMM, speed);
+    rightFront->startMoveBackward(distanceMM, speed);
+    leftBack->startMoveBackward(distanceMM, speed);
+    rightBack->startMoveBackward(distanceMM, speed);
   }
 
-    // Left wheels backward, right wheels forward
+  // Left wheels backward, right wheels forward
   void turnLeft(float degrees, int speed = DEFAULT_SPEED) {
     // needs converting to distance as move forward uses distacce not degrees
     float turnDistance = degreesToTurnDistance(degrees);
 
-    if (leftFront) leftFront->startMoveBackward(turnDistance, speed);
-    if (leftBack) leftBack->startMoveBackward(turnDistance, speed);
-    if (rightFront) rightFront->startMoveForward(turnDistance, speed);
-    if (rightBack) rightBack->startMoveForward(turnDistance, speed);
+    leftFront->startMoveBackward(turnDistance, speed);
+    leftBack->startMoveBackward(turnDistance, speed);
+    rightFront->startMoveForward(turnDistance, speed);
+    rightBack->startMoveForward(turnDistance, speed);
+    moveState = TURNING_LEFT;
   }
 
-    // Left wheels forward, right wheels backward
+  // Left wheels forward, right wheels backward
   void turnRight(float degrees, int speed = DEFAULT_SPEED) {
     // needs converting to distance as move forward uses distacce not degrees
     float turnDistance = degreesToTurnDistance(degrees);
 
-    if (leftFront) leftFront->startMoveForward(turnDistance, speed);
-    if (leftBack) leftBack->startMoveForward(turnDistance, speed);
-    if (rightFront) rightFront->startMoveBackward(turnDistance, speed);
-    if (rightBack) rightBack->startMoveBackward(turnDistance, speed);
+    leftFront->startMoveForward(turnDistance, speed);
+    leftBack->startMoveForward(turnDistance, speed);
+    rightFront->startMoveBackward(turnDistance, speed);
+    rightBack->startMoveBackward(turnDistance, speed);
+    moveState = TURNING_RIGHT;
   }
 
   void stopAll() {
-    if (leftFront) leftFront->stopMovement();
-    if (rightFront) rightFront->stopMovement();
-    if (leftBack) leftBack->stopMovement();
-    if (rightBack) rightBack->stopMovement();
+    leftFront->stopMovement();
+    rightFront->stopMovement();
+    leftBack->stopMovement();
+    rightBack->stopMovement();
+    moveState = IDLE;
   }
 
   // =============================================================
   // Homing Functions
   // =============================================================
   void adjustLeft(int speed = HOMING_SPEED) {
-    // Small left adjustment
-    turnLeft(TURN_ADJUSTMENT, speed);
+
+    leftFront->driveMotor(-100);
+    leftBack->driveMotor(-100);
+    rightFront->driveMotor(100);
+    rightBack->driveMotor(100);
+    moveState = TURNING_LEFT;
   }
 
   void adjustRight(int speed = HOMING_SPEED) {
-    // Small right adjustment
-    turnRight(TURN_ADJUSTMENT, speed);
+    leftFront->driveMotor(100);
+    leftBack->driveMotor(100);
+    rightFront->driveMotor(-100);
+    rightBack->driveMotor(-100);
+    moveState = TURNING_RIGHT;
+  }
+
+  void adjustForward(int speed = HOMING_SPEED) {
+    leftFront->driveMotor(100);
+    leftBack->driveMotor(100);
+    rightFront->driveMotor(100);
+    rightBack->driveMotor(100);
+    moveState = TURNING_RIGHT;
   }
 
   void moveForwardHoming(float distanceMM = 200.0, int speed = HOMING_SPEED) {
     // Move forward slowly for homing
     moveForward(distanceMM, speed);
+    moveState = MOVING_FORWARD;
   }
 
   // =============================================================
@@ -371,6 +410,10 @@ public:
     if (rightBack) complete = complete && !rightBack->isBusy();
     return complete;
   }
+
+  MoveState getMoveState() {
+    return moveState;
+  }
 };
 
 // =============================================================
@@ -382,7 +425,7 @@ enum RobotState {
   STATE_ARRIVED     // Can reached, stop all motors
 };
 
-class RobotFSM {
+class FSM {
 private:
   RobotState currentState;
   Robot* robot;
@@ -390,7 +433,7 @@ private:
   unsigned long lastSensorCheck;
 
 public:
-  RobotFSM(Robot* dr) {
+  FSM(Robot* dr) {
     robot = dr;
     currentState = STATE_SEARCHING;
     stateStartTime = millis();
@@ -404,17 +447,10 @@ public:
   }
 
   void update() {
-    // Update robot controller first
-    if (robot) {
-      robot->update();
-    }
+    robot->update();
 
-    // Check every 100ms if a can has been detected
-    unsigned long currentTime = millis();
-    if (currentTime - lastSensorCheck > 100) {
-      checkSensors();
-      lastSensorCheck = currentTime;
-    }
+    checkSensors();
+
 
     // Run state machine
     switch (currentState) {
@@ -442,7 +478,7 @@ public:
     }
 
     // Check for arrival in HOMING state
-    if (currentState == STATE_HOMING && robot->isCanArrived()) {
+    if (currentState == STATE_HOMING && robot->isCanArrived() && robot->isCanDetected()) {
       Serial.println("FSM: Can reached! Switching to ARRIVED");
       currentState = STATE_ARRIVED;
       stateStartTime = millis();
@@ -451,6 +487,7 @@ public:
   }
 
   void updateSearching() {
+    robot->stopAll();
     // This is where i need to  implement the search pattern
 
     // check if robot is idle and start new search movements:
@@ -470,39 +507,46 @@ public:
       return;
     }
 
-    // Check if we've arrived at the can
-    if (robot->isCanArrived()) {
-      Serial.println("FSM: Can reached! Switching to ARRIVED");
-      currentState = STATE_ARRIVED;
-      stateStartTime = millis();
-      robot->stopAll();
-      return;
-    }
+    // // Check if we've arrived at the can
+    // if (robot->isCanArrived()) {
+    //   Serial.println("FSM: Can reached! Switching to ARRIVED");
+    //   currentState = STATE_ARRIVED;
+    //   stateStartTime = millis();
+    //   robot->stopAll();
+    //   return;
+    // }
 
     // Only adjust if robot is not currently moving
+    bool canLeft = robot->isCanLeft();
+    bool canRight = robot->isCanRight();
     if (!robot->isBusy()) {
-      bool canLeft = robot->isCanLeft();
-      bool canRight = robot->isCanRight();
 
       if (canLeft && !canRight) {
         // Can is to the left - turn left while left pin is high
         Serial.println("HOMING: Can is LEFT - turning left");
-        robot->turnLeft(TURN_ADJUSTMENT, HOMING_SPEED);
-      } else if (canRight && !canLeft) {
+        robot->adjustLeft(HOMING_SPEED);
+      } else if (!canLeft && canRight) {
         // Can is to the right - turn right while right pin is high
         Serial.println("HOMING: Can is RIGHT - turning right");
-        robot->turnRight(TURN_ADJUSTMENT, HOMING_SPEED);
-      } else if (!canLeft && !canRight) {
+        robot->adjustRight(HOMING_SPEED);
+      } else if (canLeft == false && canRight == false) {
         // Can is centered - move forward
         Serial.println("HOMING: Can is CENTERED - moving forward");
-        robot->moveForwardHoming();
+        robot->adjustForward(100);
       }
+    } else if ((robot->getMoveState() == Robot::TURNING_LEFT && !canLeft)) {
+      robot->stopAll();
+    } else if ((robot->getMoveState() == Robot::TURNING_RIGHT && !canRight)) {
+      robot->stopAll();
+    } else if ((robot->getMoveState() == Robot::MOVING_FORWARD && (canLeft || canRight))) {
+      robot->stopAll();
     }
   }
 
   void updateArrived() {
     // In ARRIVED state, all motors are stopped
     Serial.println("ARRIVED: At can location.");
+    robot->stopAll();
   }
 
   // =============================================================
@@ -549,31 +593,25 @@ public:
 // =============================================================
 // Global class definitions
 // =============================================================
-Odometry* odomFL = nullptr;
-Odometry* odomFR = nullptr;
-Odometry* odomBL = nullptr;
-Odometry* odomBR = nullptr;
-Robot* robot = nullptr;
-RobotFSM* fsm = nullptr;
+// Initialize individual odometry modules
+Odometry odomFL = Odometry(motor3a, motor3b, &FL_motor);
+Odometry odomFR = Odometry(motor4a, motor4b, &FR_motor);
+Odometry odomBR = Odometry(motor1a, motor1b, &BR_motor);
+Odometry odomBL = Odometry(motor2a, motor2b, &BL_motor);
+
+// Initialize differential drive robot controller
+Robot robot = Robot(&odomFL, &odomFR, &odomBL, &odomBR);
+
+// Initialize finite state machine
+FSM fsm = FSM(&robot);
 
 // =============================================================
 // Setup and Loop
 // =============================================================
 void setup() {
   Serial.begin(9600);
-  Serial.println("=== Differential Drive Robot Initialization ===");
+  Serial.println("=== Robot Initialization ===");
 
-  // Initialize individual odometry modules
-  Odometry* odomFL = new Odometry(motor1a, motor1b, &FL_motor);
-  Odometry* odomFR = new Odometry(motor2a, motor2b, &FR_motor);
-  Odometry* odomBL = new Odometry(motor3a, motor3b, &BL_motor);
-  Odometry* odomBR = new Odometry(motor4a, motor4b, &BR_motor);
-
-  // Initialize differential drive robot controller
-  Robot* robot = new Robot(odomFL, odomFR, odomBL, odomBR);
-
-  // Initialize finite state machine
-  RobotFSM* fsm = new RobotFSM(robot);
 
   Serial.println("Robot initialized.");
   Serial.println("Starting in SEARCHING state.");
@@ -581,12 +619,10 @@ void setup() {
 }
 
 void loop() {
-  // Update the finite state machine (handles everything)
-  if (fsm) {
-    // when fsm->update() is called it updates all the logic in robot and motors
-    // fsm->update() -> robot->update(); -> if (leftFront) leftFront->update(); and all the other motors
-    fsm->update();  
-  }
 
-  delay(10);
+  // when fsm->update() is called it updates all the logic in robot and motors
+  // fsm->update() -> robot->update(); -> if (leftFront) leftFront->update(); and all the other motors
+  fsm.update();
+
+  delay(100);
 }
