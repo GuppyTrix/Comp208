@@ -6,8 +6,8 @@ const int motor3b = 40;
 const int motor1a = 41;
 const int motor1b = 39;
 
-const int motor2a = 43;
-const int motor2b = 45;
+const int motor2a = 45;
+const int motor2b = 43;
 
 const int motor4a = 42;
 const int motor4b = 44;
@@ -42,6 +42,31 @@ void forward()
   digitalWrite(motor4b, LOW);
 }
 
+void left()
+{
+  digitalWrite(motor1a, HIGH);
+  digitalWrite(motor1b, LOW);
+  digitalWrite(motor2a, HIGH);
+  digitalWrite(motor2b, LOW);
+  digitalWrite(motor3a, LOW);
+  digitalWrite(motor3b, HIGH);
+  digitalWrite(motor4a, LOW);
+  digitalWrite(motor4b, HIGH);
+
+}
+
+void right()
+{
+  digitalWrite(motor1a, LOW);
+  digitalWrite(motor1b, HIGH);
+  digitalWrite(motor2a, LOW);
+  digitalWrite(motor2b, HIGH);
+  digitalWrite(motor3a, HIGH);
+  digitalWrite(motor3b, LOW);
+  digitalWrite(motor4a, HIGH);
+  digitalWrite(motor4b, LOW);
+
+}
 void backward()
 {
   digitalWrite(motor1a, LOW);
@@ -73,6 +98,8 @@ void driveMotor(int motora, int motorb){
 }
 
 void loop() {
-  // forward();
-  driveMotor(motor4a, motor4b);
+  forward();
+  delay(500);
+  backward();
+  delay(500);
 }
