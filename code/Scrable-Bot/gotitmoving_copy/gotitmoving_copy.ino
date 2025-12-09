@@ -4,16 +4,19 @@
 Pixy2 pixy;
 
 // Motor pins
-const int motor2a = 41;
-const int motor2b = 39;
-const int motor3a = 45;
-const int motor3b = 43;
-const int motor1a = 38;
-const int motor1b = 40;
+const int motor3a = 38;
+const int motor3b = 40;
+
+const int motor1a = 41;
+const int motor1b = 39;
+
+const int motor2a = 45;
+const int motor2b = 43;
+
 const int motor4a = 42;
 const int motor4b = 44;
 
-// Tracking variables
+// Tracking variables from pixy
 float deadzone = 0.15;
 int signature, x, y, width, height;
 float cx, cy, area;
