@@ -12,7 +12,6 @@ const int motor2b = 43;
 const int motor4a = 42;
 const int motor4b = 44;
 
-
 Encoder FL_motor(20, 21);  // 1 Front Left
 Encoder FR_motor(18, 19);  // 2 Front Right
 
@@ -27,7 +26,6 @@ void setup() {
   pinMode(motor3b, OUTPUT);
   pinMode(motor4a, OUTPUT);
   pinMode(motor4b, OUTPUT);
-
 }
 
 void forward()
@@ -52,7 +50,6 @@ void left()
   digitalWrite(motor3b, HIGH);
   digitalWrite(motor4a, LOW);
   digitalWrite(motor4b, HIGH);
-
 }
 
 void right()
@@ -65,8 +62,8 @@ void right()
   digitalWrite(motor3b, LOW);
   digitalWrite(motor4a, HIGH);
   digitalWrite(motor4b, LOW);
-
 }
+
 void backward()
 {
   digitalWrite(motor1a, LOW);
@@ -91,15 +88,28 @@ void stopMotors()
   digitalWrite(motor4b, LOW);
 }
 
-void driveMotor(int motora, int motorb){
+void driveMotor(int motora, int motorb)
+{
   digitalWrite(motora, HIGH);
   digitalWrite(motorb, LOW);
-
 }
 
-void loop() {
+void movement()
+{
   forward();
-  delay(500);
+  delay(1000);
+
   backward();
-  delay(500);
+  delay(1000);
+
+  right();
+  delay(1000);
+
+  left();
+  delay(1000);
+}
+
+void loop()
+{
+  forward();
 }
