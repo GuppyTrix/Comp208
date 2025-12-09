@@ -1,22 +1,20 @@
 #include <Encoder.h>
 
-const int motor1a = 38;
-const int motor1b = 40;
+const int motor3a = 38;
+const int motor3b = 40;
 
-const int motor2a = 41;
-const int motor2b = 39;
+const int motor1a = 41;
+const int motor1b = 39;
 
-const int motor3a = 45;
-const int motor3b = 43;
+const int motor2a = 43;
+const int motor2b = 45;
 
 const int motor4a = 42;
 const int motor4b = 44;
 
 
-Encoder FL_motor(2, 4);  // 1 Front Left
-Encoder FR_motor(3, 5);  // 2 Front Right
-Encoder BL_motor(21, 6);  // 3 Back Left
-Encoder BR_motor(21, 7);  // 4 Back Right
+Encoder FL_motor(20, 21);  // 1 Front Left
+Encoder FR_motor(18, 19);  // 2 Front Right
 
 void setup() {
   Serial.begin(9600);
@@ -68,7 +66,13 @@ void stopMotors()
   digitalWrite(motor4b, LOW);
 }
 
-void loop() {
-    forward();
+void driveMotor(int motora, int motorb){
+  digitalWrite(motora, HIGH);
+  digitalWrite(motorb, LOW);
 
+}
+
+void loop() {
+  // forward();
+  driveMotor(motor4a, motor4b);
 }
