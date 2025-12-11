@@ -2,6 +2,17 @@
 ## Overview
 This repository contains the code for an autonomous robot designed to navigate outdoor terrain and locate a drink can within a 15m² arena. The robot combines fully autonomous operation with remote control capability for handling unexpected situations.
 
+# Table of Contents
+- [Project Purpose](#Project-Purpose)
+- [Key Features](#Key-Features)
+  - [Autonomous Navigation](#Autonomous-Navigation)
+  - [Operation Modes](#Operation-Modes)
+  - [Status Communication](#Status-Communication)
+- [Technical Considerations](#Technical-Considerations)
+  - [Terrain Adaptation](#Communication-Systems)
+- [Development Notes](#Development-Notes)
+
+
 ## Project Purpose
 The primary goal of this project is to create a robot that can:
 - Autonomously navigate rough outdoor terrain, including: grass, mud, rotten apples, etc...
