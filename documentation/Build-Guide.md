@@ -49,6 +49,11 @@ Upload the arduino IDE code whilst plugged into the laptop and selecting the cor
 Upload the Raspberry PI code provided []()
 ### CALIBRATION
 
+## Voltages
+12 volt 5 amps constant supply to motors.
+1 12 volt battery will power all motors.
+5 volts and 5 amps from a power bank to raspberry PI.
+the raspberry pi can then power the arduino through that voltage.
 ## Testing the robot
 Whilst connected to a power supply with the power supply turned off upload the code, then once uploaded plug remove the arduino plug from your laptop into the power supply if it has the USB port. Then turn the power supply on to test. This is what I found to be the most safe way to test code with uploading from your laptop.
 If any componets aren't powering on when they should be use a multimeter and test for continuity.
@@ -57,5 +62,12 @@ place the robot on a stand where you can see the wheels move without it running 
 ### Indoor testing
 Now using a battery instead of a power supply and a power bank for the arduino or raspberry PI. It should move around freely and provided deeper insights for testing further complexities.
 ### Outdoor testing
-
+Test on a relatively flat and controlled area, and progress down to harsher more uncontrollable environments to further your robots capabilities.
+## Troubleshooting
+Multi-meter continuity test on all components and wires powering them to ensure they are receiveing power.
+Double checking wires to ensure they're in correct placement.
+Arduino and raspberry PI adding serial.printlns help with debugging and finding if certain functions are getting reached by the code.
+Breaking it down to trialing specific functions and then rebuilding it with a deeper understanding.
 # Safety Notes
+Do not cross wires from positive to negatives in batteries or 5v from arduino. This will short your device and it will become unusable.
+Try not to leave your computer plugged into the arduino for testing as it can send higher voltage for powering the motors back into your computer and short your capacitors which will at the least result in faulty ports and at worst corrupt your laptop.
