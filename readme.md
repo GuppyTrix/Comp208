@@ -1,8 +1,7 @@
 # Comp208 Scrabbling Locomotion Robot
-## Overview
-This repository contains the code for an autonomous robot designed to navigate outdoor terrain and locate a drink can within a 15m² arena. The robot combines fully autonomous operation with remote control capability for handling unexpected situations.
 
 # Table of Contents
+- [Overview](#Overview)
 - [Project Purpose](#Project-Purpose)
 - [Key Features](#Key-Features)
   - [Autonomous Navigation](#Autonomous-Navigation)
@@ -11,7 +10,12 @@ This repository contains the code for an autonomous robot designed to navigate o
 - [Technical Considerations](#Technical-Considerations)
   - [Terrain Adaptation](#Communication-Systems)
 - [Development Notes](#Development-Notes)
+- [Installation Guide](documentation/Installation Guide.md)
+- [Build Guide](documentation/Build Guide.md)
 
+ 
+## Overview
+This repository contains the code for an autonomous robot designed to navigate outdoor terrain and locate a drink can within a 15m² arena. The robot combines fully autonomous operation with remote control capability for handling unexpected situations.
 
 ## Project Purpose
 The primary goal of this project is to create a robot that can:
@@ -39,7 +43,7 @@ The primary goal of this project is to create a robot that can:
 ## Technical Considerations
 ### Terrain Adaptation
 - Designed for chaotic and changing surfaces
-- Movement optimized for grass, mud and rough terrain
+- Movement optimised for grass, mud and rough terrain
 - Waterproof design for different weather situations
 
 ### Communication Systems
