@@ -10,8 +10,8 @@
 - [Technical Considerations](#Technical-Considerations)
   - [Terrain Adaptation](#Communication-Systems)
 - [Development Notes](#Development-Notes)
-- [Installation Guide](documentation/Installation Guide.md)
-- [Build Guide](documentation/Build Guide.md)
+- [Installation Guide](documentation/Installation-Guide.md)
+- [Build Guide](documentation/Build-Guide.md)
 
  
 ## Overview
