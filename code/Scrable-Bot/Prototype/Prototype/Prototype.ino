@@ -3,17 +3,17 @@
 // =============================================================
 // Motor Variables
 // =============================================================
-const int motor3a = 38;
-const int motor3b = 40;
+const int motor3a = 40;
+const int motor3b = 38;
 
-const int motor1a = 41;
-const int motor1b = 39;
+const int motor1a = 39;
+const int motor1b = 41;
 
-const int motor2a = 43;
-const int motor2b = 45;
+const int motor4a = 43;
+const int motor4b = 45;
 
-const int motor4a = 42;
-const int motor4b = 44;
+const int motor2a = 44;
+const int motor2b = 42;
 
 
 // =============================================================
@@ -32,10 +32,13 @@ const float WHEELBASE = 142.0;  // Distance between left and right wheels (mm)
 // =============================================================
 // Sensor Pins
 // =============================================================
-const int PIN_CAN_LEFT = 25;     // High when can is to the left
-const int PIN_CAN_RIGHT = 27;    // High when can is to the right
-const int PIN_CAN_FOUND = 29;    // High when can is detected
-const int PIN_CAN_ARRIVED = 23;  // High when robot reached can
+const int PIN_CAN_LEFT = 27;     // High when can is to the left
+const int PIN_CAN_RIGHT = 25;    // High when can is to the right
+const int PIN_CAN_FOUND = 23;    // High when can is detected
+const int PIN_CAN_ARRIVED = 29;  // High when robot reached can
+
+const int buzzerPin = 22;
+
 
 // =============================================================
 // Movement Variables
@@ -53,6 +56,9 @@ Encoder FR_motor(18, 19);  // 2 Front Right
 // the mega only had 6 interrupt pins so im just using the front 2 encoders for the values otherwise it isnt accurate
 Encoder BL_motor(20, 21);  // 3 Back Left
 Encoder BR_motor(18, 19);  // 4 Back Right
+
+
+
 
 // =============================================================
 // Odometry Class
@@ -253,6 +259,7 @@ private:
   Odometry* rightFront;
   Odometry* leftBack;
   Odometry* rightBack;
+  int buzzer;
 
 
   float degreesToTurnDistance(float degrees) {
@@ -263,11 +270,15 @@ private:
 public:
   Robot(
     Odometry* lf, Odometry* rf,
-    Odometry* lb, Odometry* rb) {
+    Odometry* lb, Odometry* rb,
+    int buz) 
+    {
     leftFront = lf;
     rightFront = rf;
     leftBack = lb;
     rightBack = rb;
+    buzzer = buz;
+    pinMode(buzzer, OUTPUT);
   }
 
   typedef enum {
@@ -417,6 +428,14 @@ public:
   MoveState getMoveState() {
     return moveState;
   }
+
+  void startBuzzer(){
+    digitalWrite(buzzer, HIGH);
+  }
+
+  void stopBuzzer(){
+    digitalWrite(buzzer, LOW);
+  }
 };
 
 // =============================================================
@@ -549,6 +568,7 @@ public:
   void updateArrived() {
     // In ARRIVED state, all motors are stopped
     Serial.println("ARRIVED: At can location.");
+    robot->startBuzzer();
     robot->stopAll();
   }
 
@@ -603,7 +623,7 @@ Odometry odomBR = Odometry(motor1a, motor1b, &BR_motor);
 Odometry odomBL = Odometry(motor2a, motor2b, &BL_motor);
 
 // Initialize differential drive robot controller
-Robot robot = Robot(&odomFL, &odomFR, &odomBL, &odomBR);
+Robot robot = Robot(&odomFL, &odomFR, &odomBL, &odomBR, buzzerPin);
 
 // Initialize finite state machine
 FSM fsm = FSM(&robot);
