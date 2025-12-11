@@ -1,7 +1,7 @@
-const int Left_Pin = 7; 
-const int Right_Pin = 6; 
-const int Found_Pin = 5; 
-const int Arrived_Pin = 4; 
+const int Left_Pin = 27; 
+const int Right_Pin = 25; 
+const int Found_Pin = 23; 
+const int Arrived_Pin = 29; 
 
 void setup() {
   Serial.begin(9600);

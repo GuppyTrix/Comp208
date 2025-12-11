@@ -3,17 +3,18 @@
 // =============================================================
 // Motor Variables
 // =============================================================
-const int motor3a = 38;
-const int motor3b = 40;
+const int motor3a = 39;
+const int motor3b = 41;
 
-const int motor1a = 41;
-const int motor1b = 39;
+const int motor2a = 44;
+const int motor2b = 42;
 
-const int motor2a = 43;
-const int motor2b = 45;
+const int motor1a = 40;
+const int motor1b = 38;
 
-const int motor4a = 42;
-const int motor4b = 44;
+const int motor4a = 43;
+const int motor4b = 45;
+
 
 
 // =============================================================
@@ -32,10 +33,14 @@ const float WHEELBASE = 142.0;  // Distance between left and right wheels (mm)
 // =============================================================
 // Sensor Pins
 // =============================================================
-const int PIN_CAN_LEFT = 25;     // High when can is to the left
-const int PIN_CAN_RIGHT = 27;    // High when can is to the right
-const int PIN_CAN_FOUND = 29;    // High when can is detected
-const int PIN_CAN_ARRIVED = 23;  // High when robot reached can
+const int PIN_CAN_LEFT = 27;     // High when can is to the left
+const int PIN_CAN_RIGHT = 25;    // High when can is to the right
+const int PIN_CAN_FOUND = 23;    // High when can is detected
+const int PIN_CAN_ARRIVED = 29;  // High when robot reached can
+const int RESET_PIN = 10;//not confirmed yet
+
+const int buzzerPin = 22;
+
 
 // =============================================================
 // Movement Variables
@@ -53,6 +58,9 @@ Encoder FR_motor(18, 19);  // 2 Front Right
 // the mega only had 6 interrupt pins so im just using the front 2 encoders for the values otherwise it isnt accurate
 Encoder BL_motor(20, 21);  // 3 Back Left
 Encoder BR_motor(18, 19);  // 4 Back Right
+
+
+
 
 // =============================================================
 // Odometry Class
@@ -253,6 +261,8 @@ private:
   Odometry* rightFront;
   Odometry* leftBack;
   Odometry* rightBack;
+  int buzzer;
+  int reset;
 
 
   float degreesToTurnDistance(float degrees) {
@@ -263,11 +273,15 @@ private:
 public:
   Robot(
     Odometry* lf, Odometry* rf,
-    Odometry* lb, Odometry* rb) {
+    Odometry* lb, Odometry* rb,
+    int buz) 
+    {
     leftFront = lf;
     rightFront = rf;
     leftBack = lb;
     rightBack = rb;
+    buzzer = buz;
+    pinMode(buzzer, OUTPUT);
   }
 
   typedef enum {
@@ -374,6 +388,22 @@ public:
     moveState = MOVING_FORWARD;
   }
 
+  void searchingRight(int speed = HOMING_SPEED) {
+    leftFront->driveMotor(100);
+    leftBack->driveMotor(100);
+    rightBack->driveMotor(-100);
+
+    moveState = TURNING_RIGHT;
+  }
+
+  void searchingLeft(int speed = HOMING_SPEED) {
+    rightFront->driveMotor(100);
+    rightBack->driveMotor(100);
+    leftBack->driveMotor(-100);
+
+    moveState = TURNING_RIGHT;
+  }
+
   // =============================================================
   // Sensor Reading
   // =============================================================
@@ -393,6 +423,9 @@ public:
     return digitalRead(PIN_CAN_RIGHT) == HIGH;
   }
 
+  bool isResetPin(){
+    return digitalRead(RESET_PIN) == HIGH;
+  }
   // =============================================================
   // Status Methods
   // =============================================================
@@ -417,6 +450,15 @@ public:
   MoveState getMoveState() {
     return moveState;
   }
+
+  void startBuzzer(){
+    digitalWrite(buzzer, HIGH);
+  }
+
+  void stopBuzzer(){
+    digitalWrite(buzzer, LOW);
+  }
+  
 };
 
 // =============================================================
@@ -472,10 +514,17 @@ public:
   }
 
   void checkSensors() {
+    // if (robot->isResetPin()){
+    //   currentState = STATE_SEARCHING;
+    //   robot->stopAll();
+    //   delay(1000);S
+    // }
+
     // Only check for can detection in SEARCHING state
     if (currentState == STATE_SEARCHING && robot->isCanDetected()) {
       Serial.println("FSM: Can detected! Switching to HOMING");
-      currentState = STATE_HOMING;
+      currentState = STATE_SEARCHING;
+      // currentState = STATE_HOMING;
       stateStartTime = millis();
       robot->stopAll();  // Stop current movements
     }
@@ -490,17 +539,71 @@ public:
   }
 
   void updateSearching() {
-    robot->stopAll();
-    // This is where i need to  implement the search pattern
-
-    // check if robot is idle and start new search movements:
-    // if (!robot->isBusy()) {
-    //   // Start the search movement here
-    //   robot->moveForward(1000);  // Move 1 meter forward
-    //   // or robot->turnLeft(45);  // Turn 45 degrees
-    // }
+      // This is where i need to implement the search pattern
+      static unsigned long lastActionTime = 0;
+      static int searchStep = 0;
+      static bool isScanning = false;
+      static unsigned long scanStartTime = 0;
+      
+      unsigned long currentTime = millis();
+      
+      // Only proceed if robot is not currently moving
+      if (robot->isBusy()) {
+          return;
+      }
+      
+      switch (searchStep) {
+          case 0: // Step 1: Move forward for 2 seconds
+              if (!isScanning) {
+                  Serial.println("SEARCHING: Moving forward");
+                  robot->adjustForward(HOMING_SPEED);
+                  isScanning = true;
+                  lastActionTime = currentTime;
+              } else if (currentTime - lastActionTime >= 2000) { // Adjust time as needed
+                  robot->stopAll();
+                  isScanning = false;
+                  searchStep = 1;
+                  lastActionTime = currentTime;
+              }
+              break;
+              
+          case 1: // Step 2: Scan left
+              if (!isScanning) {
+                  Serial.println("SEARCHING: Scanning left");
+                  robot->searchingLeft(HOMING_SPEED);
+                  isScanning = true;
+                  scanStartTime = currentTime;
+              } else if (currentTime - scanStartTime >= 4000) { // Scan for 0.5 seconds
+                  robot->stopAll();
+                  isScanning = false;
+                  searchStep = 2;
+                  lastActionTime = currentTime;
+              }
+              break;
+              
+          case 2: // Step 3: Scan right
+              if (!isScanning) {
+                  Serial.println("SEARCHING: Scanning right");
+                  robot->searchingRight(HOMING_SPEED);
+                  isScanning = true;
+                  scanStartTime = currentTime;
+              } else if (currentTime - scanStartTime >= 8000) { // Scan right for 1 second (longer to return to center)
+                  robot->stopAll();
+                  isScanning = false;
+                  searchStep = 0; // Reset to step 0 to move forward again
+                  lastActionTime = currentTime;
+              }
+              break;
+      }
+      
+      // Always check for can while searching
+      if (robot->isCanDetected()) {
+          Serial.println("SEARCHING: Can detected during search!");
+          robot->stopAll();
+          // The FSM will transition to HOMING state in checkSensors()
+      }
   }
-
+  
   void updateHoming() {
     // Check if we lost the can signal
     if (!robot->isCanDetected()) {
@@ -510,7 +613,7 @@ public:
       return;
     }
 
-    // // Check if we've arrived at the can
+    // Check if we've arrived at the can
     // if (robot->isCanArrived()) {
     //   Serial.println("FSM: Can reached! Switching to ARRIVED");
     //   currentState = STATE_ARRIVED;
@@ -549,6 +652,7 @@ public:
   void updateArrived() {
     // In ARRIVED state, all motors are stopped
     Serial.println("ARRIVED: At can location.");
+    robot->startBuzzer();
     robot->stopAll();
   }
 
@@ -603,7 +707,7 @@ Odometry odomBR = Odometry(motor1a, motor1b, &BR_motor);
 Odometry odomBL = Odometry(motor2a, motor2b, &BL_motor);
 
 // Initialize differential drive robot controller
-Robot robot = Robot(&odomFL, &odomFR, &odomBL, &odomBR);
+Robot robot = Robot(&odomFL, &odomFR, &odomBL, &odomBR, buzzerPin);
 
 // Initialize finite state machine
 FSM fsm = FSM(&robot);
@@ -618,7 +722,7 @@ void setup() {
 
   Serial.println("Robot initialized.");
   Serial.println("Starting in SEARCHING state.");
-  Serial.println("==============================================");
+  Serial.println("=============================");
 }
 
 void loop() {
@@ -626,6 +730,9 @@ void loop() {
   // when fsm->update() is called it updates all the logic in robot and motors
   // fsm->update() -> robot->update(); -> if (leftFront) leftFront->update(); and all the other motors
   fsm.update();
+  // fsm.manualMoveForward(100);
+  // fsm.manualTurnLeft(10);
+  // fsm.manualTurnRight(10);
 
   delay(100);
 }
