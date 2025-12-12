@@ -14,6 +14,9 @@
 - [Installation Guide](documentation/Installation-Guide.md)
 - [Build Guide](documentation/Build-Guide.md)
 
+## Devlog and poster
+[link](poster)
+
 ## Project Timeline Video
 [video](https://youtube.com/shorts/ekr151y18yI)
 ## Overview
