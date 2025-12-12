@@ -14,7 +14,8 @@
 - [Installation Guide](documentation/Installation-Guide.md)
 - [Build Guide](documentation/Build-Guide.md)
 
- 
+## Project Timeline Video
+[video](https://youtube.com/shorts/ekr151y18yI)
 ## Overview
 This repository contains the code for an autonomous robot designed to navigate outdoor terrain and locate a drink can within a 15m² arena. The robot combines fully autonomous operation with remote control capability for handling unexpected situations.
 
