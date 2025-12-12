@@ -523,8 +523,8 @@ public:
     // Only check for can detection in SEARCHING state
     if (currentState == STATE_SEARCHING && robot->isCanDetected()) {
       Serial.println("FSM: Can detected! Switching to HOMING");
-      currentState = STATE_SEARCHING;
-      // currentState = STATE_HOMING;
+      // currentState = STATE_SEARCHING;
+      currentState = STATE_HOMING;
       stateStartTime = millis();
       robot->stopAll();  // Stop current movements
     }
