@@ -1,0 +1,1022 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Freddy’s personal devlog</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="27e5be74-c308-8074-9937-e03dcba0ed43" class="page sans"><header><div class="page-header-icon undefined"><img class="icon notion-static-icon" src="https://www.notion.so/icons/book_gray.svg"/></div><h1 class="page-title" dir="auto">Freddy’s personal devlog</h1><p class="page-description" dir="auto"></p><table class="properties"><tbody><tr class="property-row property-row-select"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/graduate_gray.svg" style="width:14px;height:14px;display:block"/></span>Subject</th><td><span class="selected-value select-value-color-brown">Comp 208</span></td></tr><tr class="property-row property-row-date"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/calendar-day_gray.svg" style="width:14px;height:14px;display:block"/></span>Date</th><td><time>@September 30, 2025</time></td></tr><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><img src="https://www.notion.so/icons/list_gray.svg" style="width:14px;height:14px;display:block"/></span>Keywords</th><td></td></tr></tbody></table></header><div class="page-body"><div style="display:contents" dir="ltr"><div id="2a35be74-c308-803c-bd68-de0e7077a116" class="collection-content"><h4 class="collection-title"></h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><img src="https://www.notion.so/icons/font_gray.svg" style="width:14px;height:14px;display:block"/></span>Name</th></tr></thead><tbody><tr id="2a35be74-c308-80f6-bc6a-d7ae73f8e7f5"><td class="cell-title"><a href="https://www.notion.so/Worksheet-1-Braitenburg-2a35be74c30880f6bc6ad7ae73f8e7f5?pvs=21">Worksheet 1 Braitenburg</a></td></tr><tr id="2a35be74-c308-8095-82eb-e1b9ffede341"><td class="cell-title"><a href="https://www.notion.so/Worksheet-2-Finite-State-machine-2a35be74c308809582ebe1b9ffede341?pvs=21">Worksheet 2 Finite State machine</a></td></tr><tr id="2a35be74-c308-801b-8917-eee6ff254f5a"><td class="cell-title"><a href="https://www.notion.so/Worksheet-3-Odometry-2a35be74c308801b8917eee6ff254f5a?pvs=21">Worksheet 3 Odometry</a></td></tr><tr id="2a35be74-c308-80b6-bc3e-f55e88762833"><td class="cell-title"><a href="https://www.notion.so/Worksheet-4-Using-Motors-2a35be74c30880b6bc3ef55e88762833?pvs=21">Worksheet 4: Using Motors</a></td></tr><tr id="2a35be74-c308-8087-8771-e0e7346c711b"><td class="cell-title"><a href="https://www.notion.so/Worksheet-5-Control-systems-2a35be74c30880878771e0e7346c711b?pvs=21">Worksheet 5: Control systems</a></td></tr><tr id="2aa5be74-c308-809e-8612-da060187b874"><td class="cell-title"><a href="https://www.notion.so/Worksheet-6-Making-a-mechanism-2aa5be74c308809e8612da060187b874?pvs=21">Worksheet 6: Making a mechanism</a></td></tr><tr id="2b15be74-c308-8014-a8ae-dc0d7650b0e7"><td class="cell-title"><a href="https://www.notion.so/Worksheet-7-Sensors-2b15be74c3088014a8aedc0d7650b0e7?pvs=21">Worksheet 7: Sensors</a></td></tr><tr id="2b85be74-c308-8076-8dd0-dd65e0cd47a5"><td class="cell-title"><a href="https://www.notion.so/Worksheet-8-Following-and-sensing-2b85be74c30880768dd0dd65e0cd47a5?pvs=21">Worksheet 8: Following and sensing</a></td></tr><tr id="2c85be74-c308-8056-8ba3-d5e8c60b70e1"><td class="cell-title"><a href="https://www.notion.so/Worksheet-9-Pathfinding-2c85be74c30880568ba3d5e8c60b70e1?pvs=21">Worksheet 9: Pathfinding</a></td></tr></tbody></table><br/><br/></div></div><div style="display:contents" dir="auto"><p id="2b55be74-c308-800c-a66d-dc7d34af710a" class="">To do<br/>  list:</p></div><div style="display:contents" dir="auto"><hr id="c1aebc96-c516-49f9-9374-a831fc7e41c2"/></div><div style="display:contents" dir="auto"><p id="02e09d45-f15c-4614-842d-07204edf1fd8" class="">CURRENTLY DOING:</p></div><div style="display:contents" dir="auto"><hr id="44d4209e-0c3a-40cd-9fc3-413383424715"/></div><div style="display:contents" dir="auto"><p id="7fceb704-e784-4f8f-8997-e84c2d18e6c2" class="">Practice encoders and getting<br/>  brushed motors working.</p></div><div style="display:contents" dir="auto"><hr id="1788d4aa-8092-4c06-ada0-e1f2203c31dc"/></div><div style="display:contents" dir="auto"><p id="61125a0d-8b63-4c0e-9951-6162cb1ae615" class="">Get wheels</p></div><div style="display:contents" dir="auto"><hr id="122896cd-e5a0-4c7a-b824-e83617088a84"/></div><div style="display:contents" dir="auto"><p id="e92272d8-7175-4687-8001-9e3a3731c92c" class="">Get box</p></div><div style="display:contents" dir="auto"><hr id="be28f959-6e7c-4190-8ee3-37553fe27851"/></div><div style="display:contents" dir="auto"><p id="d50e97ab-c069-420e-b304-33a3a48c1b3c" class="">Make PCB</p></div><div style="display:contents" dir="auto"><hr id="5248cc2a-f098-4a77-8702-c43f482c7f9c"/></div><div style="display:contents" dir="auto"><p id="b471880b-22a3-4fda-980d-b6986aabd19d" class="">Start looking into camera<br/>  technology</p></div><div style="display:contents" dir="auto"><hr id="a788e6d7-5aa9-4dc9-8e2e-2ccfeddebafc"/></div><div style="display:contents" dir="auto"><p id="ec278ee6-cfcb-4fbf-8e39-52e241575256" class="">Battery</p></div><div style="display:contents" dir="auto"><hr id="961aacfb-2ccc-48e5-876a-7766958b5af4"/></div><div style="display:contents" dir="auto"><p id="c677fab3-c517-4d77-a43f-ac496c333b49" class="">Research</p></div><div style="display:contents" dir="auto"><hr id="f8399cab-b8a3-413e-a926-59ff00d7d8ce"/></div><div style="display:contents" dir="auto"><p id="75cd241c-5b1d-4519-9b3c-7ee7676ec7eb" class="">For prototype</p></div><div style="display:contents" dir="auto"><hr id="e66d5771-47d8-466a-99d3-b5b19075d4f8"/></div><div style="display:contents" dir="auto"><p id="d100f826-d8fb-4d98-a5b7-418c99a0223d" class="">Wheels</p></div><div style="display:contents" dir="auto"><hr id="b6dc3db9-9eee-4571-b0d3-5428d8865341"/></div><div style="display:contents" dir="auto"><p id="98508e9d-9111-435a-97a2-9ae01b1817d7" class="">2 wheel drive</p></div><div style="display:contents" dir="auto"><hr id="b7d4ffd4-ba75-49fa-ad4b-ba38c2ac4517"/></div><div style="display:contents" dir="auto"><p id="534c8ec0-762e-416a-98df-c10046356b5d" class="">2 motors</p></div><div style="display:contents" dir="auto"><hr id="8a0365d3-7a29-4448-aff1-7412be8a8b47"/></div><div style="display:contents" dir="auto"><p id="2c914cf9-42c7-4710-8bfe-2dca56a07fd1" class="">Light weight</p></div><div style="display:contents" dir="auto"><hr id="3de9570f-15fd-47f3-9429-26abd1a2bc13"/></div><div style="display:contents" dir="auto"><p id="6e612eca-ecd1-4d5c-b88b-ac2f54f9a057" class="">PCB for the actual working<br/>  product</p></div><div style="display:contents" dir="auto"><hr id="6dd4934a-676c-493f-8f94-98ae285cbc38"/></div><div style="display:contents" dir="auto"><p id="c60cd715-c5af-4c52-9ab4-fd88dfa87401" class="">Box</p></div><div style="display:contents" dir="auto"><hr id="f978e66c-7c18-4222-a5e7-699b546954dc"/></div><div style="display:contents" dir="auto"><p id="facabbb9-af13-4bcb-ba76-bbe2462674de" class="">Wheels</p></div><div style="display:contents" dir="auto"><hr id="683bf7fe-8d96-4839-8e76-06e0bc8453a2"/></div><div style="display:contents" dir="auto"><p id="042de692-08b6-4735-9c68-fec9dab5c322" class=""><strong>DAY 1 – 22/09/2025</strong></p></div><div style="display:contents" dir="auto"><p id="cda1d042-bca7-4062-964f-940d67289a12" class="">Activity: Attended Matt’s lecture and prepared for upcoming work.</p></div><div style="display:contents" dir="auto"><p id="af1e7dd0-49cb-4287-b05d-db9367dfcae0" class="">Reflection: A lot to take in a think about for the future. Need to not too far ahead and focus on little goals.</p></div><div style="display:contents" dir="auto"><p id="41501d2d-db8e-46f5-b337-6654ac721cef" class="">Next Steps: Research autonomous systems and cybernetics.</p></div><div style="display:contents" dir="auto"><p id="22234464-4124-4dad-bb49-940e95cfa0ce" class=""><strong>DAY 2 – 23/09/2025</strong></p></div><div style="display:contents" dir="auto"><p id="78d94859-939e-41bb-a554-2627cf6d3f6a" class="">Activity: Module workshop with Ben; learned lab rules (lone working, clear desk, lockers).</p></div><div style="display:contents" dir="auto"><p id="f00ab33c-0ece-4d71-b92d-2e3b35ae99ba" class="">Reflection: Inspired a nightlight robot idea: moves to dark spots and activates automatically.</p></div><div style="display:contents" dir="auto"><p id="a2098bbd-755e-49df-854f-9b4c9aa5f4b8" class="">Next Steps: Explore feasibility of mobile nightlight robot.</p></div><div style="display:contents" dir="auto"><p id="e828eedd-7cbe-4de7-996e-3974f344f1d0" class=""><strong>DAY 3 – 27/09/2025</strong></p></div><div style="display:contents" dir="auto"><p id="9795a4ad-19cd-466c-8c3f-47d252f6e7a5" class="">Activity: Group assignment confirmed: working with Ryn and Jareth. Brainstormed ideas for “scrabbling” contract (rugged outdoor robot that can locate a can).</p></div><div style="display:contents" dir="auto"><p id="1423b721-15d2-4014-9754-85c6d0b5114c" class="">Reflection: Key tasks: transport outdoors, recognize target tasks, calibrate distance, know when task is complete. Current idea: Roomba-style robot.</p></div><div style="display:contents" dir="auto"><p id="af94c807-d278-4239-bb1f-911b25334573" class="">Next Steps: Prepare sketches and logic flow for outdoor operations.</p></div><div style="display:contents" dir="auto"><p id="3884df7e-328d-4013-96be-84857088a11c" class=""><strong>DAY 4 – 28/09/2025</strong></p></div><div style="display:contents" dir="auto"><p id="6eff6a09-22a2-4edd-bb00-e3a6f20cb42f" class="">Activity: Discussed movement base with Jareth (treads, wheels, flight). Attended Matt’s lecture on human-robot connection.</p></div><div style="display:contents" dir="auto"><p id="4737db83-bbbb-433f-a5bd-aba41ce67f8b" class="">Reflection: Interface affects attachment to robots; naming them could increase meaning. Our contract has minimal interface, but it could be included as a final measure.</p></div><div style="display:contents" dir="auto"><p id="45a463c1-fc43-403a-993c-def973fd0394" class="">Next Steps: Decide movement system; considered UI for robot. Multiple LEDS that communicate different problems.</p></div><div style="display:contents" dir="auto"><p id="013253b3-6d36-4f1e-83bc-ae27b33d418e" class=""><strong>DAY 5 – 30/09/2025</strong></p></div><div style="display:contents" dir="auto"><p id="1529a966-4f76-4151-98af-7128368a8730" class="">Activity: Planning session with Jareth; finalized primary concepts:</p></div><div style="display:contents" dir="auto"><ul id="47e4228c-0b0d-42b1-9f18-0a7267760d62" class="bulleted-list"><li style="list-style-type:disc">Lightweight, nimble, torque-heavy robot</li></ul></div><div style="display:contents" dir="auto"><ul id="603b6452-df67-4a72-82f5-5c866afa4fd1" class="bulleted-list"><li style="list-style-type:disc">Spiked treads</li></ul></div><div style="display:contents" dir="auto"><ul id="69f83396-7f0e-4583-b06a-c92cc324e791" class="bulleted-list"><li style="list-style-type:disc">Finds a can and returns to start</li></ul></div><div style="display:contents" dir="auto"><ul id="f85186e1-1ff0-413b-bc68-60177c7d374c" class="bulleted-list"><li style="list-style-type:disc">Battery powered (10V)</li></ul></div><div style="display:contents" dir="auto"><ul id="356e478b-576c-4c0b-ad6c-ca098c02e1ce" class="bulleted-list"><li style="list-style-type:disc">Robust single-purpose code, alerts system failures with beepers</li></ul></div><div style="display:contents" dir="auto"><ul id="78961d20-66b9-49de-bb27-638743329946" class="bulleted-list"><li style="list-style-type:disc">Low-resolution camera for color detection</li></ul></div><div style="display:contents" dir="auto"><ul id="bc59eb27-871d-432d-8d6c-f8cc7d6bdab2" class="bulleted-list"><li style="list-style-type:disc">Secondary snake with wheels idea to explore later. So less power but more wheels and more traction.</li></ul></div><div style="display:contents" dir="auto"><ul id="fe1886fa-ec1b-436d-be4f-e4c028fb5d2e" class="bulleted-list"><li style="list-style-type:disc">Reflection: Prioritized robustness and outdoor traction.</li></ul></div><div style="display:contents" dir="auto"><ul id="754f6f95-912c-4634-8730-d335eec06e9a" class="bulleted-list"><li style="list-style-type:disc">Next Steps: Prototype movement system and integrate sensors.</li></ul></div><div style="display:contents" dir="auto"><p id="4ebb68aa-ccfd-4b79-b204-cdef09807109" class=""><strong>DAY 9 – 09/10/2025</strong></p></div><div style="display:contents" dir="auto"><p id="75bc71cd-d09d-4331-b3d3-a80d3dd19bf6" class="">Activity: Presented ideas in 208 tutorial; pitched project to Matt. Workshop paired with Jareth. Improved teamwork and task delegation.</p></div><div style="display:contents" dir="auto"><p id="de4f73d5-cca3-4e06-809d-611e79bd943b" class="">Reflection: Braitenburg machine initially imprecise; using DC programmable power supply improved functionality. Developed initial Finite state machine with LDR detecting light to switch directions. IR may improve precision.</p></div><div style="display:contents" dir="auto"><p id="b2b896f3-9066-4af9-9f35-38dda0f11d45" class="">Next Steps: Replace LDR with IR sensors for more accurate object detection.</p></div><div style="display:contents" dir="auto"><p id="fbe2e2b7-d1e4-4231-8439-d4cb5915a67b" class=""><strong>DAY 19 – 23/10/2025</strong></p></div><div style="display:contents" dir="auto"><p id="8cf03536-03d6-4fe9-b625-8c09c90d008b" class="">Project Update:</p></div><div style="display:contents" dir="auto"><p id="a13540e5-cdd3-45ad-a333-d2148e134922" class="">Presented the prototype to Matt; received valuable feedback highlighting key areas to focus on. With the power issue resolved, the next major pushes are:</p></div><div style="display:contents" dir="auto"><ul id="572350b4-1de3-494c-9eea-bccbc152d244" class="bulleted-list"><li style="list-style-type:disc">Researching and improving the steering system.</li></ul></div><div style="display:contents" dir="auto"><ul id="fca75116-ad64-47ab-9725-62eff5d6b386" class="bulleted-list"><li style="list-style-type:disc">Exploring a Jareths four-wheel drive setup with a back step focus on steering columns.</li></ul></div><div style="display:contents" dir="auto"><p id="b3ac73c9-131d-4f88-aede-f94578a92562" class="">I’ve been researching motorcycle chariot front-end designs using dual push-pull rods. Goal: keep the system simple but evaluate alternatives to make an informed decision.</p></div><div style="display:contents" dir="auto"><p id="77591c17-fae7-4ef5-ad71-0d393272caeb" class="">DAY 21 – 29/10/2025</p></div><div style="display:contents" dir="auto"><p id="b0e4ad6d-85f6-4234-8d45-288a51f08eef" class="">Mechanical &amp; Electrical Assembly:</p></div><div style="display:contents" dir="auto"><ul id="59d6ca12-3c06-445f-bc41-f7c97cdd9473" class="bulleted-list"><li style="list-style-type:disc">Components: 4 brush motors, 1 Arduino Nano, 1 H-Bridge, 1 camera, 1 box, 1 12V battery.</li></ul></div><div style="display:contents" dir="auto"><p id="fd260393-68f9-4d1e-b262-a11441389ce1" class="">Technical Parameters:</p></div><div style="display:contents" dir="auto"><p id="452b3775-80fc-4639-ba3b-ca3f184897ab" class="">Given/Primary:</p></div><div style="display:contents" dir="auto"><ul id="9e60f5ae-67a3-4e58-8197-0da55c9db209" class="bulleted-list"><li style="list-style-type:disc">Mass m=18.65 kgm</li></ul></div><div style="display:contents" dir="auto"><ul id="16d9bee4-f527-40e4-b4f2-b3ae153367b4" class="bulleted-list"><li style="list-style-type:disc">Wheel radius r=0.0508</li></ul></div><div style="display:contents" dir="auto"><ul id="e4c726fb-e7ce-484a-bfb8-2879d4cca63a" class="bulleted-list"><li style="list-style-type:disc">Linear speed v=0.10 m/sv</li></ul></div><div style="display:contents" dir="auto"><ul id="21cfb5f7-c13e-4384-92f3-f2b45196ed14" class="bulleted-list"><li style="list-style-type:disc">Gearbox ratio G=63:1G</li></ul></div><div style="display:contents" dir="auto"><ul id="05018d92-7f99-4be7-a1af-3efd4393973a" class="bulleted-list"><li style="list-style-type:disc">Driven wheels n=2n or 2n=2 differential drive</li></ul></div><div style="display:contents" dir="auto"><ul id="a64eff6a-6d54-4630-aa3f-0a5cfd822e08" class="bulleted-list"><li style="list-style-type:disc">Torque safety factor S=3S</li></ul></div><div style="display:contents" dir="auto"><p id="437556f3-4e3c-4040-8848-28243818c8f1" class="">Assumed/Explicit:</p></div><div style="display:contents" dir="auto"><ul id="97c2057e-ebdb-4511-80ac-3814e57f7946" class="bulleted-list"><li style="list-style-type:disc">Gravity g=9.81m/s²</li></ul></div><div style="display:contents" dir="auto"><ul id="9f16435d-c33e-485b-a884-deba4b42144a" class="bulleted-list"><li style="list-style-type:disc">Worm-gear efficiency n=0.6\eta</li></ul></div><div style="display:contents" dir="auto"><ul id="50e9e40f-9c64-45ad-96fd-4c45415b26cb" class="bulleted-list"><li style="list-style-type:disc">Terrain coefficients: concrete 0.01, gravel 0.02, grass 0.06</li></ul></div><div style="display:contents" dir="auto"><p id="55ba484e-8609-4a85-9330-cf9835698900" class="">Torque and power calculations for terrain &amp; slope:</p></div><div style="display:contents" dir="ltr"><table id="e7ae3d7c-9aeb-4ff7-9cd4-1830b634d4be" class="simple-table"><tbody><div style="display:contents" dir="ltr"><tr id="23f58f86-8ea9-4b2f-8874-1308f6d794fa"><td id="g=B~" class="">Case</td><td id="=`za" class="">Frr (N)</td><td id="|v{I" class="">Fhill (N)</td><td id="DgIB" class="">Ftotal (N)</td><td id="aEre" class="">twheel (N·m)</td><td id="~hEG" class="">Pwheel (W)</td><td id="zH=t" class="">tmotor (N·m)</td><td id="LJB{" class="">Pmotor (W)</td></tr></div><div style="display:contents" dir="ltr"><tr id="12e166cd-c985-49a0-8f9e-9e9f2156f6fe"><td id="g=B~" class="">Concrete</td><td id="=`za" class="">1.83</td><td id="|v{I" class="">0</td><td id="DgIB" class="">1.83</td><td id="aEre" class="">0.139</td><td id="~hEG" class="">0.274</td><td id="zH=t" class="">0.0037</td><td id="LJB{" class="">0.457</td></tr></div><div style="display:contents" dir="ltr"><tr id="ce4d858e-75e6-4e1c-ae13-13db91d89405"><td id="g=B~" class="">Gravel</td><td id="=`za" class="">3.66</td><td id="|v{I" class="">0</td><td id="DgIB" class="">3.66</td><td id="aEre" class="">0.279</td><td id="~hEG" class="">0.549</td><td id="zH=t" class="">0.0074</td><td id="LJB{" class="">0.915</td></tr></div><div style="display:contents" dir="ltr"><tr id="6bc980bd-7f45-4bb5-b6ab-af75729d40e1"><td id="g=B~" class="">Grass</td><td id="=`za" class="">10.98</td><td id="|v{I" class="">0</td><td id="DgIB" class="">10.98</td><td id="aEre" class="">0.836</td><td id="~hEG" class="">1.652</td><td id="zH=t" class="">0.0221</td><td id="LJB{" class="">2.744</td></tr></div><div style="display:contents" dir="ltr"><tr id="6d0d54e7-d5c8-4cdd-ad8e-d935504c6f77"><td id="g=B~" class=""></td><td id="=`za" class=""></td><td id="|v{I" class=""></td><td id="DgIB" class=""></td><td id="aEre" class=""></td><td id="~hEG" class=""></td><td id="zH=t" class=""></td><td id="LJB{" class=""></td></tr></div><div style="display:contents" dir="ltr"><tr id="41732b73-0773-4c03-aeb0-0e85effe13e6"><td id="g=B~" class=""></td><td id="=`za" class=""></td><td id="|v{I" class=""></td><td id="DgIB" class=""></td><td id="aEre" class=""></td><td id="~hEG" class=""></td><td id="zH=t" class=""></td><td id="LJB{" class=""></td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><p id="d5e738b1-d5fb-4137-9b0b-d30e56d9c6c9" class="">Housing: Rectangular box (8 inches) using Arduino packaging box; sufficient for all components and pre-drilled holes.</p></div><div style="display:contents" dir="auto"><p id="a446f396-ff76-43a5-b936-e0ada4b9a017" class="">Localization &amp; Data Management:</p></div><div style="display:contents" dir="auto"><ul id="01a07b36-e521-4687-97d6-1b208f5dddfa" class="bulleted-list"><li style="list-style-type:disc">Camera module for visual localization, capturing images of start and target locations.</li></ul></div><div style="display:contents" dir="auto"><ul id="896ff155-3e62-4c0a-ad12-2ed43d24b18c" class="bulleted-list"><li style="list-style-type:disc">Multiple color-coded LEDs indicate operational state or events (e.g., red LED for camera activity).</li></ul></div><div style="display:contents" dir="auto"><p id="ea496bde-bc13-4bd4-945e-9e1323d01e73" class="">FSM Design:</p></div><div style="display:contents" dir="ltr"><table id="a7d3f050-e6ec-48bf-8f56-5d5df76c468c" class="simple-table"><tbody><div style="display:contents" dir="ltr"><tr id="bad588b2-68eb-4077-959d-4ae4db8973af"><td id="~Uv^" class="">State</td><td id="RCTH" class="">Trigger/Entry</td><td id="y&lt;}@" class="">Exit/Transition</td></tr></div><div style="display:contents" dir="ltr"><tr id="09ac4bf1-a9d6-4745-9d2c-76f0a69a6b74"><td id="~Uv^" class="">Initialization</td><td id="RCTH" class="">Power switch</td><td id="y&lt;}@" class="">Calibration complete</td></tr></div><div style="display:contents" dir="ltr"><tr id="5a094128-e97f-4a4d-ba1b-f7cd572d6f88"><td id="~Uv^" class="">Idle or Standby</td><td id="RCTH" class="">Awaits command</td><td id="y&lt;}@" class="">Navigation starts</td></tr></div><div style="display:contents" dir="ltr"><tr id="0d2a793a-a42a-45e3-8ac6-9c66da529cd2"><td id="~Uv^" class="">Navigation</td><td id="RCTH" class="">Object search</td><td id="y&lt;}@" class="">Object found start Visual Tracking</td></tr></div><div style="display:contents" dir="ltr"><tr id="b32d1d11-f190-4636-9adb-d26b5cff7728"><td id="~Uv^" class="">Visual Tracking</td><td id="RCTH" class="">Camera detects target</td><td id="y&lt;}@" class="">Object located start Navigation return</td></tr></div><div style="display:contents" dir="ltr"><tr id="b0b545d0-dad7-4a34-9d38-f5e71011b2d8"><td id="~Uv^" class="">Obstacle Avoidance</td><td id="RCTH" class="">Sensor triggered</td><td id="y&lt;}@" class="">Clear path begin set directions</td></tr></div><div style="display:contents" dir="ltr"><tr id="e3c2f955-86cf-4d6f-a5e3-7a555e79c8f1"><td id="~Uv^" class="">Error o r Fault</td><td id="RCTH" class="">Fault detected</td><td id="y&lt;}@" class="">Resolved, go back to Idle</td></tr></div><div style="display:contents" dir="ltr"><tr id="d10403f3-eaee-4bb3-bbbc-de033ec19440"><td id="~Uv^" class="">Shutdown or Stop</td><td id="RCTH" class="">Task completed</td><td id="y&lt;}@" class="">Power off</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><p id="dcfa0992-4ba1-4ca0-9e3b-1389e6e11049" class="">Motor Control: H-Bridge with Arduino Nano; integrated encoder readings.</p></div><div style="display:contents" dir="auto"><p id="85539906-99c4-4e64-af72-60c437d427af" class="">Data Structures Example:</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2a35be74-c308-805c-911b-f04c009b76b4" class="code code-wrap"><code class="language-C++" style="white-space:pre-wrap;word-break:break-all">enum RobotState {
+    INIT,
+    IDLE,
+    NAVIGATION,
+    VISUAL_TRACK,
+    AVOIDANCE,
+    ERROR,
+    SHUTDOWN
+};
+
+enum ErrorType {
+    OK,
+    SENSOR,
+    MOTOR,
+    OVERCURRENT,
+    COMMS
+};
+
+struct RobotParams {
+    float wheelRadius;
+    float wheelBase;
+    float gearRatio;
+    float encoderTicks;
+    float ticksPerRevolution;
+    uint8_t drivenWheel;
+};
+
+struct RobotStatus {
+    RobotState currentState;
+    ErrorType lastError;
+    uint8_t ledStateMask;
+    long pos;
+    long lastPos;
+    unsigned long lastRPMTime;
+    float rpm;
+    bool isRaising;
+};
+</code></pre></div><div style="display:contents" dir="auto"><p id="df6eee14-c416-4523-9975-d642af3cbae1" class="">Software Architecture:</p></div><div style="display:contents" dir="auto"><ul id="d09dcdfc-804f-4c5e-afb0-d8a1f9ff51ca" class="bulleted-list"><li style="list-style-type:disc">Modules: main.ino, motor.cpp/h, camera.cpp/h, trajectory.cpp/h, robot.h</li></ul></div><div style="display:contents" dir="auto"><ul id="58d0dffb-aa9a-4b6d-ab06-c922e8b64a75" class="bulleted-list"><li style="list-style-type:disc">FSM orchestrates robot’s behaviors; camera actively searches for object, locomotion optimizes view.</li></ul></div><div style="display:contents" dir="auto"><ul id="fb346a31-f4a0-4e98-8b04-499125191c0f" class="bulleted-list"><li style="list-style-type:disc">Upon completion, robot reverses path to starting location.</li></ul></div><div style="display:contents" dir="auto"><p id="092edc61-6531-47e0-b7fa-6192c8cc79a4" class="">Error Handling &amp; Edge Cases:</p></div><div style="display:contents" dir="auto"><ul id="409ed3d2-af38-4de6-9e91-73a6d75e5b97" class="bulleted-list"><li style="list-style-type:disc">LEDs indicate error states.</li></ul></div><div style="display:contents" dir="auto"><ul id="cd6b8483-681f-4eed-adb2-e5169734c15e" class="bulleted-list"><li style="list-style-type:disc">Edge cases (robot stuck, lost object, unusual obstacle) trigger predefined movement patterns, e.g., Fibonacci or vector search, to attempt recovery.</li></ul></div><div style="display:contents" dir="auto"><p id="ac8d8575-9036-4b36-9262-b99c343e373b" class="">DAY 22 - 03/11/2025</p></div><div style="display:contents" dir="auto"><p id="d016418b-f61c-4fdd-8d1f-044764d1e306" class="">Whilst Jareth worked on refining and charging the finite state machine, I worked on everything outside of the machine. Such as the Huffman table. I had a bit of trouble wrapping my head around it so it might be incorrect.</p></div><div style="display:contents" dir="ltr"><table id="47b7afda-7c67-4691-bbac-a079d10d7dad" class="simple-table"><tbody><div style="display:contents" dir="ltr"><tr id="fde3d80e-2f07-481f-b050-386c8f319044"><td id="lnTb" class="">States</td><td id="TU?&gt;" class="">NONE</td><td id="fKtz" class="">RIGHT IR</td><td id="RZb?" class="">LEFT IR</td><td id="fIjf" class="">BOTH</td><td id="DHfI" class="">OUTPUTS</td></tr></div><div style="display:contents" dir="ltr"><tr id="91d41c11-8d80-44fc-909a-7de87f9611e2"><td id="lnTb" class=""></td><td id="TU?&gt;" class="">0,0</td><td id="fKtz" class="">0,1</td><td id="RZb?" class="">1,0</td><td id="fIjf" class="">1,1</td><td id="DHfI" class=""></td></tr></div><div style="display:contents" dir="ltr"><tr id="097ec7d6-45dc-4190-a750-d158f5d03ee5"><td id="lnTb" class="">1: Stop</td><td id="TU?&gt;" class="">2/F</td><td id="fKtz" class="">4/L</td><td id="RZb?" class="">3/R</td><td id="fIjf" class="">1/S</td><td id="DHfI" class="">F:MOTORS FORWARD</td></tr></div><div style="display:contents" dir="ltr"><tr id="cfbe271f-b12f-41fd-8222-e2778ade71bc"><td id="lnTb" class="">2: Forward</td><td id="TU?&gt;" class="">2/F</td><td id="fKtz" class="">1/S</td><td id="RZb?" class="">1/S</td><td id="fIjf" class="">2/F</td><td id="DHfI" class="">R:MOTORS ROTATE RIGHT</td></tr></div><div style="display:contents" dir="ltr"><tr id="5eb37131-01a4-4eea-94cb-1edb3b9cf5cd"><td id="lnTb" class="">3: Rotate Right</td><td id="TU?&gt;" class="">1/S</td><td id="fKtz" class="">1/S</td><td id="RZb?" class="">1/S</td><td id="fIjf" class="">4/L</td><td id="DHfI" class="">L:MOTOR ROTATE LEFT</td></tr></div><div style="display:contents" dir="ltr"><tr id="64f34c61-b6d0-4806-b123-fdc28efd6b04"><td id="lnTb" class="">4: Rotate Left</td><td id="TU?&gt;" class="">1/S</td><td id="fKtz" class="">4/L</td><td id="RZb?" class="">3/R</td><td id="fIjf" class="">3/R</td><td id="DHfI" class="">S:MOTORS STOP</td></tr></div></tbody></table></div><div style="display:contents" dir="auto"><ul id="7a028653-27c6-43a1-9a58-09cfcafd41eb" class="bulleted-list"><li style="list-style-type:disc">Went to Matts lecture about actuators. Recounting the 4 key actuation systems: Pneumatic, Hydraulic, Fuel actuators, Electric motors.</li></ul></div><div style="display:contents" dir="auto"><ul id="b1f87ca0-42e8-4836-9b35-303743c9f675" class="bulleted-list"><li style="list-style-type:disc">Pneumatic using pressurised water or air driven in tubing.</li></ul></div><div style="display:contents" dir="auto"><ul id="ec3c979e-00eb-49a0-b0dc-bb0746b31a28" class="bulleted-list"><li style="list-style-type:disc">Hydraulic using heavy air compression around tubing.</li></ul></div><div style="display:contents" dir="auto"><ul id="85944c73-be05-4d14-a987-5930337f3cb6" class="bulleted-list"><li style="list-style-type:disc">Fuel actuators uses a system that controls amount of and pressure of fuel.</li></ul></div><div style="display:contents" dir="auto"><ul id="40d0cbb7-f03f-4dcf-98a5-49a4801cf279" class="bulleted-list"><li style="list-style-type:disc">Electric motors - Typically controlled by a shaft between magnetic forces and shifting between those forces.</li></ul></div><div style="display:contents" dir="auto"><p id="95a4019a-ec9e-4899-9ff2-67a0fceddf87" class="">Turned out that was last weeks lecture.</p></div><div style="display:contents" dir="auto"><p id="de392d95-1185-4d6b-9d89-cd80a8d454f7" class="">This weeks lecture was about control theory. The whole system the idea we take something out of the robot put something back in to see what we need to change in the future.</p></div><div style="display:contents" dir="auto"><p id="f692710a-4802-4d42-912c-289bd146f31d" class="">Control Periods, 0.5cm is a good control period baseline to build upon.</p></div><div style="display:contents" dir="auto"><p id="ec9cc828-0009-4d3e-b1b8-610f3fed20ea" class="">Control Algorithms things such as BANG BANG CONTOROL: Between the desired value and measured value is the error.</p></div><div style="display:contents" dir="auto"><p id="06c5abb8-c407-4c00-a6e9-dee844ccaab8" class="">PID CONTROL SYSTEMS: consider the present, remember the past, predict the future.</p></div><div style="display:contents" dir="auto"><p id="85f728ca-2dfa-486d-90c7-d60bddb2c3d2" class="">Proportional Control: reduce your speed more as you get closer to the reference distance.</p></div><div style="display:contents" dir="auto"><ul id="6eb0f2c5-3ade-4e15-8077-1adf7b6ea382" class="bulleted-list"><li style="list-style-type:disc">This weeks lecture involved feedback processes. How we can can act on the feedback we gather.</li></ul></div><div style="display:contents" dir="auto"><p id="17c3f3fc-45ea-4303-bc51-6c47a85ad5f3" class="">Day 23 04/11/2025</p></div><div style="display:contents" dir="auto"><p id="47fbf516-960d-462a-9a8c-2ce8cd7f2a34" class="">Tutorial with Ben: I worked on starting the PCB, Lab Bot, or more specifically the motors on the labbot and being able to practice programming a moving object. It’s more about getting acquainted with the technology to ease myself in 2 weeks before the prototype.</p></div><div style="display:contents" dir="auto"><p id="2a45be74-c308-8022-a5c0-d20fc0391fc2" class="">Day 24 - 09/11/2025</p></div><div style="display:contents" dir="auto"><p id="2a65be74-c308-8099-8013-d1f4bc91acb0" class="">Easy eda for the pathfinding robot.</p></div><div style="display:contents" dir="auto"><p id="2a65be74-c308-802f-8950-f7446b2d982d" class="">Goal make a PCB for the robot.</p></div><div style="display:contents" dir="auto"><p id="2a65be74-c308-805b-8ba4-e1a154dfdd8c" class="">Outcome: Only have attachments for motors and a battery.</p></div><div style="display:contents" dir="auto"><p id="2a65be74-c308-8082-82c2-dddbbe20bbf6" class="">Going forward: putting in more attachements for camera use and 2 more motors. or 1 with a drive chain.</p></div><div style="display:contents" dir="auto"><p id="2a65be74-c308-80e5-ac5e-e9ac491229a4" class="">I restarted my sketch this time with better routing and tried it with a smaller board to find that a 200mm^2 board is probably best since it will leave plenty of space for future attachments and batteries. This is what I have so far.</p></div><div style="display:contents" dir="auto"><p id="2a65be74-c308-8029-ad9d-c46427c57d09" class=""><a href="https://github.falmouth.ac.uk/JH321562/Comp-208-Brab-Putt/tree/main/CAD">https://github.falmouth.ac.uk/JH321562/Comp-208-Brab-Putt/tree/main/CAD</a></p></div><div style="display:contents" dir="auto"><p id="2a75be74-c308-80e1-8445-fee72436f3d5" class="">DAY 25 - 10/11/2025</p></div><div style="display:contents" dir="auto"><p id="2a75be74-c308-802e-bf43-cc40007e207c" class="">Goal: attended Matts lecture on mechanisms and materials, start on poster for the assignment, work on the labbot for worksheet 5.</p></div><div style="display:contents" dir="auto"><p id="2a75be74-c308-803d-be4c-ff945c76cba5" class="">Outcome: Theorizing Implementation of long lasting principles into my own devices. Such as gearing. bearings and brushes, cams and followers, springs, assemblies.</p></div><div style="display:contents" dir="auto"><p id="2a75be74-c308-801f-ba93-ed789ed86781" class="">Started work on poster, added it to the repository, made an abstract to get started that will be rewritten.</p></div><div style="display:contents" dir="auto"><p id="2a75be74-c308-8084-98ab-c32764e56641" class="">As far as the labbot I worked on odometry code, adding it to my PID control code and the labbot controls code. It’s too long for a code snippet so I’ve attached the url to the github: </p></div><div style="display:contents" dir="auto"><p id="2a75be74-c308-804d-b86e-d9816ad69f7d" class=""><a href="https://github.falmouth.ac.uk/JH321562/Comp-208-Brab-Putt/tree/main/freddy%20practice/encoderpract_copy_20251110134017">https://github.falmouth.ac.uk/JH321562/Comp-208-Brab-Putt/tree/main/freddy practice/encoderpract_copy_20251110134017</a></p></div><div style="display:contents" dir="auto"><p id="2a75be74-c308-803d-b7b6-dd4a38f08dc0" class="">Going forward I will have to learn about using h files since the file is over a hundred lines and it will keep building so to make it more readable I will start moving functions over to ensure its readability and ease of understanding. Will try to implement long lasting principles into my own creations.</p></div><div style="display:contents" dir="auto"><p id="2a75be74-c308-80e2-a754-f801e438115c" class="">Learnt about Pierre Jacquet Droz 1773 robot that is now 250 years old. An autonomation that could last over 250 years a  quarter of a century. One of the first instances of the first programmable device that is still functioning as it would when it was first created.</p></div><div style="display:contents" dir="auto"><p id="2a85be74-c308-80c7-ac96-d24bc834be04" class="">DAY 26 11/11/2025</p></div><div style="display:contents" dir="auto"><p id="2a85be74-c308-8073-a19a-c87dbf47d610" class="">Goal: Finish PCB, clear nets, ensure it’s able to be built upon and doesn’t later hinder us.</p></div><div style="display:contents" dir="auto"><p id="2a85be74-c308-80f0-9a43-ca73004f41c1" class="">Outcome: I added a mosfet, a motor to the PCB and cleared most of the nets. </p></div><div style="display:contents" dir="auto"><p id="2a85be74-c308-806d-9404-e504485d5024" class="">Going forward: It is too soon to be get the PCB since it’s early in the project to have something so definite. Especially since Jareth or Ryn isn’t in and it won’t be agreed upon. I will continuously work on it.</p></div><div style="display:contents" dir="auto"><p id="2a85be74-c308-80b9-9428-dbb4b2cd3b2e" class="">Working on the PCB for the second time. Reading about encoders to try and get my encoder code to function for the labbot and hopefully our device, since they’re using very similar technology.</p></div><div style="display:contents" dir="auto"><p id="2a85be74-c308-8023-805d-da8aee5f1351" class=""><a href="https://adityakamath.github.io/2021-12-12-getting-started-with-odometry">https://adityakamath.github.io/2021-12-12-getting-started-with-odometry</a></p></div><div style="display:contents" dir="auto"><p id="2a85be74-c308-8008-a000-c99fa3b9d8a2" class="">From this I found a useful equation for programming these kind of robots. From that equation I put it into arduino code that I could hopefully use in my current arduino for movement: <a href="https://github.falmouth.ac.uk/JH321562/Comp-208-Brab-Putt/blob/main/freddy%20practice/encoderpract_copy_20251110134017/encoderpract_copy_20251110134017.ino">https://github.falmouth.ac.uk/JH321562/Comp-208-Brab-Putt/blob/main/freddy practice/encoderpract_copy_20251110134017/encoderpract_copy_20251110134017.ino</a></p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2a85be74-c308-80a7-ba16-d7b341a09583" class="code code-wrap"><code class="language-C++" style="white-space:pre-wrap;word-break:break-all">float angular_velocityw1 = 0;
+float angular_velocityw2 = 0;
+float angular_velocityw3 = 0;
+float angular_velocityw4 = 0;
+float radius = 0;
+float system_dimensionx = 0;
+float system_dimensiony = 0;
+float longitudinal_velocity = (angular_velocityw1 + angular_velocityw2 + angular_velocityw3 + angular_velocityw4) * (radius / 4);
+float transveral_velocity = (-angular_velocityw1 + -angular_velocityw2 + angular_velocityw3 - angular_velocityw4) * (radius / 4);
+float angular_velocity = (-angular_velocityw1 + angular_velocityw2 - angular_velocityw3 + angular_velocityw4) * (radius/4 * (system_dimensionx + system_dimensiony));
+void setup()
+{
+  // put your setup code here, to run once:
+
+}
+
+void loop()
+{
+  // put your main code here, to run repeatedly:
+
+}
+</code></pre></div><div style="display:contents" dir="auto"><p id="2a85be74-c308-8044-b5aa-d4396cfd73bd" class="">To find the radius, I would have to measure each wheel, to find the angular velocities I would have to measure the rate at which each wheel is spinning using the encoder (revolutions over time). For the system_dimension x &amp; y I can find them by physical measurements of the scrabbling robot or LABBOT in this case.</p></div><div style="display:contents" dir="auto"><p id="2a95be74-c308-80ea-ba67-c59cadc31d6c" class="">DAY 27 12/11/2025</p></div><div style="display:contents" dir="auto"><p id="2a95be74-c308-8003-8f70-c889df296dfb" class="">Goal: Incorporate the equation above into the encoder code for the odometry task.</p></div><div style="display:contents" dir="auto"><p id="2a95be74-c308-804e-ac74-ebc47bc63cfe" class="">Outcome: Unfortunately I’m currently unable to test the code since my debugger won’t allow the encoder library to upload this to an raspberry pi.</p></div><div style="display:contents" dir="auto"><p id="2a95be74-c308-8036-b4fb-ed682f2c0256" class="">Going forward: Researching more ways that precision can be used in moving robots. Gaining deeper insights into motors and wheels.</p></div><div style="display:contents" dir="auto"><p id="2a95be74-c308-8032-812e-d8b7d5330162" class="">Keeping the original equations and changing the declarations to what actually fitted the previously established code I managed to implement the equation to help with accuracy and tuning in both worksheet 5 and the scrabbling device.</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2a95be74-c308-80b1-a128-f123a8e16fc6" class="code code-wrap"><code class="language-C++" style="white-space:pre-wrap;word-break:break-all">void velocity()
+{
+  static long lprevticks = 0;
+  static long rtrevticks = 0;
+  static unsigned long lasttime = 0;
+
+  unsigned long now = millis();
+  float deltatime = (now - lasttime) / 1000.0;
+  if (deltatime &lt;= 0)
+  {
+    deltatime = 0.0001;
+  }
+
+  long lticks = myEncoderL.read();
+  long rticks = myEncoderR.read();
+
+  long ldeltaticks = lticks - lprevticks;
+  long rdeltaticks = rticks - rprevticks;
+
+  float wheelradius = 0.00;
+  float angular_velocityw1 = (ldeltaticks / ticksPerDegree) * (PI / 180.0) / dt;
+  float angular_velocityw2 = (rdeltaticks / ticksPerDegree) * (PI / 180.0) / dt;
+
+  float longitudinal_velocity = (wheelradius / 2.0) * (angular_velocityw1 + angular_velocityw2);
+  float angular_velocity = (wheelradius / axisWidth) * (angular_velocityw2 - angular_velocityw1);
+  lprevticks = lticks;
+  rprevticks = rticks;
+  lasttime = now;
+}</code></pre></div><div style="display:contents" dir="auto"><p id="2a85be74-c308-8052-818a-fa7d28e0cb75" class="">Day 28 14/11/2025</p></div><div style="display:contents" dir="auto"><p id="2ab5be74-c308-805c-9f74-f4d692ef8339" class="">Researching armature resistance control method</p></div><div style="display:contents" dir="auto"><p id="2ab5be74-c308-80ab-8a96-ee2c3c928e4e" class="">Goal: Gain deeper understanding of how else the motors could be controlled, for higher capabilites and further fault proofing.</p></div><div style="display:contents" dir="auto"><p id="2ab5be74-c308-80af-bc3c-c8e0414a8264" class="">Outcome: I learnt that increasing the resistance causes a larger voltage drop, which lowers the armature voltage, armature current, and motor speed. Which helps to control the speed.</p></div><div style="display:contents" dir="auto"><p id="2ab5be74-c308-803d-a1e2-f1decc2a9af5" class="">Going forward: Using this method, to help control the vehicle would allow for non-user controlled capacity. It can be controlled by taking readings from itself.</p></div><div style="display:contents" dir="auto"><p id="2aa5be74-c308-805a-8961-c4a2f029f838" class="">here’s what I found: “”</p></div><div style="display:contents" dir="auto"><p id="9ad59ec2-4275-4221-80ca-d3bc3ffce8f9" class="">The concept of speed regulation is different from the speed control. In speed regulation, the speed of the motor changes naturally whereas in dc motor the speed of the motor changes manually by the operator or by some automatic control device. The<strong> speed</strong> of DC Motor is given by the relation shown below:</p></div><div style="display:contents" dir="auto"><p id="10aa6a5e-7fee-4be2-b4ce-5ea74d11a472" class="">Here equation (1) shows the speed is dependent upon the supply voltage V, the armature circuit resistance Ra and the field flux ϕ, which is produced by the field current.</p></div><div style="display:contents" dir="auto"><p id="2ab5be74-c308-800c-9d49-d6918ae14ccf" class=""><a href="https://circuitglobe.com/speed-control-of-dc-motor-armature-resistance-control-and-field-flux-control.html">https://circuitglobe.com/speed-control-of-dc-motor-armature-resistance-control-and-field-flux-control.html</a></p></div><div style="display:contents" dir="auto"><p id="2ac5be74-c308-8052-87a0-eb3f29df5de3" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2ac5be74-c308-804c-ada1-c735dc8278ac" class="">DAY 29 15/11/2025</p></div><div style="display:contents" dir="auto"><p id="2ac5be74-c308-8021-b5b7-e526b387c46e" class="">Goal: wire up the internals of the prototype.</p></div><div style="display:contents" dir="auto"><p id="2ac5be74-c308-8027-b230-f05425291694" class="">2 motors 1 h bridge 1 arduino.</p></div><div style="display:contents" dir="auto"><p id="2ac5be74-c308-80ee-94bf-ecbf2d60f1bc" class="">Outcome: followed MATTS diagram from the odometry worksheet and adapted it for 2 motors, then set the variables on my encoder code to fit the same ports on the arduino.</p></div><div style="display:contents" dir="auto"><p id="2ac5be74-c308-8003-9461-fea98ec0ebbb" class="">Going forward: I will begin testing on the internals ensuring they work reliably and that my wiring and code functions as expected.</p></div><div style="display:contents" dir="auto"><p id="2ac5be74-c308-801f-a311-e9c98abcac23" class="">I wish I could of done more than just wire something up, especially with another presentation day coming up and how much I want to test this code, but with dealing with higher voltages in a weary state meant I should make the grown up decision and call it there for the day.</p></div><div style="display:contents" dir="auto"><p id="2ad5be74-c308-80ac-84dd-cc7ad3088cba" class="">DAY 30 16/11/2025</p></div><div style="display:contents" dir="auto"><p id="2ad5be74-c308-80d7-97e4-dd8621abdbff" class="">Finished wiring up and checking it’s all in the right ports.</p></div><div style="display:contents" dir="auto"><p id="2ad5be74-c308-80b1-bf95-c074aa0e0d6f" class="">Goal: Final evaluation and showcase to the rest of the group.</p></div><div style="display:contents" dir="auto"><p id="2ad5be74-c308-800e-a1d4-ccc89ac7fc3c" class="">Outcome: I have a lot more confidence in my code and mechanism.</p></div><div style="display:contents" dir="auto"><p id="2ad5be74-c308-80e7-b251-fe2e946a2e72" class="">Going forward: I will test it tomorrow during my free 4 hours in the lab.</p></div><div style="display:contents" dir="auto"><p id="2ad5be74-c308-8073-bd46-c5ffd155de90" class="">I did want to test it today however I was unable to or at least it wouldn’t of been safe since the connections have been soldered however without rubber on top so it’s exposed with 12 volts going through. I want to reduce the risk of a short so I left it to Monday to test it practically and not theoretically. </p></div><div style="display:contents" dir="auto"><p id="2ae5be74-c308-8072-8005-dd0a5048eb9d" class="">DAY 31 17/11/2025</p></div><div style="display:contents" dir="auto"><p id="2ae5be74-c308-80e7-bb5a-ee31ef53f6fa" class="">Goal: Get two motors moving, carrying on from yesterday.</p></div><div style="display:contents" dir="auto"><p id="2ae5be74-c308-80c6-ba53-f306bbc12d22" class="">Outcome: Shorted my laptop because one of the connector pins were set in a different order to the other motor, which I hadn’t realised.</p></div><div style="display:contents" dir="auto"><p id="2ae5be74-c308-80f0-b839-cd0c7c6f278b" class="">Going forward: I will test it on a lab laptop then if it works continue on my laptop. One motor was working so now that I have correctly wired it, it should function.</p></div><div style="display:contents" dir="auto"><p id="2ae5be74-c308-809c-ba54-de11e0a5aac2" class="">I covered up the soldered ends, which I ended up reshouldering so that the ends matched the other motor, and I had a level of continuity. One motor was working and I couldn’t figure out why the other wasn’t so I i tried the h-bridge and switching the out ports which led to a short on my laptop. WHen trying to find what caused this Maya had pointed out that the other motor was set up differently but with the same colored wires. Only 3 were in a different order.</p></div><div style="display:contents" dir="auto"><p id="2ae5be74-c308-8006-9a06-dc45df3ec000" class="">I also made some test code:</p></div><div style="display:contents" dir="ltr"><figure id="2ae5be74-c308-8005-9c9b-d4efb4de441f"><div class="source"><a href="MicrosoftTeams-video_(1).mp4">attachment:3465202d-adcd-4199-9ff2-349fb9987152:MicrosoftTeams-video_(1).mp4</a></div></figure></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2ae5be74-c308-8033-9bda-f294764c0a70" class="code code-wrap"><code class="language-C++" style="white-space:pre-wrap;word-break:break-all">// Motor pin declaration
+int motorA = 8;   // Right motor IN1
+int motorB = 9;   // Right motor IN2
+int motorC = 10;  // Left motor IN3
+int motorD = 11;  // Left motor IN4
+void one()
+{
+  analogWrite(motorA, 200);
+  analogWrite(motorB, 0);
+  analogWrite(motorC, 200);
+  analogWrite(motorD, 0);
+}
+void two()
+{
+  analogWrite(motorA, 0);
+  analogWrite(motorB, 200);
+  analogWrite(motorC, 200);
+  analogWrite(motorD, 0);
+}
+void three()
+{
+  analogWrite(motorA, 0);
+  analogWrite(motorB, 200);
+  analogWrite(motorC, 0);
+  analogWrite(motorD, 200);
+}
+void four()
+{
+  analogWrite(motorA, 200);
+  analogWrite(motorB, 0);
+  analogWrite(motorC, 0);
+  analogWrite(motorD, 200);
+}
+
+void setup()
+{
+  // put your setup code here, to run once:
+  Serial.begin(9600);
+  pinMode(motorA, OUTPUT);
+  pinMode(motorB, OUTPUT);
+  pinMode(motorC, OUTPUT);
+  pinMode(motorD, OUTPUT);
+}
+
+void loop()
+{
+  // put your main code here, to run repeatedly:
+  one();
+  delay(2000);
+
+  two();
+  delay(1000);
+
+  three();
+  delay(2000);
+
+  four();
+  delay(1000);
+}
+</code></pre></div><div style="display:contents" dir="auto"><p id="2ae5be74-c308-803f-8ab8-f5b8de50fade" class="">Went to Matts Lecture where I learnt about:</p></div><div style="display:contents" dir="auto"><p id="2ae5be74-c308-80ff-ba20-fc6f56704d71" class="">Sense and sensors, completing the cybernetic loop. Passive and active sensors, define ranges, resolution, precision, and accuracy of sensors. Active sensors do .</p></div><div style="display:contents" dir="auto"><p id="2ae5be74-c308-8015-89a1-f8bae28ec898" class="">Machine vision, lidar, ultra sonic, infrared, etc. Their advantages, drawbacks, what applications their used for.</p></div><div style="display:contents" dir="auto"><p id="2ae5be74-c308-803b-8957-cf29567bdf82" class="">I managed to get both motors working. Turns out the safe way to do it is with the power supply with the code already uploaded.</p></div><div style="display:contents" dir="ltr"><figure id="2ae5be74-c308-8089-bbf4-ff903734028b"><div class="source"><a href="MicrosoftTeams-video_(2).mp4">attachment:6523f002-9061-40c9-8e1d-35f95396d241:MicrosoftTeams-video_(2).mp4</a></div></figure></div><div style="display:contents" dir="ltr"><figure id="2ae5be74-c308-8079-84ce-e466a6c8cf6a" class="image"><a href="Image_(2).jpg"><img style="width:375.3125px" src="Image_(2).jpg"/></a></figure></div><div style="display:contents" dir="auto"><p id="2af5be74-c308-801c-89fe-cf27606d7e92" class="">DAY 32 18/11/2025</p></div><div style="display:contents" dir="auto"><p id="2af5be74-c308-8077-962f-cf30f7894347" class="">I managed to get a to get two wooden wheels and a rod inbetween so now it has 2 wheels. I wanted to print off two more wheels as it was a more tapered fit as these would be attached to the motors however orca slicer wouldn’t open, so I decided to leave that job to Jareth. I need to work on my code and getting it more simultaneous. However it is close to moving. I also need batteries for the motors.</p></div><div style="display:contents" dir="auto"><p id="2af5be74-c308-8054-872d-e9233a6284c2" class="">Because of how I’ve placed the motors one of them works inversely to the other. So it appears to be going reverse when the other is going forward.</p></div><div style="display:contents" dir="auto"><p id="2af5be74-c308-8020-b71b-d358280499a1" class="">Goal: Get 4 wheels and a moving prototype without battery.</p></div><div style="display:contents" dir="auto"><p id="2af5be74-c308-8011-8694-f2cf62668a64" class="">Outcome: I only got 2 wheels, and tested the code and it all fits together nicecly.</p></div><div style="display:contents" dir="auto"><p id="2af5be74-c308-80d1-912f-dd2544502f9e" class="">Going forward: Get two more wheels, work on code and purchase battery pack.</p></div><div style="display:contents" dir="auto"><p id="2af5be74-c308-804d-b41f-da388775dc98" class="">DAY 33 19/11/2025</p></div><div style="display:contents" dir="ltr"><figure id="2b05be74-c308-8054-a1f6-c82f1c527587"><div class="source"><a href="Video.785259619.354462.mp4">attachment:d2ea9747-099e-4de5-ba83-cd405c10f3ad:Video.785259619.354462.mp4</a></div></figure></div><div style="display:contents" dir="ltr"><figure id="2b05be74-c308-8009-9efc-d3d76bb13fee"><div class="source"><a href="original-D7B85FBB-8FC3-465C-9268-049422982DED.mp4">attachment:989d5811-19fa-4d27-9725-979d35650545:original-D7B85FBB-8FC3-465C-9268-049422982DED.mp4</a></div></figure></div><div style="display:contents" dir="auto"><p id="2b05be74-c308-8007-9490-e1e502564bc6" class="">Met with Jareth in the lab, we pulled through and put our work together and made one working prototype. We put together our separate prototypes and with my internals, and Jareth&#x27;s box and wheel setup, worked instantly.</p></div><div style="display:contents" dir="auto"><p id="2b05be74-c308-8022-8dab-ed9d9120297b" class="">Goal: Fashion together, a prototype.</p></div><div style="display:contents" dir="auto"><p id="2b05be74-c308-806f-8417-e54d3fa34c0a" class="">Outcome: We have a pulled in prototype, we just need one with a battery so that it can be more portable.</p></div><div style="display:contents" dir="auto"><p id="2b05be74-c308-8008-857a-cfa32e1b4c4d" class="">Going forward: We will continue to communicate effectively. Start finalizing our project into something more applicable.</p></div><div style="display:contents" dir="auto"><p id="2b05be74-c308-80b5-8605-eec71f1adc3e" class="">DAY 34 20/11/2025</p></div><div style="display:contents" dir="auto"><p id="2b15be74-c308-8078-a586-d3a624eb4b9b" class="">Goal: New Shell, new wheels, new power for anker battery.</p></div><div style="display:contents" dir="auto"><p id="2b15be74-c308-80ae-ae8c-fe06cc9ea100" class="">Outcome: Matt was pleased the robot moved well by itself but with 22 days left, we now need to take it further and include machine vision and improve every aspect of the device.</p></div><div style="display:contents" dir="auto"><p id="2b15be74-c308-80b1-a97b-fe2a366135f1" class="">Going forward: Purchase new components, work on set out its faults.</p></div><div style="display:contents" dir="auto"><p id="2b15be74-c308-80e4-a250-dfef931e45e7" class="">Today we had a demonstration with Matt. Unfortunately I could only get a battery for the Arduino and not for the 12 volt so now looking for answer for transferring power from the one battery to the 4 motors.</p></div><div style="display:contents" dir="auto"><p id="2b15be74-c308-80f9-ad63-db94268e3004" class="">States. Finding / searching state / Going back states.</p></div><div style="display:contents" dir="auto"><p id="2b15be74-c308-8030-b9d8-d46e7e8738b9" class="">I think for a box, laser cut a box so that it has extremely accurate hole positions for applying the motor.</p></div><div style="display:contents" dir="auto"><p id="2b15be74-c308-807d-9af2-fbc6319a4c58" class="">Work on gearing mechanisms for power application. Power non-directly to wheels. </p></div><div style="display:contents" dir="auto"><p id="2b15be74-c308-801c-a3c5-d1dd9850493a" class="">SO to do list in terms of easiest to hardest:</p></div><div style="display:contents" dir="auto"><p id="2b15be74-c308-8042-9ef3-ebc7c0123518" class="">BOX - 1 day</p></div><div style="display:contents" dir="auto"><p id="2b15be74-c308-801d-b50d-cd828359ee01" class="">GEARING - 2 days</p></div><div style="display:contents" dir="auto"><p id="2b15be74-c308-80a0-90d3-fb1fcf1e3d94" class="">new design - 3 days</p></div><div style="display:contents" dir="auto"><p id="2b15be74-c308-8076-b8db-d82f39dd75f4" class=""><strong>Battery - 5 days</strong></p></div><div style="display:contents" dir="auto"><p id="2b15be74-c308-804d-8a5e-ce96ff6a89a2" class="">NO PCB</p></div><div style="display:contents" dir="auto"><p id="2b15be74-c308-80d2-810e-ce247c24de08" class="">Machine vision - 2 weeks</p></div><div style="display:contents" dir="auto"><p id="2b15be74-c308-80c5-821b-db7e3239f94c" class="">If I were to focus on the hardware and Jareth Software, rotating every week then I think we would have a good flow state.</p></div><div style="display:contents" dir="auto"><p id="2b15be74-c308-80fc-879e-e17180be01e6" class="">2nd half movement is complete. Now to finish it have all wheel drive. While Jareth looks into machine vision.</p></div><div style="display:contents" dir="auto"><p id="2b15be74-c308-80ec-a795-c79c94d611e5" class="">Then hopefully by next week we have a moving prototype, that is self controlled.</p></div><div style="display:contents" dir="auto"><p id="2b15be74-c308-80b1-8911-d143b3bec4a8" class="">A prototype that goes to a certain location then moves back.</p></div><div style="display:contents" dir="auto"><p id="2b15be74-c308-80f3-9011-fdf05609a5b1" class="">Then A prototype that can detect certain objects and move towards them and moves back.</p></div><div style="display:contents" dir="auto"><p id="2b15be74-c308-80cd-9ec7-ebc4746629f5" class="">Wish list:</p></div><div style="display:contents" dir="auto"><p id="2b15be74-c308-800d-8db2-fab6e580a2e6" class="">Wheels</p></div><div style="display:contents" dir="auto"><p id="2b15be74-c308-806e-83b2-c765488fd248" class=""> <a href="https://www.amazon.co.uk/dp/B099DTX315/ref=sspa_dk_detail_1?pd_rd_i=B099DTX315&amp;pd_rd_w=Kyiz9&amp;content-id=amzn1.sym.9a64fe05-cdee-4d53-a27b-f3614d726545&amp;pf_rd_p=9a64fe05-cdee-4d53-a27b-f3614d726545&amp;pf_rd_r=J11E9EJCR07D6YXAGZ5H&amp;pd_rd_wg=dcHNR&amp;pd_rd_r=4b0399ae-ca43-4ea6-acee-08dd302433c7&amp;aref=hwd5l0Sxl0&amp;sp_csd=d2lkZ2V0TmFtZT1zcF9kZXRhaWxfdGhlbWF0aWM&amp;th=1&amp;tag=operagx-def-sp-co2-gb-21">https://www.amazon.co.uk/dp/B099DTX315/ref=sspa_dk_detail_1?pd_rd_i=B099DTX315&amp;pd_rd_w=Kyiz9&amp;content-id=amzn1.sym.9a64fe05-cdee-4d53-a27b-f3614d726545&amp;pf_rd_p=9a64fe05-cdee-4d53-a27b-f3614d726545&amp;pf_rd_r=J11E9EJCR07D6YXAGZ5H&amp;pd_rd_wg=dcHNR&amp;pd_rd_r=4b0399ae-ca43-4ea6-acee-08dd302433c7&amp;aref=hwd5l0Sxl0&amp;sp_csd=d2lkZ2V0TmFtZT1zcF9kZXRhaWxfdGhlbWF0aWM&amp;th=1&amp;tag=operagx-def-sp-co2-gb-21</a></p></div><div style="display:contents" dir="auto"><p id="2b15be74-c308-80f9-b7bf-fdfc35fb47b2" class="">Battery converter</p></div><div style="display:contents" dir="auto"><p id="2b15be74-c308-805a-a43e-e4933cbf274c" class=""><a href="https://www.amazon.co.uk/AITRIP-Converter-Adapter-Reduced-Regulator-Type/dp/B0DCGGGPFZ/ref=sr_1_10?crid=2ZD7I85Q1SYNI&amp;dib=eyJ2IjoiMSJ9.41wdIjTOEhxz4IH40iyryZxct72iVWn6XLthmGHprmxxRegTBGizrIvcorIRmQm-CxKWF1VqZF0QImIIlNPBmUXFRSmrfHRZArDu7Qf7juuPBpWXQgirH-RFb0w_wCChyfFS1d2ewEy9LskMYzCk5aAZOtYZE66Tmk3n9yZR1vMfg1xCI6vAw_P1GtanBCKZ4bEJRswtyJOdjRmlOEPP7mn3XXJ2lxua6NcIHM1azuHM9Jfz6LNu-NH10eJb_k8A2QHZpbAY2Jc3AUmPth4D2c7mvLvJIh0VNf3iimmKeig.xRMj15lUjIaIYnNWKKNbuveJNXVnjO_IqnpN1fJ7R8k&amp;dib_tag=se&amp;keywords=5V+USB+To+For+12V+1A+Clip+Converter+Power+Supply&amp;qid=1763635554&amp;s=electronics&amp;sprefix=5v+usb+to+for+12v+1a+clip+converter+power+supply%2Celectronics%2C460&amp;sr=1-10">https://www.amazon.co.uk/AITRIP-Converter-Adapter-Reduced-Regulator-Type/dp/B0DCGGGPFZ/ref=sr_1_10?crid=2ZD7I85Q1SYNI&amp;dib=eyJ2IjoiMSJ9.41wdIjTOEhxz4IH40iyryZxct72iVWn6XLthmGHprmxxRegTBGizrIvcorIRmQm-CxKWF1VqZF0QImIIlNPBmUXFRSmrfHRZArDu7Qf7juuPBpWXQgirH-RFb0w_wCChyfFS1d2ewEy9LskMYzCk5aAZOtYZE66Tmk3n9yZR1vMfg1xCI6vAw_P1GtanBCKZ4bEJRswtyJOdjRmlOEPP7mn3XXJ2lxua6NcIHM1azuHM9Jfz6LNu-NH10eJb_k8A2QHZpbAY2Jc3AUmPth4D2c7mvLvJIh0VNf3iimmKeig.xRMj15lUjIaIYnNWKKNbuveJNXVnjO_IqnpN1fJ7R8k&amp;dib_tag=se&amp;keywords=5V+USB+To+For+12V+1A+Clip+Converter+Power+Supply&amp;qid=1763635554&amp;s=electronics&amp;sprefix=5v+usb+to+for+12v+1a+clip+converter+power+supply%2Celectronics%2C460&amp;sr=1-10</a></p></div><div style="display:contents" dir="auto"><p id="2b15be74-c308-80bd-8726-d8d9b095bafb" class="">DAY 35 21/11/2025</p></div><div style="display:contents" dir="auto"><p id="2b25be74-c308-80d3-9e45-d977d9d4957e" class="">Goal: Upload videos to devlog / buy components.</p></div><div style="display:contents" dir="auto"><p id="2b25be74-c308-800e-b05b-e7a2ec669c94" class="">Outcome: Today was admin since a lot of my pictures and videos were missing. I had components I needed to purchase to make it to the next stage.</p></div><div style="display:contents" dir="auto"><p id="2b25be74-c308-800e-944b-f6647622ea67" class="">Going forward: parts should arrive tomorrow. I’ve get straight to work on testing them and using them.</p></div><div style="display:contents" dir="auto"><p id="2b25be74-c308-8008-8040-dc8e2c2e588b" class="">I spent around £80 on wheels,12 volt battery, 1 more encoder motor, and cambelt and gearing for my own personal use, as well as 1 300 rpm dc motor to test my idea. It should me grasp the idea of gear ratios. Me and Jareth agreed to put it on a place plate. The chasis is built to work on it’s own without the cover on the top.</p></div><div style="display:contents" dir="auto"><p id="2b35be74-c308-8040-8cd4-d5a88fc54188" class="">DAY 36 22/11/2025</p></div><div style="display:contents" dir="auto"><p id="2b35be74-c308-801a-a5bd-cffe208ae68f" class="">Goal: Test out apparatus.</p></div><div style="display:contents" dir="auto"><p id="2b35be74-c308-8095-bc4f-f0cf59fd2704" class="">Outcome: Only the cambelt gearing arrived, so unfortunately I couldn’t test out anything. Although I did learn that the gearing doesn’t fit the motor.</p></div><div style="display:contents" dir="auto"><p id="2b35be74-c308-807f-b918-c2eb11092acc" class="">Going forward: I will test out components and starting by attaching it to encoders.</p></div><div style="display:contents" dir="auto"><p id="2b35be74-c308-80e5-97f0-d8c78652cd5d" class="">Only one thing arrived so I was unable to complete what I wanted to. I want to focus on practical building things rather than fixating on code, CAD, CAM. Rapid prototyping, so not getting the parts was a sting.</p></div><div style="display:contents" dir="auto"><p id="2b85be74-c308-80fc-b4bd-c80f0ae2a770" class="">I’ve tried to do more labbot code with the new encoder however I still have some kinks to straighten out. It currently isn’t compiling yet.</p></div><div style="display:contents" dir="auto"><p id="687afc02-a99d-4270-9d5c-3dd57c4181f8" class=""><br/>void control_left_motor(int motor_power)<br/>{<br/>motor_power = constrain(motor_power, -255, 255);</p></div><div style="display:contents" dir="auto"><p id="e44a633b-ca6f-4b42-a6f7-f4b1829e761c" class="">if (motor_power &gt; 0) {<br/>analogWrite(L_MOTOR_A, motor_power);<br/>digitalWrite(L_MOTOR_B, LOW);<br/>} else if (motor_power &lt; 0) {<br/>analogWrite(L_MOTOR_B, -motor_power);<br/>digitalWrite(L_MOTOR_A, LOW);<br/>} else {<br/>digitalWrite(L_MOTOR_A, LOW);<br/>digitalWrite(L_MOTOR_B, LOW);<br/>}<br/>}</p></div><div style="display:contents" dir="auto"><p id="fb86dd0a-dc30-4219-8865-b48505672e16" class="">void control_right_motor(int motor_power)<br/>{<br/>motor_power = constrain(motor_power, -255, 255);</p></div><div style="display:contents" dir="auto"><p id="dbabfb1b-8295-42db-929a-fadcaa287617" class="">if (motor_power &gt; 0) {<br/>analogWrite(R_MOTOR_A, motor_power);<br/>digitalWrite(R_MOTOR_B, LOW);<br/>} else if (motor_power &lt; 0) {<br/>analogWrite(R_MOTOR_B, -motor_power);<br/>digitalWrite(R_MOTOR_A, LOW);<br/>} else {<br/>digitalWrite(R_MOTOR_A, LOW);<br/>digitalWrite(R_MOTOR_B, LOW);<br/>}<br/>}</p></div><div style="display:contents" dir="auto"><p id="2b45be74-c308-80eb-8b50-d4ec87ee8781" class="">DAY 37 23/11/2025</p></div><div style="display:contents" dir="auto"><p id="2b45be74-c308-80a5-acf0-ffb966eba393" class="">Goal: start testing motors and get things working.</p></div><div style="display:contents" dir="auto"><p id="2b45be74-c308-8030-ae5f-ca427b754de0" class="">Outcome: Ended up on fusion making encoders and boards to later cut for accuracy.</p></div><div style="display:contents" dir="auto"><p id="2b45be74-c308-80dd-8e43-ea88e5be87b0" class="">Going forward: The parts will arrive when they arrive I have to make sure I keep moving forward with the project even if they’re not here.</p></div><div style="display:contents" dir="auto"><p id="2b45be74-c308-800b-aed6-e4b92119b5c4" class="">Unfortunately only the battery and other encoder motor turned up today. I’ll need to wire up the new encoder motor tomorrow and test it out. This lack of progress and need to complete thing</p></div><div style="display:contents" dir="ltr"><figure id="2b45be74-c308-80e1-9ba4-daf5509457ca" class="image"><a href="image.png"><img style="width:709.96875px" src="image.png"/></a></figure></div><div style="display:contents" dir="ltr"><figure id="2b45be74-c308-8006-9e44-ee75c759629a" class="image"><a href="image%201.png"><img style="width:709.9896240234375px" src="image%201.png"/></a></figure></div><div style="display:contents" dir="auto"><p id="2b55be74-c308-8057-aea2-ee4a8c2abcf8" class="">DAY 38 24/11/2025</p></div><div style="display:contents" dir="auto"><p id="2b55be74-c308-8006-abe7-e82d48680f42" class="">Goal: Read up on PS3 machine vision camera.</p></div><div style="display:contents" dir="auto"><p id="2b55be74-c308-8087-9501-caeccf746fb3" class="">Outcome: Revan a third year sent me a link to the github repository of a machine vision camera, I had bought:<a href="https://github.com/jkevin/PS3EyeDirectShow/releases">Releases · jkevin/PS3EyeDirectShow</a>. Reading through this and how untested it is led me to think of other ways to approach this. OPENSOURCE.</p></div><div style="display:contents" dir="auto"><p id="2b55be74-c308-8001-9a18-c39e01e9db55" class="">Going forward: I will look at apps for a phone that can detect an object and send signals to an arduino or a bluetooth controller. I feel that may be the easiest way forward but it’s time consuming in research and trial that might not actually work.</p></div><div style="display:contents" dir="auto"><p id="2b55be74-c308-8044-bb5c-e9f24c3ea970" class="">Lecture with Matt:</p></div><div style="display:contents" dir="auto"><p id="2b55be74-c308-8051-98b7-d2ad9b99d989" class="">Navigation and localisation.</p></div><div style="display:contents" dir="auto"><p id="2b55be74-c308-8031-89ef-da03da8d6d4b" class="">Identify basic methods: robot navigation (line and wall following), direction and goal, probabilistic methods to find objects in environment. Pledge algorithm. </p></div><div style="display:contents" dir="auto"><p id="2b55be74-c308-8040-8c60-c2ba05fe7316" class="">PID can help control line following to make less erratic. </p></div><div style="display:contents" dir="auto"><p id="2b55be74-c308-80b1-b9b6-cb3131d14f2d" class="">Dosh dat method, line following on for localising and the other for something…Navigation.</p></div><div style="display:contents" dir="auto"><p id="2b55be74-c308-8048-8480-ddb9d90bb24d" class="">Mediapipe. Check it out.</p></div><div style="display:contents" dir="auto"><p id="2b55be74-c308-8027-b964-ce6e31f6c1a7" class=""><a href="https://github.com/google-ai-edge/mediapipe">https://github.com/google-ai-edge/mediapipe</a></p></div><div style="display:contents" dir="auto"><p id="2b55be74-c308-8048-856c-dc938b43104b" class="">The other parts came - the wheels and other motor to test my idea of two encodes at the front and I DC motor at the back powering the back two wheels.</p></div><div style="display:contents" dir="auto"><p id="2b55be74-c308-8033-9818-f7ce29480c66" class="">DAY 39 25/11/2025</p></div><div style="display:contents" dir="auto"><p id="2b65be74-c308-801c-8a12-f8a5d684e0ce" class="">Goal: Get board made up / laser cut.</p></div><div style="display:contents" dir="auto"><p id="2b65be74-c308-80c3-9ebe-fe1678fcac2f" class="">Outcome: Got the components together and the cambelts are the way forward.</p></div><div style="display:contents" dir="auto"><p id="2b65be74-c308-80fa-b86d-e7c46ac1685f" class="">Going Forward: We will put the components on the board then create a system on top of the board.</p></div><div style="display:contents" dir="auto"><p id="2b65be74-c308-80a0-ae85-fa6d6e135877" class="">We managed to connect the battery to new ends so that it can be charged in the lab.</p></div><div style="display:contents" dir="auto"><p id="2b65be74-c308-8099-af7f-df107a35f30b" class="">Wheels are 4.5 mm hold. 12 mm inside hexagon. I want to make a bolt that goes from the outside, bolt screws into the hexagon the bolt then goes through Jareths box join for finally a bearing on a positioner the one that looks like a little bridge to hold it up then thats the bolt. Inbetween the bearing and the wall is the cambelt that drives it.</p></div><div style="display:contents" dir="auto"><p id="2b65be74-c308-80cc-864e-cd81d6a4d105" class="">Okay so change of plan. It’s just the bearing that look like bridges holding it in place on the board drills into the rod for precisely keeping in the cambelt gearing. Then look at how tall it needs to be for the gearing. Mounted bearings.</p></div><div style="display:contents" dir="auto"><p id="2b65be74-c308-80d2-96f1-c55580493c5d" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2b65be74-c308-8096-8c3c-d2a83f837a7f" class="">When I got home I began working on placing everything on the board and trying to work out how it would all fit together. Doing this I wanted to just solve it by layering it on top of each other. Laser cutting more boards, which could work and would keep it tidy but it definitely all fit well together I just need to think…Scrutinize about it. At the moment the hardest part is the encoders and how they’re always facing a different direction. Not to mention their is 4 encoders although I want 2 and 1 dc motor. I came up with facing the batteries, arduino, h bridge. Well all of the components upwards which gave me a lot of space but means I can’t zip tire it down and will need a holder. To 3d print holders. 3d printing and CAD take me more time than I would like and so I would prefer to tire it down but for a flush finished project I might have to.</p></div><div style="display:contents" dir="ltr"><figure id="2b65be74-c308-8058-a5e6-ffba37a6f7a4" class="image"><a href="WIN_20251125_09_34_44_Pro.jpg"><img style="width:710px" src="WIN_20251125_09_34_44_Pro.jpg"/></a></figure></div><div style="display:contents" dir="auto"><p id="2b65be74-c308-80b6-84ae-f64cdaed55b1" class="">
+</p></div><div style="display:contents" dir="ltr"><figure id="2b65be74-c308-80fc-90d5-fb4c3fb9e225"><div class="source"><a href="video-20251125-104502-d7d3e3e1.mov">attachment:3787acd5-154a-409d-b756-3136d63b90af:video-20251125-104502-d7d3e3e1.mov</a></div></figure></div><div style="display:contents" dir="ltr"><figure id="2b65be74-c308-80aa-b0c5-d9ed29d926ba"><div class="source"><a href="video-20251125-102431-70a4636f.mov">attachment:142a4932-b648-40fc-b827-ad430c6c4385:video-20251125-102431-70a4636f.mov</a></div></figure></div><div style="display:contents" dir="ltr"><figure id="2b65be74-c308-801e-936c-dbd3368999fc" class="image"><a href="image%202.png"><img style="width:375.3125px" src="image%202.png"/></a></figure></div><div style="display:contents" dir="ltr"><figure id="2b65be74-c308-80e2-81c6-cd10c16b7a95" class="image"><a href="Image_(5).jpg"><img style="width:365px" src="Image_(5).jpg"/></a></figure></div><div style="display:contents" dir="ltr"><figure id="2b75be74-c308-803b-b650-cc63c643950d" class="image"><a href="Image_(8).jpg"><img style="width:365px" src="Image_(8).jpg"/></a></figure></div><div style="display:contents" dir="auto"><p id="2b75be74-c308-80ae-96dd-e855b803ff70" class="">DAY 40 26/11/2025</p></div><div style="display:contents" dir="auto"><p id="2b75be74-c308-80da-8448-f4ea07c9cb1c" class="">Goal: Find the right positioning for everything.</p></div><div style="display:contents" dir="auto"><p id="2b75be74-c308-807d-a89c-d27ac33a1ca0" class="">Outcome: I only have decided to the position of the secondary gears that turn the rod.</p></div><div style="display:contents" dir="auto"><p id="2b75be74-c308-80a0-97ae-f94693b0da10" class="">Going forward: I’ll have to speak with Jareth tomorrow and get his input before we start building onto it.</p></div><div style="display:contents" dir="auto"><p id="2b75be74-c308-8079-8185-cdf5f714d9e6" class="">What I’m struggling most with is the encoder motors they have to be fit a very exact way that allows them to be plugged in and in a good location for turning the gears. The problem is the best position for them is the least suitable for everything else. I’m thinking the arduino battery will have to go underneath. It is waterproof afterall. Not to mention space for the camera operation.</p></div><div style="display:contents" dir="auto"><p id="2b85be74-c308-800d-ac95-e430b53e64fb" class="">Day 41 27/11/2025</p></div><div style="display:contents" dir="auto"><p id="2b85be74-c308-80aa-875e-f7165fed79d9" class="">make endcap that is at least 27 millimetres.</p></div><div style="display:contents" dir="auto"><p id="2b85be74-c308-8004-b8ba-c052165caff6" class="">Goal: Final Redesign</p></div><div style="display:contents" dir="auto"><p id="2b85be74-c308-8018-8994-d9ce46fbd375" class="">Outcome: I’ve made an encoder case that is ready to be 3d printed and mounted to the board.</p></div><div style="display:contents" dir="auto"><p id="2b85be74-c308-801b-8705-df3f6906e324" class="">Going forward: I will mount the encoders and work on getting a prototype over the weekend.</p></div><div style="display:contents" dir="auto"><p id="2b85be74-c308-8036-b2cf-cba518978bd5" class="">I worked on fusion designing an encoder case and a bolt that can attach to the motor.</p></div><div style="display:contents" dir="auto"><p id="2b85be74-c308-80ed-973b-ea068a3b67af" class=""><a href="https://github.falmouth.ac.uk/JH321562/Comp-208-Brab-Putt/commit/df50d0597a7f96f25dae85fd785dba7ac873e8c2">https://github.falmouth.ac.uk/JH321562/Comp-208-Brab-Putt/commit/df50d0597a7f96f25dae85fd785dba7ac873e8c2</a></p></div><div style="display:contents" dir="auto"><p id="b1b153af-1eee-409d-ad60-8035c0671569" class="">The measurements should be correct, but I’m preparing for the possibility that something may be slightly off. Everything in this design is friction fit and packed as tightly as possible to keep components from shifting. Without a PCB, every single placement has to be exact.</p></div><div style="display:contents" dir="auto"><p id="d0963a31-c64c-47a4-a109-41938989988c" class="">Because I wanted the wheels to cover most of the board, the available surface area is tiny, and fitting all the components has been a real challenge. Part of me feels like I should have done this redesign a week ago, but I wanted to be completely sure the final version would actually work before committing.</p></div><div style="display:contents" dir="auto"><p id="6d26b3e5-7bd1-4a1b-8c73-a9b198c3b265" class="">I knew going into this that redesigning so late was a risk… A step back with the hope of taking two steps forward. Right now, though, I’m still in the middle of that risk, and it’s hard to tell whether it’s paid off. It doesn’t feel like it has yet, but maybe that’s just part of the process.</p></div><div style="display:contents" dir="auto"><p id="d8a06b82-c873-45ae-b207-6e018673d887" class="">DAY 42 30/11/2025<br/>Goal: Finish wiring diagram<br/>Outcome: couldn’t finish wiring diagram so begun testing and assembling prototype.<br/>Going forward: I will put together all the components tomorrow.<br/>Tried to complete the wiring diagram on easy eda however due to a network error I couldn&#x27;t sign in. However, I did get the prototype moving again and it’s looking quite exciting. I’m also preparing the full set up, utilizing a Arduino mega and 2 h-bridges this time.</p></div><div style="display:contents" dir="auto"><p id="3c990b7f-18b5-4fb2-bee3-5eabc979bcf8" class="">DAY 43 2/12/2025<br/>Goal: Drill exact holes in board<br/>Outcome: Got board done, Motors fixed, and camera detecting.<br/>Going forward: I will worked on the pixy cam in the background and begin implementing path finding.<br/>Supervised lab with Ben, I got the chasis holes done exactly in the laser cutter, printed off more wheel connectors and demonstrated the prototype to Jareth while he worked on the object detection. Got the board fixed back together and completed the chasis.<br/>DAY 44 3/12/2025<br/>Goal: complete poster<br/>Outcome: completed most of the wording for the poster.<br/>Going forward: add more equations, add more to repo and overall clean up.<br/>Worked on the poster all day documenting all features of the project and why we had made those choices, how the robot is meant to work and why it works. Why we chose those materials and how those choices impacted the project.</p></div><div style="display:contents" dir="auto"><p id="8422f380-5fd1-41e5-a1d5-0b737a13ac6d" class="">DAY 47 Day 6/12/2025<br/>Goal: Rewire correctly prototype, finish chassis, and implement object detection.<br/>Outcome: Rewire is complete, and code is now optimized. The chassis may be finished I don’t know how it will I will turn it on if it is under a box. Object detection was troublesome.<br/>Going forward: I will continue to work on object detection; it works with the uno but not the mega.<br/>Once I solve that problem, it will have an object following. Once I have the object, following it’s just setting pathfinding, then we’re done. Clean up rep, and that’s it<br/>It is 15, nearly 16, and the chassis is done, now just to rewire it for Jareth’s code, object detection, object detection with movement and maybe something else<br/>Got motors turning nicely and synchronised, so the pins are all correctly set now. Unfortunately, I couldn’t get the object detection on the Mega shown in the first video, but I could on the Uno. I don’t know why this is, but it is frustrating to deal with. I may have to ask Matt about it tomorrow.<br/>DAY 48 07/12/2025<br/>Goal: get motor moving from camera.<br/>Outcome: motor moves without encoders<br/>Going forward: chassis, repo, pathfinding, obstacle avoidance.<br/>I took the encoder wiring out, and it worked. It moved and everything. I sent Jareths the video, and I’m very happy. Now just chassis, waterproofing, repo, pathfinding. On a 15-square track. Finalising code to go to red and avoid dark. Go to signature one and avoid signature two.<br/>DAY 49 8/12/2025<br/>Goal: Chassis is currently being printed. Jareth is working on the raspberry pi and getting it working for the field. Getting the repo ready with the video of the whole project. I also got the battery connected with strong cabling.<br/>Outcome: Chassis is being built and I just don’t know how to integrate the original board with this new one.<br/>Going forward: I will think about the repo all the other odd jobs to complete and just work with the all the components already made.<br/>Finally got it tested working without a power supply. Unfortunately, I displayed it to matt without video presentation.<br/>Because all I want is something to place on top. The chassis should be kept in place by the motors and tolerances made.<br/>I’ve made a component to fit to the board so I think I’ve now solved that problem with the chassis.<br/>I’ll have a look over at my devlog and video back home. Jareth’s now taking over and working hard with the project. I’ve provided him with the perfect.</p></div><div style="display:contents" dir="auto"><p id="2c45be74-c308-8052-b530-fc8f77497377" class="">DAY 50 9/12/2025</p></div><div style="display:contents" dir="auto"><p id="2c45be74-c308-8019-9cf3-cbc6e0ceb4b2" class="">Goal: field test prototype and finalise design.</p></div><div style="display:contents" dir="auto"><p id="2c45be74-c308-80b2-876f-ee38b0eafd27" class="">Outcome: 3D print worked well only thing holding it back was that I bolted the plate underneath instead of just keeping it all in the same print.</p></div><div style="display:contents" dir="auto"><p id="2c45be74-c308-80ec-9259-f9c83fc33352" class="">Going forward: I will try to plan further ahead making more sustainable designs. Make further modifications and work on code.</p></div><div style="display:contents" dir="auto"><p id="2c45be74-c308-80ea-8cf9-d3e9200b6ac5" class="">I managed to fix my slight design error by bolting the design in.</p></div><div style="display:contents" dir="auto"><p id="2c45be74-c308-8057-972d-f69a0e91a43d" class="">Jareth troubleshooted the device and after a field test at a new field, we found that the ground clearance is not enough. We need to put the wheels and motors lower. He designed new motor holders after I ran through some designs we could implement right away.</p></div><div style="display:contents" dir="auto"><p id="2c45be74-c308-8016-9432-c6dab14c7bde" class="">I worked on my poster and researched parts to help Jareths raspberry Pi issue:<a href="https://forums.raspberrypi.com/viewtopic.php?t=364311">https://forums.raspberrypi.com/viewtopic.php?t=364311</a>. He told he’s already got the component so I trusted him and ensure that we would have a back up by modifying my backup version with the pixy cam.</p></div><div style="display:contents" dir="auto"><p id="2c45be74-c308-809a-bb25-ecb426800eed" class="">I also managed to design an improved iteration on the box: <a href="https://github.falmouth.ac.uk/JH321562/Comp-208-Brab-Putt/blob/main/CAD/shell/chassis%20take%202.f3z">https://github.falmouth.ac.uk/JH321562/Comp-208-Brab-Putt/blob/main/CAD/shell/chassis take 2.f3z</a></p></div><div style="display:contents" dir="ltr"><figure id="2c45be74-c308-8045-aae7-cd698c6cac97" class="image"><a href="image%203.png"><img style="width:710px" src="image%203.png"/></a></figure></div><div style="display:contents" dir="auto"><p id="2c45be74-c308-803d-a8f8-c1cfe68f7214" class="">
+</p></div><div style="display:contents" dir="ltr"><figure id="2c45be74-c308-8056-8c6f-d34e5feb8c3b"><div class="source"><a href="MicrosoftTeams-video_(4).mp4">attachment:30ebe088-9f83-4f69-b987-58cbfeaf17ac:MicrosoftTeams-video_(4).mp4</a></div></figure></div><div style="display:contents" dir="auto"><h1 id="2c75be74-c308-8050-a02d-f52907a0392a" class="">AFTER ASSIGNMENT DEADLINE / after 16:00 on 12/12/2025</h1></div><div style="display:contents" dir="auto"><p id="2c75be74-c308-8089-9494-e06eb5d40b34" class="">DAY 51 10/12/2025</p></div><div style="display:contents" dir="auto"><p id="2c75be74-c308-800a-b7bc-f2707a0049e7" class="">Goal: Complete poster, with documentation and mathematics and format devlogs into something more organised.</p></div><div style="display:contents" dir="auto"><p id="2c75be74-c308-8097-b081-c17ce9264161" class="">Outcome: I got the poster at a point where I was satisfied with it however I did not implement what I had wanted to. I did not finish the video, or the readme.md.</p></div><div style="display:contents" dir="auto"><p id="2c75be74-c308-8063-a081-d8f4714ea324" class="">Going forward: I will continue to clean up the repo.</p></div><div style="display:contents" dir="auto"><p id="2c75be74-c308-80da-9a81-c53a7d6847f3" class="">DAY 52 11/12/2025</p></div><div style="display:contents" dir="auto"><p id="2c75be74-c308-805b-b837-c08c2b41a233" class="">Goal: Help Jareth set up his new clearance motor holders and continue trouble shooting project. I managed to switch the pins from digital to PWM. Although the some motors weren’t running and the battery needs a recharge.</p></div><div style="display:contents" dir="auto"><p id="2c75be74-c308-8025-8540-ddce2b0f4aed" class="">Outcome: We stayed in the lab till 8:00 - I got there at 11:00. We uncounted a tripping issue with the robot that was resolved by the end by simply placing the motor holders diagonally.</p></div><div style="display:contents" dir="auto"><p id="2c75be74-c308-80d2-bf3d-fa273754fd5c" class="">Going forward: We will be able to implement this robot now into the field it just needs some modifications.</p></div><div style="display:contents" dir="auto"><p id="2c75be74-c308-8007-9978-ec1e1dadd613" class="">Such as path finding and a better searching algorithm.</p></div><div style="display:contents" dir="ltr"><figure id="2c75be74-c308-8009-88df-fc3df7a96cb9"><div class="source"><a href="MicrosoftTeams-video_(4)%201.mp4">attachment:3c9e556a-e86c-41a6-b71c-e798fa00bd31:MicrosoftTeams-video_(4).mp4</a></div></figure></div><div style="display:contents" dir="auto"><p id="2c75be74-c308-80b7-8856-de920fb589c5" class="">DAY 53 12/12/2025</p></div><div style="display:contents" dir="auto"><p id="2c75be74-c308-8076-a63e-f2f27a2c314d" class="">OFFICIAL DEADLINE for the module</p></div><div style="display:contents" dir="auto"><p id="2c75be74-c308-8072-8046-ff470d5238c3" class="">Goal: manage to submit everything and try new wiring configuration. Now the encoder wiring module connects and it is more a fitted connection than the exposed wire and the pertruding male end of the motor.</p></div><div style="display:contents" dir="auto"><p id="2c75be74-c308-8048-8b4d-e684e6996c34" class="">Outcome: I only managed to do the encoders and finish my poster as well as add the research using the research I had from my poster. <br/>Going forward: I think I will try this project again in my spare time using all of my parts and knowledge. I want to try and make a 2 wheeled taller version.</p></div><div style="display:contents" dir="auto"><p id="2c75be74-c308-8000-af56-ee55772e18b2" class="">Unfortunately I committed code 2 hours before deadline but it didn’t seem to be on the repo for what ever reason. It was important as well since it was the base of my poster talking about the state machine (which it had implemented) however without it, it questions the solidarity of my poster.</p></div><div style="display:contents" dir="auto"><p id="2c75be74-c308-80d6-9dec-faac50ff1dbb" class="">here is the evidence: </p></div><div style="display:contents" dir="ltr"><figure id="2c75be74-c308-80d6-ab88-f2c15a6f327b" class="image"><a href="image%204.png"><img style="width:709.9896240234375px" src="image%204.png"/></a></figure></div><div style="display:contents" dir="auto"><p id="2c75be74-c308-80ea-ab22-d30535f0f336" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2c75be74-c308-8027-9974-ee656c612b51" class="">For whatever reason it isn’t on the github repo but here is the code to demonstrate that I was honest in my poster.</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2c75be74-c308-8052-a143-c2f731d342df" class="code code-wrap"><code class="language-C++" style="white-space:pre-wrap;word-break:break-all">#include &lt;Pixy2.h&gt;
+#include &lt;Pixy2CCC.h&gt;
+
+Pixy2 pixy;
+
+// Motor pins
+const int motor3a = 38;
+const int motor3b = 40;
+const int motor1a = 41;
+const int motor1b = 39;
+const int motor2a = 45;
+const int motor2b = 43;
+const int motor4a = 42;
+const int motor4b = 44;
+
+// Tracking variables
+float deadzone = 0.15;
+int signature, x, y, width, height;
+float cx;
+//state machine
+enum State { SEARCH, TRACK_CAN, AVOID, CENTERED, TURN };
+State state = SEARCH;
+
+void setup()
+{
+  Serial.begin(115200);
+  pixy.init();
+  pixy.changeProg(&quot;color_connected_components&quot;);
+
+  pinMode(motor1a, OUTPUT);
+  pinMode(motor1b, OUTPUT);
+  pinMode(motor2a, OUTPUT);
+  pinMode(motor2b, OUTPUT);
+  pinMode(motor3a, OUTPUT);
+  pinMode(motor3b, OUTPUT);
+  pinMode(motor4a, OUTPUT);
+  pinMode(motor4b, OUTPUT);
+}
+
+// Movement functions
+void forward() {
+  digitalWrite(motor1a, HIGH); digitalWrite(motor1b, LOW);
+  digitalWrite(motor2a, HIGH); digitalWrite(motor2b, LOW);
+  digitalWrite(motor3a, HIGH); digitalWrite(motor3b, LOW);
+  digitalWrite(motor4a, HIGH); digitalWrite(motor4b, LOW);
+}
+
+void backward() {
+  digitalWrite(motor1a, LOW); digitalWrite(motor1b, HIGH);
+  digitalWrite(motor2a, LOW); digitalWrite(motor2b, HIGH);
+  digitalWrite(motor3a, LOW); digitalWrite(motor3b, HIGH);
+  digitalWrite(motor4a, LOW); digitalWrite(motor4b, HIGH);
+}
+
+void stopMotors() {
+  digitalWrite(motor1a, LOW); digitalWrite(motor1b, LOW);
+  digitalWrite(motor2a, LOW); digitalWrite(motor2b, LOW);
+  digitalWrite(motor3a, LOW); digitalWrite(motor3b, LOW);
+  digitalWrite(motor4a, LOW); digitalWrite(motor4b, LOW);
+}
+
+// Mapping
+float mapfloat(long x,long in_min,long in_max,long out_min,long out_max)
+{
+  return float(x - in_min) * (out_max - out_min) / float(in_max - in_min) + out_min;
+}
+
+// Read Pixy, return signature or 0 if none for debugging
+int checkPixy()
+{
+  uint16_t blocks = pixy.ccc.getBlocks();
+
+  if(blocks == 0) return 0;
+
+  signature = pixy.ccc.blocks[0].m_signature;
+  x = pixy.ccc.blocks[0].m_x;
+  width = pixy.ccc.blocks[0].m_width;
+
+  cx = x + (width / 2);
+  cx = mapfloat(cx, 0, 316, -1, 1);
+
+  return signature;
+}
+
+// AVOID BEHAVIOUR
+void avoidObstacle()
+{
+  Serial.println(&quot;AVOIDING&quot;);
+
+  // Stop then back up then turn right
+  stopMotors();
+  delay(150);
+
+  backward();
+  delay(250);
+
+  // turn away from obstacle
+  digitalWrite(motor1a, HIGH); digitalWrite(motor1b, LOW);
+  digitalWrite(motor2a, LOW);  digitalWrite(motor2b, HIGH);
+  digitalWrite(motor3a, HIGH); digitalWrite(motor3b, LOW);
+  digitalWrite(motor4a, LOW);  digitalWrite(motor4b, HIGH);
+
+  delay(350);
+
+  stopMotors();
+}
+
+void loop()
+{
+  int sig = checkPixy();
+
+  // No detections == SEARCH
+  if(sig == 0)
+  {
+    state = SEARCH;
+  }
+  // Signature 2 = obstacle == AVOID
+  else if(sig == 2)
+  {
+    state = AVOID;
+  }
+  // Signature 1 = can to chase
+  else if(sig == 1)
+  {
+    state = TRACK_CAN;
+  }
+
+  // STATES AND THEIR ACTIONS
+  switch(state)
+  {
+    case SEARCH:
+      stopMotors();
+      break;
+
+    case AVOID:
+      avoidObstacle();
+      state = SEARCH;
+      break;
+
+    case TRACK_CAN:
+      // if in the centre go forward
+      if(cx &gt; -deadzone &amp;&amp; cx &lt; deadzone)
+      {
+        forward();
+      }
+      // If off-centre, bias movement
+      else if(cx &lt; 0)
+      {
+        forward();   // left bias
+      }
+      else if(cx &gt; 0)
+      {
+        backward();  // right bias
+      }
+      break;
+  }
+
+  delay(40);
+}
+</code></pre></div><div style="display:contents" dir="auto"><p id="2c75be74-c308-80e2-b1b5-c8f2c18502a7" class="">I also had the old poster on the github but my finalized oit’s in the submission area. So hopefully that’s enough.</p></div><div style="display:contents" dir="auto"><p id="2c75be74-c308-8020-9444-e6e9fca661c5" class="">Anyway it is now later in the day and I need to write this idea down.</p></div><div style="display:contents" dir="auto"><p id="2c75be74-c308-8049-af00-ddbc1094aa13" class="">So two big wheels attached to 2 small n20 motors, one arduino uno, one pixy cam cam and I think that is it. oh and one hbridge on and then 1 battery.</p></div><div style="display:contents" dir="auto"><p id="2c75be74-c308-80d5-bb92-ec5bdb01f1e9" class="">Use this for the wheels.</p></div><div style="display:contents" dir="auto"><p id="2c75be74-c308-80c9-b6da-fb992141c7a9" class="">The most important thing would be balancing the arduino and keeping the camera flat inbetween the two wheels.</p></div><div style="display:contents" dir="ltr"><figure id="2c75be74-c308-8022-b752-c6817232e4c4" class="image"><a href="image%205.png"><img style="width:709.9896240234375px" src="image%205.png"/></a></figure></div><div style="display:contents" dir="auto"><p id="2c75be74-c308-8090-84d0-ce6de36d7aa8" class="">Then I went to begin simplifying Jareths worksheet 9 code: </p></div><div style="display:contents" dir="ltr"><figure id="2c75be74-c308-8000-9364-e3fef687b6f4" class="image"><a href="image%206.png"><img style="width:709.96875px" src="image%206.png"/></a></figure></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
